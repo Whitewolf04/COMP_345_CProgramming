@@ -2,17 +2,27 @@
 
 
 int main(){
-
     
-    Advance example1;
-    Advance example2;
+    Advance order1;
+    Airlift order2;
     OrdersList list;
 
-    list.add(example1);    
-    list.add(example2);
+    //validation and execution of orders
+    order2.validate();
+    std::cout << order1.execute() << "\n";
+
+    list.add(order1);    
+    list.add(order2);
+
+    //iterate through the list
     std::cout << list << "\n";
+
+    //remove first order
     list.remove(0);
-    //list->add(example2);
+
+    //move() not yet implemented
+
     std::cout << list << "\n";
+    
 
 }
