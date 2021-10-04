@@ -15,10 +15,31 @@ Cards::Cards(string t){
     // If the type is not what expected, default value would be assigned
 }
 
+Cards::Cards(){
+    *type = "default";
+}
+
 Deck::Deck(int deckSize){
     *size = deckSize;
+    Cards deck[deckSize];
+    deckPtr = &deck;
+}
+
+int Deck::getDeckSize(){
+    return *size;
+}
+
+void Deck::draw(Cards hand[], int handSize){
+    int deckSize = getDeckSize();
+    int cardIndex = rand() % deckSize;
 }
 
 Hand::Hand(int handSize){
     *size = handSize;
+    Cards hand[handSize];
+    handPtr = &hand;
+}
+
+int Hand::getHandSize(){
+    return *size;
 }
