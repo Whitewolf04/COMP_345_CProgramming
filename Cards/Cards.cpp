@@ -28,6 +28,7 @@ bool Cards::equals(Cards *other){
 
 Deck::Deck(int deckSize){
     size = deckSize;
+    deckIndex = 0;
 }
 
 int Deck::getDeckSize(){
@@ -43,6 +44,40 @@ void Deck::draw(Hand *hand, int handSize){
     (*hand).add(&drawn);
 
     // Remove the card drawn from the deck
+    remove(&drawn);
+}
+
+void Deck::add(Cards *card){
+    deck[deckIndex] = *card;
+    deckIndex++;
+}
+
+void Deck::remove(Cards *target){
+    int removeIndex = -1;
+
+    // Loop through the hand to find the target card
+    for(int i = 0; i < size; i++){
+        Cards temp = deck[i];
+        if((*target).equals(&temp)){
+            removeIndex = i;
+            break;
+        }
+    }
+
+    // Check if the target was found
+    if(removeIndex == -1){
+        return;
+    }
+
+    for(int i = removeIndex; i < (size-1); i++){
+        deck[i] = deck[i+1];
+    }
+    // Setting the last item to be Null if it is not Null yet
+    Cards *tempPtr = &deck[size-1];
+    tempPtr = NULL;
+
+    // Decrement the deckIndex
+    deckIndex--;
 }
 
 Hand::Hand(int handSize){
@@ -56,6 +91,7 @@ int Hand::getHandSize(){
 
 void Hand::add(Cards *newCard){
     hand[handIndex] = *newCard; 
+    handIndex++;
 }
 
 void Hand::remove(Cards *target){
@@ -81,4 +117,7 @@ void Hand::remove(Cards *target){
     // Setting the last item to be Null if it is not Null yet
     Cards *tempPtr = &hand[size-1];
     tempPtr = NULL;
+
+    // Decrement the handIndex
+    handIndex--;
 }

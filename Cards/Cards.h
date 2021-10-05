@@ -17,6 +17,7 @@ class Deck
 {
 private:
     int size;
+    int deckIndex;
     Cards *deck = new Cards[size];
 public:
     Deck(int deckSize){};
