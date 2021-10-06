@@ -3,39 +3,31 @@
 using namespace std;
 
 
-//Pointers
-//string territory;
-//string* ter1 = &territory;
-//string* card1 = &cards;
-
-
-/*Player(const Player &p1){
-t = p1.territory;
-c = p1.cards;
-o = p1.orders
-}*/
-
 vector<Territory> Player::toDefend() {
-territories obj1 = new territories();
-cout<<"territory to defend<<end l";
-cin>>terr;
-//return obj1 = cin>>territory;
 
-return 
+/*territories obj1 = new territories();
+cout<<"territory to defend"<<;
+cin>>terr;
+return obj1 = cin>>territory;*/
+
 }
 
 string Player::toAttack(){
-territories obj1 = new territories ();
+
+/*territories obj1 = new territories ();
 cout<<"territory to defend<<end l";
 cin>>territory;
-return obj1 = cin>>territory;
+return obj1 = cin>>territory;*/
+
 }
 
 void Player::issueOrder(){
-Order order_obj = new Oredr();
+
+/*Order order_obj = new Oredr();
 Cout<<"What are my orders"
 Cin>>orders(move);
-return obj1.move();
+return obj1.move();*/
+
 }
 
 
