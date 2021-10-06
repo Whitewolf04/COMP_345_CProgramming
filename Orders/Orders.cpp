@@ -146,12 +146,15 @@ Order OrdersList::getElement(int index){
     return Order_List[index]->getType(); 
 }
 
-void OrdersList::move(){
-    
+void OrdersList::move(int from, int to){
+    Order buffer = *Order_List[from];
+    *Order_List[from] = *Order_List[to];
+    *Order_List[to] = buffer;
+    return;
 }
 
 void OrdersList::remove(int index){  
-    free(Order_List[index]);
+    //Order ptr = *Order_List[index];
     Order_List.erase(Order_List.begin()+index);
 }
 

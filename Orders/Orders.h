@@ -29,7 +29,7 @@ struct OrdersList
     void add(Order o);
     Order getElement(int index);
     void remove(int index);
-    void move();
+    void move(int from, int to);
 };
 
 
