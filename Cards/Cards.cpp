@@ -26,6 +26,14 @@ bool Cards::equals(Cards *other){
     return false;
 }
 
+void Cards::play(Deck *deck){
+    // Add this card to the list of orders
+    cout << "Card has been added to the list of orders" << endl;
+
+    // Return the card to the deck
+    (*deck).add(this);
+}
+
 Deck::Deck(int deckSize){
     size = deckSize;
     deckIndex = 0;
@@ -35,7 +43,7 @@ int Deck::getDeckSize(){
     return size;
 }
 
-void Deck::draw(Hand *hand, int handSize){
+void Deck::draw(Hand *hand){
     int deckSize = getDeckSize();
     int cardIndex = rand() % deckSize;
     Cards drawn = deck[cardIndex];
@@ -120,4 +128,8 @@ void Hand::remove(Cards *target){
 
     // Decrement the handIndex
     handIndex--;
+}
+
+void Hand::playCard(int index, Deck *deck){
+    hand[index].play(deck);
 }

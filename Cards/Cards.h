@@ -10,7 +10,7 @@ public:
     Cards(){};
     Cards(string t){};
     bool equals(Cards *other);
-    void play();
+    void play(Deck *deck);
 };
 
 class Deck
@@ -24,7 +24,7 @@ public:
     int getDeckSize(){};
     void add(Cards *newCard);
     void remove(Cards *target);
-    void draw(Hand *hand, int handSize);
+    void draw(Hand *hand);
 };
 
 class Hand
@@ -38,4 +38,5 @@ public:
     int getHandSize(){};
     void add(Cards *newCard);
     void remove(Cards *target);
+    void playCard(int index, Deck *deck);
 };
