@@ -3,30 +3,39 @@ using namespace std;
 
 class Cards
 {
-public:
-    string* type = new string();
+private:
     string types[5] = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
-    string (*cardTypes)[5] = &types;
+public:
+    string type;
+    Cards(){};
     Cards(string t){};
+    bool equals(Cards *other);
     void play();
 };
 
 class Deck
 {
 private:
-    int* size = new int();
+    int size;
+    int deckIndex;
+    Cards *deck = new Cards[size];
 public:
     Deck(int deckSize){};
     int getDeckSize(){};
-    void draw();
+    void add(Cards *newCard);
+    void remove(Cards *target);
+    void draw(Hand *hand, int handSize);
 };
 
 class Hand
 {
 private:
-    int* size = new int();
+    int size;
+    int handIndex;
+    Cards *hand = new Cards[size];
 public:
     Hand(int handSize){};
     int getHandSize(){};
-    void draw();
+    void add(Cards *newCard);
+    void remove(Cards *target);
 };
