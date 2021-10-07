@@ -2,12 +2,27 @@
 #include<string>
 
 //Define Order functions
+
+//constructors
 Order::Order(){
     type = "Order not specified";
 }
 Order::Order(std::string newType){
     type = newType;
 }
+
+Order::Order(const Order &o){
+    this->type = o.type;
+}
+
+Order& Order::operator =(const Order &o){
+
+    this->type = o.type;
+
+    return *this;
+}
+
+//functions
 std::string Order::getType(){
     return type;
 }
@@ -127,12 +142,23 @@ OrdersList::OrdersList(){
 }
 
 OrdersList::OrdersList(const OrdersList &o){
-    Order_List = o.Order_List;
+    
+    Order* _arr = new Order[o.Order_List.size()];
+
+    for (int i=0; i<o.Order_List.size(); ++i){
+        _arr[i] = *o.Order_List[i];
+        Order_List.push_back(&_arr[i]);
+    } 
 }
 
 OrdersList& OrdersList::operator =(const OrdersList &o){
-
-    Order_List = o.Order_List;
+    
+    Order* ptr = new Order[o.Order_List.size()];
+    
+    for (int i=0; i<o.Order_List.size(); ++i){
+        ptr[i] = *o.Order_List[i];
+        this->Order_List.push_back(&ptr[i]);
+    } 
 
     return *this;
 }

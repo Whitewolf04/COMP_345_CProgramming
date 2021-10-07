@@ -3,10 +3,15 @@
 
 int main(){
     
-    Advance order1;
-    Airlift order2;
-    Negotiate order3;
+    Deploy order1;
+    Advance order2;
+    Bomb order3;
+    Blockade order4;
+    Airlift order5;
+    Negotiate order6;
+    
     OrdersList list;
+
 
     //validation and execution of orders
     order2.validate();
@@ -14,6 +19,11 @@ int main(){
     list.add(order1);    
     list.add(order2);
     list.add(order3);
+    list.add(order4);
+    list.add(order5);
+    list.add(order6);
+
+    OrdersList list_copy = list;
 
     std::cout << list.getElement(1).execute() << "\n";
 
@@ -30,6 +40,7 @@ int main(){
     list.move(0,1);
 
     std::cout << list << "\n";
-    
+    std::cout << list_copy << "\n";
+
 
 }

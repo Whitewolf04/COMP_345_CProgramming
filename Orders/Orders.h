@@ -10,6 +10,8 @@ struct Order
     public:
     Order();
     Order(std::string newType);
+    Order(const Order &o);
+    Order& operator =(const Order &o);
     void validate();
     std::string execute();
     std::string getType();
