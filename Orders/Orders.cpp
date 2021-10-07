@@ -22,7 +22,7 @@ Order& Order::operator =(const Order &o){
     return *this;
 }
 
-//functions
+//Order functions
 std::string Order::getType(){
     return type;
 }
@@ -38,6 +38,7 @@ std::string Order::execute(){
 std::ostream& operator<<(std::ostream &strm, const Order &order){
     return strm << "Order is an undefined order" << ' ';
 }
+
 
 //Deploy functions
 Deploy::Deploy():Order("deploy"){}
@@ -55,9 +56,9 @@ std::ostream& operator<<(std::ostream &strm, const Deploy &deploy){
     return strm << "Deploy ..." << ' ';
 }
 
+
 //Advance functions
 Advance::Advance():Order("advance"){}
-
 
 void Advance::validate(){
     std::cout << this->getType() << "'s validation is not yet implemented" << "\n";
@@ -71,6 +72,7 @@ std::string Advance::execute(){
 std::ostream& operator<<(std::ostream &strm, const Advance &advance){
     return strm << "Advance ..." << ' ';
 }
+
 //Bomb functions
 Bomb::Bomb():Order("bomb"){}
 
@@ -136,11 +138,12 @@ std::ostream& operator<<(std::ostream &strm, const Negotiate &negotiate){
 }
 
 
-//Define OrderList functions
+//Define OrderList constructors and destructor
 OrdersList::OrdersList(){
     Order_List;
 }
 
+//Copy constructors
 OrdersList::OrdersList(const OrdersList &o){
     
     Order* _arr = new Order[o.Order_List.size()];
@@ -163,15 +166,28 @@ OrdersList& OrdersList::operator =(const OrdersList &o){
     return *this;
 }
 
+//Destructor: deletes all Order pointer of the list
+OrdersList::~OrdersList(){
+    for (int i=0; i<Order_List.size(); ++i){
+        delete Order_List[i];
+    } 
+}
+
+//Order List functions
+
+//adds Order object through a pointer to the vector list
 void OrdersList::add(Order o){
-    Order* ptr = &o;
+    Order* ptr = new Order;
+    ptr = &o;
     Order_List.push_back(ptr);
 }
 
+//get the order type
 Order OrdersList::getElement(int index){
     return Order_List[index]->getType(); 
 }
 
+//swaps values of two order pointers in the list at different positions
 void OrdersList::move(int from, int to){
     Order buffer = *Order_List[from];
     *Order_List[from] = *Order_List[to];
@@ -179,11 +195,12 @@ void OrdersList::move(int from, int to){
     return;
 }
 
-void OrdersList::remove(int index){  
-    //Order ptr = *Order_List[index];
+//removes element from the list
+void OrdersList::remove(int index){ 
     Order_List.erase(Order_List.begin()+index);
 }
 
+//Shows all element of the list
 std::ostream& operator<<(std::ostream &strm, const OrdersList &olist){
     std::cout << "OrderList contains:";
     for (int i=0; i<olist.Order_List.size(); ++i){

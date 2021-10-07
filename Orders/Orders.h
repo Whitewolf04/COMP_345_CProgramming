@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 
+//Order class
 struct Order
 {
     private:
@@ -18,6 +19,7 @@ struct Order
     
 };
 
+//OrderList class
 struct OrdersList
 {
     private:
@@ -28,6 +30,7 @@ struct OrdersList
     OrdersList();
     OrdersList(const OrdersList &o);
     OrdersList& operator =(const OrdersList &o);
+    ~OrdersList();
     void add(Order o);
     Order getElement(int index);
     void remove(int index);
@@ -35,7 +38,7 @@ struct OrdersList
 };
 
 
-
+//Order subclasses
 struct Advance : public Order
 {
     private:
