@@ -15,10 +15,6 @@ Cards::Cards(string t){
     // If the type is not what expected, default value would be assigned
 }
 
-Cards::Cards(){
-    type = "default";
-}
-
 bool Cards::equals(Cards *other){
     if((this->type).compare((*other).type) == 0){
         return true;
@@ -26,46 +22,47 @@ bool Cards::equals(Cards *other){
     return false;
 }
 
-void Cards::play(Deck *deck){
+void Cards::play(){
     // Add this card to the list of orders
-    cout << "Card has been added to the list of orders" << endl;
+    cout << "Card " << this->type << " has been added to the list of orders" << endl;
+}
 
-    // Return the card to the deck
-    (*deck).add(this);
+std::ostream& operator<<(std::ostream &strm, const Cards &card){
+    return strm << card.type;
 }
 
 Deck::Deck(int deckSize){
     size = deckSize;
-    deckIndex = 0;
 }
 
 int Deck::getDeckSize(){
     return size;
 }
 
-void Deck::draw(Hand *hand){
+Cards Deck::draw(){
     int deckSize = getDeckSize();
     int cardIndex = rand() % deckSize;
     Cards drawn = deck[cardIndex];
 
     // Add the new card to the player's hand
-    (*hand).add(&drawn);
 
     // Remove the card drawn from the deck
     remove(&drawn);
+
+    // Return the drawn card
+    return drawn;
 }
 
 void Deck::add(Cards *card){
-    deck[deckIndex] = *card;
-    deckIndex++;
+    deck.push_back(*card);
 }
 
 void Deck::remove(Cards *target){
     int removeIndex = -1;
 
     // Loop through the hand to find the target card
-    for(int i = 0; i < size; i++){
-        Cards temp = deck[i];
+    for(int i = 0; i < deck.size(); i++){
+        Cards temp = deck.at(i);
         if((*target).equals(&temp)){
             removeIndex = i;
             break;
@@ -77,20 +74,22 @@ void Deck::remove(Cards *target){
         return;
     }
 
-    for(int i = removeIndex; i < (size-1); i++){
-        deck[i] = deck[i+1];
-    }
-    // Setting the last item to be Null if it is not Null yet
-    Cards *tempPtr = &deck[size-1];
-    tempPtr = NULL;
+    // Remove the target from the vector
+    deck.erase(deck.begin()+removeIndex);
+}
 
-    // Decrement the deckIndex
-    deckIndex--;
+std::ostream& operator<<(std::ostream &stream, const Deck &obj){
+    string output = "";
+    for(int i = 0; i < obj.deck.size(); i++){
+        output += obj.deck.at(i).type;
+        output += " card\n";
+    }
+
+    return stream << output;
 }
 
 Hand::Hand(int handSize){
     size = handSize;
-    handIndex = 0;
 }
 
 int Hand::getHandSize(){
@@ -98,16 +97,15 @@ int Hand::getHandSize(){
 }
 
 void Hand::add(Cards *newCard){
-    hand[handIndex] = *newCard; 
-    handIndex++;
+    hand.push_back(*newCard);
 }
 
 void Hand::remove(Cards *target){
     int removeIndex = -1;
 
     // Loop through the hand to find the target card
-    for(int i = 0; i < size; i++){
-        Cards temp = hand[i];
+    for(int i = 0; i < hand.size(); i++){
+        Cards temp = hand.at(i);
         if((*target).equals(&temp)){
             removeIndex = i;
             break;
@@ -119,17 +117,25 @@ void Hand::remove(Cards *target){
         return;
     }
 
-    for(int i = removeIndex; i < (size-1); i++){
-        hand[i] = hand[i+1];
-    }
-    // Setting the last item to be Null if it is not Null yet
-    Cards *tempPtr = &hand[size-1];
-    tempPtr = NULL;
-
-    // Decrement the handIndex
-    handIndex--;
+    // Remove the target from hand
+    hand.erase(hand.begin()+removeIndex);
 }
 
 void Hand::playCard(int index, Deck *deck){
-    hand[index].play(deck);
+    Cards temp = hand.at(index);
+    temp.play();
+
+    // Remove the card that was played from hand, and add it back to the deck
+    remove(&temp);
+    (*deck).add(&temp);
+}
+
+std::ostream& operator<<(std::ostream &stream, const Hand &obj){
+    string output = "";
+    for(int i = 0; i < obj.hand.size(); i++){
+        output += obj.hand.at(i).type;
+        output += " card\n";
+    }
+    
+    return stream << output;
 }

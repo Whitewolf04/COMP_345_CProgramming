@@ -1,5 +1,4 @@
-#include <iostream>
-#include "Cards.cpp"\
+#include "Cards.cpp"
 
 int main(){
     // Initialize all the cards
@@ -19,12 +18,23 @@ int main(){
     deck.add(&airlift);
     deck.add(&diplomacy);
 
-    deck.draw(&hand);
-    deck.draw(&hand);
+    cout << deck << endl;
+
+    Cards drawn = deck.draw();
+    hand.add(&drawn);
+    drawn = deck.draw();
+    hand.add(&drawn);
+
+    cout << "Hand: \n" << hand << endl;
+    cout << "Deck: \n" << deck << endl;
 
     // Play all the cards on hand
     hand.playCard(0, &deck);
     hand.playCard(1, &deck);
+
+    cout << "\n" << endl;
+    cout << "Hand: \n" << hand << endl;
+    cout << "Deck: \n" << deck << endl;
 
     return 0;
 }
