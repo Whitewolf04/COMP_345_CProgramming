@@ -20,17 +20,17 @@ int main(){
 
     cout << deck << endl;
 
-    Cards drawn = deck.draw();
-    hand.add(&drawn);
-    drawn = deck.draw();
-    hand.add(&drawn);
+    // Drawing cards onto the hand
+    hand.drawCard(&deck);
+    hand.drawCard(&deck);
 
+    // Print out deck and hand content
     cout << "Hand: \n" << hand << endl;
     cout << "Deck: \n" << deck << endl;
 
     // Play all the cards on hand
     hand.playCard(0, &deck);
-    hand.playCard(1, &deck);
+    hand.playCard(0, &deck);
 
     cout << "\n" << endl;
     cout << "Hand: \n" << hand << endl;
