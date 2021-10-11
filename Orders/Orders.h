@@ -1,6 +1,8 @@
+
 #include <vector>
 #include <iostream>
 
+//Order class
 struct Order
 {
     private:
@@ -10,12 +12,15 @@ struct Order
     public:
     Order();
     Order(std::string newType);
+    Order(const Order &o);
+    Order& operator =(const Order &o);
     void validate();
     std::string execute();
     std::string getType();
     
 };
 
+//OrderList class
 struct OrdersList
 {
     private:
@@ -26,14 +31,15 @@ struct OrdersList
     OrdersList();
     OrdersList(const OrdersList &o);
     OrdersList& operator =(const OrdersList &o);
+    ~OrdersList();
     void add(Order o);
     Order getElement(int index);
     void remove(int index);
-    void move();
+    void move(int from, int to);
 };
 
 
-
+//Order subclasses
 struct Advance : public Order
 {
     private:
