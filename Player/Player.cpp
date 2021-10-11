@@ -2,6 +2,12 @@
 #include"Player.h"
 using namespace std;
 
+Player::Player(){
+    territories = vector<Territory*>();
+    hand = Hand();
+    orders = OrdersList();
+}
+
 Player::Player(vector<Territory*>& t, Hand& h, OrdersList& o){
     territories = t;
     hand = h;
@@ -14,31 +20,35 @@ Player::Player(const Player& p){
     this->orders = p.orders;
 }
 
-vector<Territory*> Player::toDefend() {
-
-/*territories obj1 = new territories();
-cout<<"territory to defend"<<;
-cin>>terr;
-return obj1 = cin>>territory;*/
-
+Player::~Player(){
+    for(int i = 0; i < territories.size(); i++){
+        delete territories[i];
+    }
 }
 
-string Player::toAttack(){
+void Player::addTerritories(Territory *t){
+    territories.push_back(t);
+}
 
-/*territories obj1 = new territories ();
-cout<<"territory to defend<<end l";
-cin>>territory;
-return obj1 = cin>>territory;*/
+void Player::addCards(Cards *c){
+    hand.add(c);
+}
 
+void Player::addOrder(Order *o){
+    orders.add(*o);
+}
+
+vector<Territory*>* Player::toDefend() {
+    return &territories;
+}
+
+vector<Territory*>* Player::toAttack(){
+    return &territories;
 }
 
 void Player::issueOrder(){
-
-/*Order order_obj = new Oredr();
-Cout<<"What are my orders"
-Cin>>orders(move);
-return obj1.move();*/
-
+    Order order = Order();
+    orders.add(order);
 }
 
 

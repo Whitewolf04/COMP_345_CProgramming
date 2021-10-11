@@ -13,8 +13,10 @@ class Player {
 
 	public:
 		//Constructors
+		Player();
 		Player(vector<Territory*>& t, Hand& h, OrdersList& o); //change
 		Player(const Player& p);
+		~Player();
 		
 		//Accessors
 		vector<Territory*> getTerritories();
@@ -22,13 +24,13 @@ class Player {
 		OrdersList& getOrders();
 
         //Mutator
-        void addTerritories(Territory& t);
-        void addCards(Cards& c);
-        void addOrders(OrdersList& o);
+        void addTerritories(Territory *t);
+        void addCards(Cards *c);
+        void addOrder(Order *o);
 
         //Methods
-        vector<Territory*> toDefend();
-        string toAttack();
+        vector<Territory*>* toDefend();
+        vector<Territory*>* toAttack();
         void issueOrder();
 
 };		
