@@ -2,8 +2,19 @@
 #include"Player.h"
 using namespace std;
 
+Player::Player(vector<Territory*>& t, Hand& h, OrdersList& o){
+    territories = t;
+    hand = h;
+    orders = o;
+}
 
-vector<Territory> Player::toDefend() {
+Player::Player(const Player& p){
+    this->territories = p.territories;
+    this->hand = p.hand;
+    this->orders = p.orders;
+}
+
+vector<Territory*> Player::toDefend() {
 
 /*territories obj1 = new territories();
 cout<<"territory to defend"<<;

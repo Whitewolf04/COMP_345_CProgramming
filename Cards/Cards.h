@@ -37,6 +37,7 @@ private:
     std::vector<Cards*> hand;
     friend std::ostream& operator<<(std::ostream&, const Hand&);
 public:
+    Hand();
     Hand(int handSize);
     ~Hand();
     int getHandSize();
