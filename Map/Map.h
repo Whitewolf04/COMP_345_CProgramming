@@ -35,13 +35,23 @@ class Continent {
 
 };
 
+class Player {
+private:
+	int playerNum;
+public:
+	Player(int n);
+	void setPlayerNumber(int n);
+	int getPlayerNum();
+};
+
 class Territory {
+	
 	private:
 		int T_num;
 		int NumOfArmies;
 		string T_name;
 		int Continent_Number;
-		int PlayerNumber;
+		int PlayerNumber=0;
 		vector<int> NeighboringTerritories;
 		vector<Territory*> Edges;
 

@@ -115,7 +115,16 @@ bool MapLoader::FileParser(string& str, vector<Continent>& c, vector<Territory>&
 			}
 
 			//Accessing the amount of armies that each continent has for its armies
-			int numOfArmies = C->at(IntegerNumberOfContinent -1).getCCB();
+			int numOfArmies = 0;
+			try {
+				numOfArmies = C->at(IntegerNumberOfContinent - 1).getCCB();
+			}
+			catch (exception e) {
+				cout << "Problem with accessing a certain continent number to add armies.\n";
+				valid = false;
+				break;
+			}
+
 
 			//Adding a Territory Object with the Above Values to the passed Vector of Territories
 			Territory t(TerritoryOrder, numOfArmies, *NameOfTerritory, IntegerNumberOfContinent);
@@ -253,7 +262,6 @@ Map::Map() {
 				}
 			}
 		}
-		validate();
 	}
 		delete Territories, Continents, stream, MapInformation;
 	
@@ -334,15 +342,19 @@ bool Map::validate() {
 				bool connectedForward = false;
 				bool connectedBackwards = false;
 				for (int j = 0;j < getNodesForContinent(c).size();j++) {
-					if (j == 0) {
+					if (j == 0 && getNodesForContinent(c).size() != 1) {
 						starter = getNodesForContinent(c).at(j).getTerritoryNumber();
 					}
-					checkpoints.push_back(getNodesForContinent(c).at(j).getTerritoryNumber());
-				}
+						checkpoints.push_back(getNodesForContinent(c).at(j).getTerritoryNumber());
 
+				}
+				if (checkpoints.size() == 1) { 
+					cout << "Continent contains a single node, no need to check.\n";
+					continue; }
 				do {
+
 					marks = checkpoints;
-					if (starter == marks.at(0)) {
+					if ( marks.size()!=1 && starter == marks.at(0)) {
 
 						//Loop to check if the a path exists
 						for (int i = 0; i < marks.size() - 1;i++) {
@@ -455,7 +467,7 @@ bool Map::validate() {
 				for (int i = 0;i < Cnodes.size();i++) {
 					canExit = false;
 					for (int j = 0;j < Cnodes.at(i).size();j++) {//This loop serves to see where each node connects to
-						
+						if (ListOfNodes->at(Cnodes.at(i).at(j) - 1).getTerritoryConnexions().size() == 0) { break; }
 						for (auto k : ListOfNodes->at(Cnodes.at(i).at(j) - 1).getTerritoryConnexions()) {
 							if (ListOfNodes->at(k - 1).getTerritoryContinent() - 1 != i) {// This is to check that the node does not connect to itself
 								cout << "From Continent " << ListOfContinents->at(i).getContinentName() << ", you can go to " << ListOfContinents->at(ListOfNodes->at(k - 1).getTerritoryContinent() - 1).getContinentName() << endl;
@@ -625,3 +637,12 @@ bool Territory::PlayerCheck(int n) {
 };
 
 
+void Player::setPlayerNumber(int n) {
+	playerNum = n;
+}
+int Player::getPlayerNum() {
+	return playerNum;
+}
+Player::Player(int n){
+	playerNum = n;
+}
