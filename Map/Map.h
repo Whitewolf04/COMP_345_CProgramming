@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 
@@ -11,7 +12,7 @@ class Continent {
 	private:
 		int C_num;
 		string C_name;
-		int NumOfArmies;
+		int CCBus;
 		string colour;
 	public:
 		//Constructors
@@ -22,8 +23,9 @@ class Continent {
 		//Accessors
 		int getContinentNumber();
 		string getContinentName() ;
-		int getContinentArmies();
+		int getCCB();
 		string getContinentColour();
+		
 
 		//Stream Insertion Operator
 		friend ostream& operator<<(ostream& os, const Continent& dt);
@@ -40,9 +42,12 @@ class Territory {
 		string T_name;
 		int Continent_Number;
 		int PlayerNumber;
-		vector<int>* NeighboringTerritories = new vector<int>;
+		vector<int> NeighboringTerritories;
+		vector<Territory*> Edges;
+
 	public:
 		//Constructors
+		Territory();
 		Territory(int num, int armies, string name, int Cont_num);
 		Territory(const Territory& t);
 		Territory& operator = (const Territory& t);// Not Working Properly
@@ -52,12 +57,15 @@ class Territory {
 		string getTerritoryName();
 		int getTerritoryContinent();
 		int getPlayerNumber();
-		vector<int>& getTerritoryConnexions();
+		int getNumOfArmies();
+		vector<int> getTerritoryConnexions();
+		vector<Territory*>& getEdges();
 
 		//Mutator
 		void addNeighbors(int n);
 		void setNumArmies(int n);
 		void setPlayerNumber(int n);
+		void addEdges(Territory* p);
 
 		//Checking if territory belongs to the passed player
 		bool PlayerCheck(int n);
@@ -69,15 +77,33 @@ class Territory {
 
 };
 
-struct Node {
 
-	
-};
+
+
 class Map {
 
-	public:	
 
+	public:	
+		//Constructors and destructor
+		Map();
+		Map(const Map& m);
+		Map(vector<Continent>& v, vector<Territory>& t);
+		//Display Methods
+		void printContinentList();
+		void printNodeList();
+		vector<Territory> getNodesForContinent(int n);
+		
+		//Game Related Methods
+		bool advance(int n, int m);
+		bool PlayerCheck(int node, int playerN);
+		bool validate();
+
+		//Accessors
+		Territory* getNode(int n);
+		Continent* getContinent(int n);
 	private:
+		vector<Territory>* ListOfNodes = new vector<Territory>;
+		vector<Continent>* ListOfContinents = new vector<Continent>;
 
 };
 
@@ -85,7 +111,7 @@ class MapLoader {
 
 	public:
 		static string FileLoader(ifstream* stream); // Checks if file exists
-		static void FileParser(string& str, vector<Continent>& v, vector<Territory>& c); // Add function to empty v and c if map is invalid
+		static bool FileParser(string& str, vector<Continent>& v, vector<Territory>& c); // Add function to empty v and c if map is invalid
 
 	private:
 		static void addContinents(Continent c, vector<Continent>* v);
@@ -93,3 +119,6 @@ class MapLoader {
 		vector<Continent>* Continents;
 		vector<Territory>* CountryList;
 };
+
+//Add dummy player class
+//validate method
