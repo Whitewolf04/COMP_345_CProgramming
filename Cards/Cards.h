@@ -1,32 +1,48 @@
 #include <string>
+#include <vector>
 using namespace std;
 
 class Cards
 {
-public:
-    string* type = new string();
+private:
     string types[5] = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
-    string (*cardTypes)[5] = &types;
-    Cards(string t){};
+    friend std::ostream& operator<<(std::ostream&, const Cards&);
+public:
+    string type;
+    Cards();
+    Cards(string t);
+    bool equals(Cards *other);
     void play();
 };
 
 class Deck
 {
 private:
-    int* size = new int();
+    int size;
+    std::vector<Cards*> deck;
+    friend std::ostream& operator<<(std::ostream&, const Deck&);
 public:
-    Deck(int deckSize){};
-    int getDeckSize(){};
-    void draw();
+    Deck(int deckSize);
+    ~Deck();
+    int getDeckSize();
+    void add(Cards *newCard);
+    void remove(Cards *target);
+    Cards* draw();
 };
 
 class Hand
 {
 private:
-    int* size = new int();
+    int size;
+    std::vector<Cards*> hand;
+    friend std::ostream& operator<<(std::ostream&, const Hand&);
 public:
-    Hand(int handSize){};
-    int getHandSize(){};
-    void draw();
+    Hand();
+    Hand(int handSize);
+    ~Hand();
+    int getHandSize();
+    void add(Cards *newCard);
+    void remove(Cards *target);
+    void drawCard(Deck *deck);
+    void playCard(int index, Deck *deck);
 };
