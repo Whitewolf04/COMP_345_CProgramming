@@ -1,4 +1,0 @@
-ToolSet: w64 6.0 (local)@D:\CLion 2021.2.1\mingw64
-Options: 
-
-Options:
