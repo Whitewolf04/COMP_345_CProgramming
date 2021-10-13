@@ -637,12 +637,12 @@ bool Territory::PlayerCheck(int n) {
 };
 
 
-void Player::setPlayerNumber(int n) {
+void DummyPlayer::setPlayerNumber(int n) {
 	playerNum = n;
 }
-int Player::getPlayerNum() {
+int DummyPlayer::getPlayerNum() {
 	return playerNum;
 }
-Player::Player(int n){
+DummyPlayer::DummyPlayer(int n){
 	playerNum = n;
 }

@@ -26,6 +26,15 @@ Player::~Player(){
     }
 }
 
+std::ostream& operator<<(ostream& stream, const Player &player){
+    stream << "Player hand:\n" << player.hand;
+    stream << "\nPlayer territories:\n";
+    for(int i = 0; i < player.territories.size(); i++){
+        stream << *player.territories[i] << "\n";
+    }
+    stream << "\nPlayer orders list:\n" << player.orders;
+}
+
 void Player::addTerritories(Territory *t){
     territories.push_back(t);
 }

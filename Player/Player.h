@@ -1,7 +1,7 @@
 #include <string>
-#include "Cards/Cards.cpp"
-#include "Orders/Orders.cpp"
-#include "Map/Map.cpp"
+#include "../Cards/Cards.cpp"
+#include "../Orders/Orders.cpp"
+#include "../Map/Map.cpp"
 using namespace std;
 
 class Player {
@@ -10,6 +10,7 @@ class Player {
         vector<Territory*> territories;
 		Hand hand;
 		OrdersList orders;
+		friend std::ostream& operator<<(ostream& os, const Player&);
 
 	public:
 		//Constructors

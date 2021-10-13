@@ -35,11 +35,11 @@ class Continent {
 
 };
 
-class Player {
+class DummyPlayer {
 private:
 	int playerNum;
 public:
-	Player(int n);
+	DummyPlayer(int n);
 	void setPlayerNumber(int n);
 	int getPlayerNum();
 };
