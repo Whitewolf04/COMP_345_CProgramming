@@ -113,7 +113,7 @@ std::ostream& operator<<(std::ostream &stream, const Deck &obj){
     return stream << output;
 }
 
-// Default Constructor
+// Default constructor for Hand
 Hand::Hand(){
     size = 0;
 }

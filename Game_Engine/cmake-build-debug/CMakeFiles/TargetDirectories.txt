@@ -1,0 +1,3 @@
+C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir
+C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
