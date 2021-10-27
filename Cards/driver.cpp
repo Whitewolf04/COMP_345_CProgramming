@@ -18,6 +18,7 @@ int main(){
     deck.add(&airlift);
     deck.add(&diplomacy);
 
+    cout << "Deck: " << endl;
     cout << deck << endl;
 
     // Drawing cards onto the hand

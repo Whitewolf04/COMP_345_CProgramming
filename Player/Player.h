@@ -1,7 +1,7 @@
 #include <string>
-#include "../Cards/Cards.cpp"
-#include "../Orders/Orders.cpp"
-#include "../Map/Map.cpp"
+#include "../Cards/Cards.h"
+#include "../Orders/Orders.h"
+#include "../Map/Map.h"
 using namespace std;
 
 class Player {
