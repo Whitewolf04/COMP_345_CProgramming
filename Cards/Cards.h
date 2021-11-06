@@ -46,3 +46,4 @@ public:
     void drawCard(Deck *deck);
     void playCard(int index, Deck *deck);
 };
+
