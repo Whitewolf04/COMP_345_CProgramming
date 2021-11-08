@@ -35,11 +35,11 @@ class Continent {
 
 };
 
-class Player {
+class DummyPlayer {
 private:
 	int playerNum;
 public:
-	Player(int n);
+	DummyPlayer(int n);
 	void setPlayerNumber(int n);
 	int getPlayerNum();
 };
@@ -95,7 +95,7 @@ class Map {
 
 	public:	
 		//Constructors and destructor
-		Map();
+		Map(std::string name);
 		Map(const Map& m);
 		Map(vector<Continent>& v, vector<Territory>& t);
 		//Display Methods
@@ -120,7 +120,7 @@ class Map {
 class MapLoader {
 
 	public:
-		static string FileLoader(ifstream* stream); // Checks if file exists
+		static string FileLoader(ifstream* stream,string name); // Checks if file exists
 		static bool FileParser(string& str, vector<Continent>& v, vector<Territory>& c); // Add function to empty v and c if map is invalid
 
 	private:
