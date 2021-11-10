@@ -1,6 +1,5 @@
 #include "Orders.h"
 #include<string>
-using namespace std;
 
 //Define Order functions
 
@@ -146,23 +145,23 @@ OrdersList::OrdersList(){
 
 //Copy constructors
 OrdersList::OrdersList(const OrdersList &o){
-    
+
     Order* _arr = new Order[o.Order_List.size()];
 
     for (int i=0; i<o.Order_List.size(); ++i){
         _arr[i] = *o.Order_List[i];
         Order_List.push_back(&_arr[i]);
-    } 
+    }
 }
 
 OrdersList& OrdersList::operator =(const OrdersList &o){
-    
+
     Order* ptr = new Order[o.Order_List.size()];
-    
+
     for (int i=0; i<o.Order_List.size(); ++i){
         ptr[i] = *o.Order_List[i];
         this->Order_List.push_back(&ptr[i]);
-    } 
+    }
 
     return *this;
 }
@@ -171,7 +170,7 @@ OrdersList& OrdersList::operator =(const OrdersList &o){
 OrdersList::~OrdersList(){
     for (int i=0; i<Order_List.size(); ++i){
         delete Order_List[i];
-    } 
+    }
 }
 
 //Order List functions
@@ -185,7 +184,7 @@ void OrdersList::add(Order o){
 
 //get the order type
 Order OrdersList::getElement(int index){
-    return Order_List[index]->getType(); 
+    return Order_List[index]->getType();
 }
 
 //swaps values of two order pointers in the list at different positions
@@ -197,7 +196,7 @@ void OrdersList::move(int from, int to){
 }
 
 //removes element from the list
-void OrdersList::remove(int index){ 
+void OrdersList::remove(int index){
     Order_List.erase(Order_List.begin()+index);
 }
 
@@ -206,6 +205,6 @@ std::ostream& operator<<(std::ostream &strm, const OrdersList &olist){
     std::cout << "OrderList contains:";
     for (int i=0; i<olist.Order_List.size(); ++i){
         std::cout << ' ' << olist.Order_List[i]->getType();
-    }    
+    }
     return std::cout << "";
 }

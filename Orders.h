@@ -1,16 +1,16 @@
-#pragma once
+#ifndef ORDER_H
+#define ORDER_H
 #include <vector>
 #include <iostream>
-using namespace std;
 
 //Order class
 struct Order
 {
-    private:
-    std::string type;  
+private:
+    std::string type;
     friend std::ostream& operator<<(std::ostream &strm, const Order &order);
 
-    public:
+public:
     Order();
     Order(std::string newType);
     Order(const Order &o);
@@ -18,17 +18,17 @@ struct Order
     void validate();
     std::string execute();
     std::string getType();
-    
+
 };
 
 //OrderList class
 struct OrdersList
 {
-    private:
+private:
     std::vector<Order*> Order_List;
     friend std::ostream& operator<<(std::ostream &strm, const OrdersList &olist);
 
-    public:
+public:
     OrdersList();
     OrdersList(const OrdersList &o);
     OrdersList& operator =(const OrdersList &o);
@@ -43,9 +43,9 @@ struct OrdersList
 //Order subclasses
 struct Advance : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Advance &advance);
-    public:
+public:
     Advance();
     void validate();
     std::string execute();
@@ -54,9 +54,9 @@ struct Advance : public Order
 
 struct Deploy : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Deploy &deploy);
-    public:
+public:
     Deploy();
     void validate();
     std::string execute();
@@ -65,9 +65,9 @@ struct Deploy : public Order
 
 struct Bomb : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Bomb &bomb);
-    public:
+public:
     Bomb();
     void validate();
     std::string execute();
@@ -76,10 +76,10 @@ struct Bomb : public Order
 
 struct Blockade : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Blockade &blockade);
 
-    public:
+public:
     Blockade();
     void validate();
     std::string execute();
@@ -87,10 +87,10 @@ struct Blockade : public Order
 
 struct Airlift : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Airlift &airlift);
 
-    public:
+public:
     Airlift();
     void validate();
     std::string execute();
@@ -98,11 +98,13 @@ struct Airlift : public Order
 
 struct Negotiate : public Order
 {
-    private:
+private:
     friend std::ostream& operator<<(std::ostream &strm, const Negotiate &negotiate);
 
-    public:
+public:
     Negotiate();
     void validate();
     std::string execute();
 };
+
+#endif

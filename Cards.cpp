@@ -2,8 +2,6 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 // Cards default constructor
 Cards::Cards(){
     type = "default";
@@ -192,6 +190,6 @@ std::ostream& operator<<(std::ostream &stream, const Hand &obj){
         output += temp.type;
         output += " card\n";
     }
-    
+
     return stream << output;
 }

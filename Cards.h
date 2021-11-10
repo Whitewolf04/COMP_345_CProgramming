@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CARDS_H
+#define CARDS_H
 #include <string>
 #include <vector>
 using namespace std;
@@ -48,3 +49,4 @@ public:
     void playCard(int index, Deck *deck);
 };
 
+#endif
