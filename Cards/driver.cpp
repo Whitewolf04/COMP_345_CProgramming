@@ -1,5 +1,7 @@
 #include <iostream>
-#include "Cards.cpp"
+#include "Cards.h"
+
+using namespace std;
 
 int main(){
     // Initialize all the cards

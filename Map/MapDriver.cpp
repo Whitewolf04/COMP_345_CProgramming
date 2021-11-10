@@ -3,7 +3,7 @@ using namespace std;
 
 int main() {
 
-	Player p1(4);
+	DummyPlayer p1(4);
 	Map map1;
 	map1.validate();
 	Map map2(map1);

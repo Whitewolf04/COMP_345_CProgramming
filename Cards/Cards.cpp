@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 // Cards default constructor
 Cards::Cards(){
     type = "default";

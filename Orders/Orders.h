@@ -1,5 +1,7 @@
+#pragma once
 #include <vector>
 #include <iostream>
+using namespace std;
 
 //Order class
 struct Order

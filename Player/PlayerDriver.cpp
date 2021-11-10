@@ -1,4 +1,6 @@
-#include "Player.cpp"
+#include "Player.h"
+#include <iostream>
+using namespace std;
 
 int main() {
     // Initialize all the cards
@@ -28,7 +30,7 @@ int main() {
     territories.push_back(&t4);
 
     // Initialize the Player
-    Player player = Player(territories, hand, orders);
+    Player player = Player(territories, hand, orders, 1, 0);
     player.addCards(&bomb);
     player.addCards(&reinforcement);
     player.addCards(&blockade);
@@ -36,6 +38,9 @@ int main() {
     player.addCards(&diplomacy);
 
     cout << player << endl;
+
+    Player::playerList.push_back(&player);
+    cout << "Player added to player list" << endl;
 
     return 0;
 }

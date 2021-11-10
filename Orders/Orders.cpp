@@ -1,5 +1,6 @@
 #include "Orders.h"
 #include<string>
+using namespace std;
 
 //Define Order functions
 
