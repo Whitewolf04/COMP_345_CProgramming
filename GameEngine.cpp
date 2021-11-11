@@ -8,7 +8,7 @@ const map <PlayManagerState, string> pmsmap = {{assignReinforcement,"assignReinf
 
 bool isGameOver = false;
 
-vector<Player> listOfPlayers;
+vector<Player*> listOfPlayers;
 
 Map * loader;
 
@@ -162,7 +162,7 @@ void StartupManager::addPlayers(string arg) {
     cout << "\n";
     // add player
     Player p(arg);
-    listOfPlayers.push_back(p);
+    listOfPlayers.push_back(&p);
     // add player
     setSms(playersAdded);
     s = PLAYERADDED;
@@ -176,7 +176,7 @@ void StartupManager::addPlayers(string arg) {
             cp.lc.back().saveEffect("Adding player "+ input.substr(input.find(' ') + 1, input.length()-1));
             // add player
             Player p(arg);
-            listOfPlayers.push_back(p);
+            listOfPlayers.push_back(&p);
             //
             printSMS();
             cout << "Please enter an option" << "\n";
@@ -206,10 +206,24 @@ void PlayManager::printPMS() {
 void PlayManager::setPms(PlayManagerState p) {
     pms = p;
 }
+
+// Reinforcement phase
 void PlayManager::init () {
     setPms(assignReinforcement);
     s = ASSIGNREINFORCEMENT;
     printPMS();
+
+    // Reinforcement phase starts
+    for(int i = 0; i < listOfPlayers.size(); i++){
+        Player temp = *listOfPlayers.at(i);
+        int reinArmyNum = (int) (temp.playerTerritories.size()/3);
+        temp.addReinArmy(reinArmyNum);
+
+        // Consider continent quirk
+        //----------------------------------------------
+    }
+
+    // Reinforcement phase is done, move on to the next phase on command
     cout << "Please enter an option" << "\n";
     string input;
     cin >> input;
@@ -225,6 +239,8 @@ void PlayManager::init () {
         }
     }
 }
+
+// Issuing order phase
 void PlayManager::issueOrder(){
     cout << "\n";
     // issue orders
@@ -253,6 +269,7 @@ void PlayManager::issueOrder(){
         }
     }
 }
+
 void PlayManager::endIssueOrders() {
     cout << "\n";
     // end issue order
@@ -284,6 +301,8 @@ void PlayManager::endIssueOrders() {
         }
     }
 }
+
+// Executing order phase
 void PlayManager::exeOrder() {
     cout << "\n";
     // execute order

@@ -37,15 +37,6 @@ public:
 
 };
 
-class DummyPlayer {
-private:
-    int playerNum;
-public:
-    DummyPlayer(int n);
-    void setPlayerNumber(int n);
-    int getPlayerNum();
-};
-
 class Territory {
 
 private:

@@ -7,16 +7,28 @@
 
 class Player {
 public:
-    Player(string n);
-    string getName();
     vector<Territory> playerTerritories;
     Hand playerHand;
     OrdersList playerOrdersList;
+
+    // Constructor
+    Player();
+    Player(string name);
+
+    // Accessor
+    string getPlayerName();
+    int getReinArmy();
+
+    // Mutator
+    void addReinArmy(int num);
+    void removeReinArmy(int num);
+
     vector<Territory>* toDefend();
     vector<Territory>* toAttack();
     void issueOrder(Order o);
 private :
-    string name;
+    string playerName;
+    int reinArmy;
 };
 
 #endif //PLAYER_PLAYER_H

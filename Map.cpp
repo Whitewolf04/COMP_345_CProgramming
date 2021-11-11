@@ -639,13 +639,3 @@ bool Territory::PlayerCheck(int n) {
     return (PlayerNumber==n ? true : false); // Used whenever to check if a territory belongs to player N
 };
 
-
-void DummyPlayer::setPlayerNumber(int n) {
-    playerNum = n;
-}
-int DummyPlayer::getPlayerNum() {
-    return playerNum;
-}
-DummyPlayer::DummyPlayer(int n){
-    playerNum = n;
-}
