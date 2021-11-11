@@ -8,7 +8,7 @@ const map <PlayManagerState, string> pmsmap = {{assignReinforcement,"assignReinf
 
 bool isGameOver = false;
 
-vector<Player*> listOfPlayers;
+vector<Player*> listOfPlayers = vector<Player*>(5);
 
 Map * loader;
 
@@ -161,8 +161,9 @@ void StartupManager::validateMap() {
 void StartupManager::addPlayers(string arg) {
     cout << "\n";
     // add player
-    Player p(arg);
-    listOfPlayers.push_back(&p);
+    Player* p = new Player(arg);
+//    listOfPlayers.push_back(&p);
+    (*Player::playerList).push_back(p);
     // add player
     setSms(playersAdded);
     s = PLAYERADDED;
@@ -172,11 +173,13 @@ void StartupManager::addPlayers(string arg) {
     cout << input << "\n";
     while (!cp.validate(s, input) || input.substr(0,input.find(' ')) == "addplayer" ) {
         if (input.substr(0,input.find(' ')) == "addplayer") {
-            cout << "Adding player " + input.substr(input.find(' ') + 1, input.length()-1) << "\n";
-            cp.lc.back().saveEffect("Adding player "+ input.substr(input.find(' ') + 1, input.length()-1));
+            string name = input.substr(input.find(' ') + 1, input.length()-1);
+            cout << "Adding player " + name << "\n";
+            cp.lc.back().saveEffect("Adding player "+ name);
             // add player
-            Player p(arg);
-            listOfPlayers.push_back(&p);
+            Player* p2 = new Player(name);      // Avoid overshadowing
+//            listOfPlayers.push_back(&p);
+            (*Player::playerList).push_back(p2);
             //
             printSMS();
             cout << "Please enter an option" << "\n";
@@ -214,60 +217,138 @@ void PlayManager::init () {
     printPMS();
 
     // Reinforcement phase starts
-    for(int i = 0; i < listOfPlayers.size(); i++){
-        Player temp = *listOfPlayers.at(i);
-        int reinArmyNum = (int) (temp.playerTerritories.size()/3);
+    for(int i = 0; i < (*Player::playerList).size(); i++){
+        Player temp = * (*Player::playerList).at(i);
+
+        // Debug------------------------------------------------------------------
+        cout << "Player " << temp.getPlayerName() << " extracted from list" << endl;
+        // -----------------------------------------------------------------------
+        int reinArmyNum = (int) (temp.playerTerritories.size() / 3);
+
+        // Make sure that each player receive minimum 3 reinforcement armies
+        if(reinArmyNum <= 3){
+            reinArmyNum = 3;
+        }
         temp.addReinArmy(reinArmyNum);
 
         // Consider continent quirk
         //----------------------------------------------
+
+        cout << reinArmyNum << " armies have been added to Player " << temp.getPlayerName() << "'s reinforcement army pool" << endl;
     }
 
     // Reinforcement phase is done, move on to the next phase on command
-    cout << "Please enter an option" << "\n";
-    string input;
-    cin >> input;
-    while (true) {
-        if (input == "issueorder") {
-            cout << "Issuing order." << "\n";
-            issueOrder();
-            break;
-        }
-        else {
-            cout << "Invalid input, please enter a valid option" << "\n";
-            cin >> input;
-        }
-    }
+    issueOrder();
+
+    // Old code
+//    cout << "Please enter an option" << "\n";
+//    string input;
+//    cin >> input;
+//    while (true) {
+//        if (input == "issueorder") {
+//            cout << "Issuing order." << "\n";
+//            issueOrder();
+//            break;
+//        }
+//        else {
+//            cout << "Invalid input, please enter a valid option" << "\n";
+//            cin >> input;
+//        }
+//    }
+    // ----------------------------------------
 }
 
 // Issuing order phase
 void PlayManager::issueOrder(){
     cout << "\n";
-    // issue orders
+    // Start issue order phase, print out the current game state
     setPms(issueOrders);
     s = ISSUEORDER;
     printPMS();
-    cout << "Please enter an option" << "\n";
-    string input;
-    cin >> input;
-    while (true) {
-        if (input == "issueorder") {
-            cout << "Issuing order." << "\n";
-            // issue orders
-            printPMS();
-            cout << "Please enter an option" << "\n";
+
+    cout << "Currently these players are in the list of players: " << endl;
+    for(int i = 0; i < (*Player::playerList).size(); i++){
+        Player temp = *(*Player::playerList).at(i);
+        cout << "Player " << temp.getPlayerName() << endl;
+    }
+
+    // Ask user to issue order
+    for(int i = 0; i < (*Player::playerList).size(); i++){
+        cout << "Iterating the list" << endl;
+        Player tempPlayer = * (*Player::playerList).at(i);
+
+        // Debug----------------
+        cout << "Player " << tempPlayer.getPlayerName() << " is extracted from list." << endl;
+        // ---------------------------------
+        bool endIssueOrder = false;
+
+        // Print out user's name and ask to issue order
+        cout << "Player " << tempPlayer.getPlayerName() << ", it is your turn to issue order." << endl;
+
+        // Loop constantly until the current player has finished issuing order
+        while(!endIssueOrder) {
+            string input;
+
+            // Fetch order from the player
+            cout << "Please enter an order: ";
             cin >> input;
-        }
-        else if (input == "endissueorders") {
-            cout << "Ending issue orders." << "\n";
-            endIssueOrders();
-            break;
-        }
-        else {
-            cout << "Invalid input, please enter a valid option" << "\n";
-            cin >> input;
+            cout << "\n" << endl;
+
+            // Create a new order and check if it is valid
+            Order newOrder = Order(input);
+            if (!newOrder.validate()) {
+                cout << "Invalid order! Please try again!" << endl;
+                continue;
+            }
+
+            // Once validated, issue order
+            tempPlayer.issueOrder(newOrder);
+
+            // Ask player if they want to continue issuing order
+            cout << "Order issued" << "\n";
+
+            while (true) {
+                cout << "Do you want to end your turn? [Y/N]" << "\n";
+                cin >> input;
+                cout << endl;
+
+                // Check player's answer
+                if (input == "Y") {
+                    endIssueOrder = true;
+                    break;
+                } else if (input == "N") {
+                    break;
+                } else {
+                    cout << "Invalid input. Please try again!" << endl;
+                }
+            }
         }
     }
+
+    endIssueOrders();
+    // Old code------------------------------------------------------------
+//    cout << "Please enter an option" << "\n";
+//    string input;
+//    cin >> input;
+//    while (true) {
+//        if (input == "issueorder") {
+//            cout << "Issuing order." << "\n";
+//            // issue orders
+//            printPMS();
+//            cout << "Please enter an option" << "\n";
+//            cin >> input;
+//        }
+//        else if (input == "endissueorders") {
+//            cout << "Ending issue orders." << "\n";
+//            endIssueOrders();
+//            break;
+//        }
+//        else {
+//            cout << "Invalid input, please enter a valid option" << "\n";
+//            cin >> input;
+//        }
+//    }
+    // --------------------------------------------------------------------
 }
 
 void PlayManager::endIssueOrders() {

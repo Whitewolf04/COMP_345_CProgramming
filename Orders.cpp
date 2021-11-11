@@ -1,7 +1,8 @@
 #include "Orders.h"
 #include<string>
 
-//Define Order functions
+//Define Order functions and attributes
+std::vector<std::string> Order::ordersType{"advance", "deploy", "bomb", "blockade", "airlift", "negotiate"};
 
 //constructors
 Order::Order(){
@@ -27,8 +28,15 @@ std::string Order::getType(){
     return type;
 }
 
-void Order::validate(){
-    std::cout << this->getType()+"'s validation is not yet implemented" << "\n";
+// Validate this order
+bool Order::validate(){
+    for(int i = 0; i < ordersType.size(); i++){
+        std::string orderType = ordersType.at(i);
+        if(type == orderType){
+            return true;
+        }
+    }
+    return false;
 }
 
 std::string Order::execute(){

@@ -47,10 +47,10 @@ Deck::Deck(int deckSize){
 
 // Destructor to delete all the pointers on deck vector
 Deck::~Deck(){
-    // for(int i = 0; i < deck.size(); i++){
-    //     free(deck[i]);
-    //     // deck[i] = NULL;
-    // }
+     for(int i = 0; i < deck.size(); i++){
+         free(deck[i]);
+         // deck[i] = NULL;
+     }
 }
 
 // Deck size getter
@@ -125,10 +125,10 @@ Hand::Hand(int handSize){
 
 // Destructor deleting all the pointers in hand vector
 Hand::~Hand(){
-    // for(int i = 0; i < hand.size(); i++){
-    //     free(hand[i]);
-    //     // hand[i] = NULL;
-    // }
+     for(int i = 0; i < hand.size(); i++){
+         free(hand[i]);
+         // hand[i] = NULL;
+     }
 }
 
 // Hand size getter

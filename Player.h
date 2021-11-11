@@ -7,13 +7,17 @@
 
 class Player {
 public:
-    vector<Territory> playerTerritories;
-    Hand playerHand;
-    OrdersList playerOrdersList;
+    static vector<Player*> playerList;
+    vector<Territory*> playerTerritories;
+    Hand* playerHand;
+    OrdersList* playerOrdersList;
 
     // Constructor
     Player();
     Player(string name);
+
+    // Destructor
+    ~Player();
 
     // Accessor
     string getPlayerName();
@@ -23,9 +27,9 @@ public:
     void addReinArmy(int num);
     void removeReinArmy(int num);
 
-    vector<Territory>* toDefend();
-    vector<Territory>* toAttack();
-    void issueOrder(Order o);
+    vector<Territory*> toDefend();
+    vector<Territory*> toAttack();
+    void issueOrder(Order& o);
 private :
     string playerName;
     int reinArmy;

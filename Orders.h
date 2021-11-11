@@ -2,6 +2,7 @@
 #define ORDER_H
 #include <vector>
 #include <iostream>
+#include <string>
 
 //Order class
 struct Order
@@ -11,11 +12,12 @@ private:
     friend std::ostream& operator<<(std::ostream &strm, const Order &order);
 
 public:
+    static std::vector<std::string> ordersType;
     Order();
     Order(std::string newType);
     Order(const Order &o);
     Order& operator =(const Order &o);
-    void validate();
+    bool validate();
     std::string execute();
     std::string getType();
 
