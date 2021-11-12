@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 vector<Player*> Player::playerList = vector<Player*>();
 
@@ -6,24 +7,24 @@ vector<Player*> Player::playerList = vector<Player*>();
 Player::Player(){
     playerName = "NULL";
     reinArmy = 0;
-    playerHand = Hand();
-    playerOrdersList = OrdersList();
+    playerHand = new Hand();
+    playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
 }
 
 Player::Player(string playerName){
     this->playerName = playerName;
     reinArmy = 0;
-    playerHand = Hand();
-    playerOrdersList = OrdersList();
+    playerHand = new Hand();
+    playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
 }
 
 Player::Player(Player& anotherPlayer){
     this->playerName = anotherPlayer.playerName;
     this->reinArmy = anotherPlayer.reinArmy;
-    this->playerHand = Hand(anotherPlayer.playerHand);
-    this->playerOrdersList = OrdersList(anotherPlayer.playerOrdersList);
+    this->playerHand = new Hand(*anotherPlayer.playerHand);
+    this->playerOrdersList = new OrdersList(*anotherPlayer.playerOrdersList);
     this->playerTerritories = vector<Territory*>();
     for(int i = 0; i < anotherPlayer.playerTerritories.size(); i++){
         this->playerTerritories.push_back(anotherPlayer.playerTerritories.at(i));
@@ -33,10 +34,24 @@ Player::Player(Player& anotherPlayer){
 
 // Destructor
 Player::~Player(){
+//    cout << "DEBUG: Player destructor is called" << endl;
+//    cout << "DEBUG: playerOrdersList address: " << playerOrdersList << endl;
+    free(playerOrdersList);
+    playerOrdersList = nullptr;
+    free(playerHand);
+    playerHand = nullptr;
+//    cout << "DEBUG: playerOrdersList destruction complete" << endl;
     for(int i = 0; i < playerList.size(); i++){
         free(playerList.at(i));
-        playerList.at(i) = NULL;
+        playerList.at(i) = nullptr;
     }
+//    cout << "DEBUG: Player destructor completes" << endl;
+}
+
+// Print out function
+ostream& operator<<(ostream &strm, const Player& player){
+    strm << "Player " << player.playerName;
+    return strm << "";
 }
 
 // Accessor
@@ -74,6 +89,7 @@ void Player::addPlayer(Player& player){
 // Operational methods
 vector<Territory*> Player::toDefend() {
     vector<Territory*> territoriesToDefend = vector<Territory*>();
+    territoriesToDefend.push_back()
     // add computation for territories to defend
     return territoriesToDefend;
 }
@@ -85,7 +101,9 @@ vector<Territory*> Player::toAttack() {
 }
 
 void Player::issueOrder(Order& o) {
-    playerOrdersList.add(o);
+//    cout << "DEBUG: Order " << o << " is being issued" << endl;
+    (*playerOrdersList).add(&o);
+    cout << "DEBUG: Order " << o << " has been issued from Player" << endl;
 }
 
 

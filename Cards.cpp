@@ -49,7 +49,7 @@ Deck::Deck(int deckSize){
 Deck::~Deck(){
      for(int i = 0; i < deck.size(); i++){
          free(deck[i]);
-         // deck[i] = NULL;
+         deck[i] = nullptr;
      }
 }
 
@@ -127,7 +127,7 @@ Hand::Hand(int handSize){
 Hand::~Hand(){
      for(int i = 0; i < hand.size(); i++){
          free(hand[i]);
-         // hand[i] = NULL;
+         hand[i] = nullptr;
      }
 }
 

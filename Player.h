@@ -9,8 +9,8 @@ class Player {
 public:
     static vector<Player*> playerList;
     vector<Territory*> playerTerritories;
-    Hand playerHand;
-    OrdersList playerOrdersList;
+    Hand* playerHand;
+    OrdersList* playerOrdersList;
 
     // Constructor
     Player();
@@ -37,6 +37,7 @@ public:
 private :
     string playerName;
     int reinArmy;
+    friend ostream& operator<<(ostream&, const Player&);
 };
 
 #endif //PLAYER_PLAYER_H

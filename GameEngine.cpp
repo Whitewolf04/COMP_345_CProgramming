@@ -9,6 +9,8 @@ const map <PlayManagerState, string> pmsmap = {{assignReinforcement,"assignReinf
 bool isGameOver = false;
 
 vector<Player*> listOfPlayers;
+// REMEMBER TO ADD DELETE STATEMENT LATER
+//---------------------------------------------------------
 
 Map * loader;
 
@@ -161,8 +163,8 @@ void StartupManager::validateMap() {
 void StartupManager::addPlayers(string arg) {
     cout << "\n";
     // add player
-     Player p(arg);
-    listOfPlayers.push_back(&p);
+    Player* p = new Player(arg);
+    listOfPlayers.push_back(p);
 //    Player::addPlayer(p);
     // add player
     setSms(playersAdded);
@@ -177,8 +179,8 @@ void StartupManager::addPlayers(string arg) {
             cout << "Adding player " + name << "\n";
             cp.lc.back().saveEffect("Adding player "+ name);
             // add player
-            Player p(name);      // Avoid overshadowing
-            listOfPlayers.push_back(&p);
+            Player* p2 = new Player(name);      // Avoid overshadowing
+            listOfPlayers.push_back(p2);
 //            Player::addPlayer(p);
             //
             printSMS();
@@ -222,11 +224,6 @@ void PlayManager::init () {
         if(listOfPlayers.at(i) == nullptr){continue;}
 
         Player temp =  *listOfPlayers.at(i);
-
-        // Debug------------------------------------------------------------------
-        cout << "Player " << temp.getPlayerName() << " extracted from list" << endl;
-        cout << "Iterating the list at index " << i << endl;
-        // -----------------------------------------------------------------------
         int reinArmyNum = (int) ((temp).playerTerritories.size() / 3);
 
         // Make sure that each player receive minimum 3 reinforcement armies
@@ -270,14 +267,23 @@ void PlayManager::issueOrder(){
     s = ISSUEORDER;
     printPMS();
 
+    // Debug-------------------------------------------------------
+//    cout << "Current size of list of players: " << listOfPlayers.size() << endl;
+//    for(int i = 0; i < listOfPlayers.size(); i++){
+//        cout << listOfPlayers.at(i) << endl;
+//    }
+//    cout << endl;
+    //-----------------------------------------------------------------
+
     // Ask user to issue order
     for(int i = 0; i < listOfPlayers.size(); i++){
         // Prevent NULL pointer issue
         if(listOfPlayers.at(i) == nullptr){continue;}
-        cout << "Checked for null pointer " << endl;
+        cout << "Checked for null pointer \n" << endl;
+        cout << "DEBUG: listOfPlayers element address: " << listOfPlayers.at(i) << endl;
 
-        Player tempPlayer = * listOfPlayers.at(i);
-        cout << "Extracted Player" << endl;
+        Player tempPlayer = *listOfPlayers.at(i);
+        cout << "DEBUG: Extracted Player" << tempPlayer << endl;
 
         bool endIssueOrder = false;
 
@@ -294,14 +300,15 @@ void PlayManager::issueOrder(){
             cout << "\n" << endl;
 
             // Create a new order and check if it is valid
-            Order newOrder(input);
-            if (!newOrder.validate()) {
+            Order* newOrder = new Order(input);
+            if (!(*newOrder).validate()) {
                 cout << "Invalid order! Please try again!" << endl;
                 continue;
             }
+            cout << "DEBUG: Order address: " << newOrder << endl;
 
             // Once validated, issue order
-            tempPlayer.issueOrder(newOrder);
+            tempPlayer.issueOrder(*newOrder);
 
             // Ask player if they want to continue issuing order
             cout << "Order issued" << "\n";
@@ -325,7 +332,7 @@ void PlayManager::issueOrder(){
 
         cout << "Looping over again" << endl;
     }
-
+//
     endIssueOrders();
     // Old code------------------------------------------------------------
 //    cout << "Please enter an option" << "\n";
@@ -391,6 +398,8 @@ void PlayManager::exeOrder() {
     setPms(executeOrders);
     s = EXECUTEORDERS;
     printPMS();
+
+    // Old Code-----------------------------------------------------------
     cout << "Please enter an option" << "\n";
     string input;
     cin >> input;
@@ -417,6 +426,7 @@ void PlayManager::exeOrder() {
             cin >> input;
         }
     }
+    //------------------------------------------------------------------------
 }
 void PlayManager::endExeOrders(){
     cout << "\n";

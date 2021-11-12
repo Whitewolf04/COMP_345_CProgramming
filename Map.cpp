@@ -201,7 +201,10 @@ void MapLoader::addTerritory(Territory t, vector<Territory>* v) {
 
 //Constructor//AssignmentOperator Definitions
 Territory::Territory() {
-
+    T_num = 0;
+    NumOfArmies = 0;
+    T_name = "NULL";
+    Continent_Number = -1;
 };
 Territory::Territory(int i, int i2, string s, int i3) {
     T_num = i;

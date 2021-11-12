@@ -44,7 +44,7 @@ std::string Order::execute(){
 }
 
 std::ostream& operator<<(std::ostream &strm, const Order &order){
-    return strm << "Order is an undefined order" << ' ';
+    return strm << order.type << ' ';
 }
 
 
@@ -184,10 +184,8 @@ OrdersList::~OrdersList(){
 //Order List functions
 
 //adds Order object through a pointer to the vector list
-void OrdersList::add(Order o){
-    Order* ptr = new Order;
-    ptr = &o;
-    Order_List.push_back(ptr);
+void OrdersList::add(Order* o){
+    Order_List.push_back(o);
 }
 
 //get the order type
