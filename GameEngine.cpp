@@ -8,7 +8,7 @@ const map <PlayManagerState, string> pmsmap = {{assignReinforcement,"assignReinf
 
 bool isGameOver = false;
 
-vector<Player*> listOfPlayers = vector<Player*>(5);
+vector<Player*> listOfPlayers;
 
 Map * loader;
 
@@ -161,9 +161,9 @@ void StartupManager::validateMap() {
 void StartupManager::addPlayers(string arg) {
     cout << "\n";
     // add player
-    Player* p = new Player(arg);
-//    listOfPlayers.push_back(&p);
-    (*Player::playerList).push_back(p);
+     Player p(arg);
+    listOfPlayers.push_back(&p);
+//    Player::addPlayer(p);
     // add player
     setSms(playersAdded);
     s = PLAYERADDED;
@@ -177,9 +177,9 @@ void StartupManager::addPlayers(string arg) {
             cout << "Adding player " + name << "\n";
             cp.lc.back().saveEffect("Adding player "+ name);
             // add player
-            Player* p2 = new Player(name);      // Avoid overshadowing
-//            listOfPlayers.push_back(&p);
-            (*Player::playerList).push_back(p2);
+            Player p(name);      // Avoid overshadowing
+            listOfPlayers.push_back(&p);
+//            Player::addPlayer(p);
             //
             printSMS();
             cout << "Please enter an option" << "\n";
@@ -217,24 +217,28 @@ void PlayManager::init () {
     printPMS();
 
     // Reinforcement phase starts
-    for(int i = 0; i < (*Player::playerList).size(); i++){
-        Player temp = * (*Player::playerList).at(i);
+    for(int i = 0; i < listOfPlayers.size(); i++){
+        // Avoid null pointer issues
+        if(listOfPlayers.at(i) == nullptr){continue;}
+
+        Player temp =  *listOfPlayers.at(i);
 
         // Debug------------------------------------------------------------------
         cout << "Player " << temp.getPlayerName() << " extracted from list" << endl;
+        cout << "Iterating the list at index " << i << endl;
         // -----------------------------------------------------------------------
-        int reinArmyNum = (int) (temp.playerTerritories.size() / 3);
+        int reinArmyNum = (int) ((temp).playerTerritories.size() / 3);
 
         // Make sure that each player receive minimum 3 reinforcement armies
         if(reinArmyNum <= 3){
             reinArmyNum = 3;
         }
-        temp.addReinArmy(reinArmyNum);
+        (temp).addReinArmy(reinArmyNum);
 
         // Consider continent quirk
         //----------------------------------------------
 
-        cout << reinArmyNum << " armies have been added to Player " << temp.getPlayerName() << "'s reinforcement army pool" << endl;
+        cout << reinArmyNum << " armies have been added to Player " << (temp).getPlayerName() << "'s reinforcement army pool" << endl;
     }
 
     // Reinforcement phase is done, move on to the next phase on command
@@ -266,20 +270,15 @@ void PlayManager::issueOrder(){
     s = ISSUEORDER;
     printPMS();
 
-    cout << "Currently these players are in the list of players: " << endl;
-    for(int i = 0; i < (*Player::playerList).size(); i++){
-        Player temp = *(*Player::playerList).at(i);
-        cout << "Player " << temp.getPlayerName() << endl;
-    }
-
     // Ask user to issue order
-    for(int i = 0; i < (*Player::playerList).size(); i++){
-        cout << "Iterating the list" << endl;
-        Player tempPlayer = * (*Player::playerList).at(i);
+    for(int i = 0; i < listOfPlayers.size(); i++){
+        // Prevent NULL pointer issue
+        if(listOfPlayers.at(i) == nullptr){continue;}
+        cout << "Checked for null pointer " << endl;
 
-        // Debug----------------
-        cout << "Player " << tempPlayer.getPlayerName() << " is extracted from list." << endl;
-        // ---------------------------------
+        Player tempPlayer = * listOfPlayers.at(i);
+        cout << "Extracted Player" << endl;
+
         bool endIssueOrder = false;
 
         // Print out user's name and ask to issue order
@@ -295,7 +294,7 @@ void PlayManager::issueOrder(){
             cout << "\n" << endl;
 
             // Create a new order and check if it is valid
-            Order newOrder = Order(input);
+            Order newOrder(input);
             if (!newOrder.validate()) {
                 cout << "Invalid order! Please try again!" << endl;
                 continue;
@@ -323,6 +322,8 @@ void PlayManager::issueOrder(){
                 }
             }
         }
+
+        cout << "Looping over again" << endl;
     }
 
     endIssueOrders();

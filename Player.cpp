@@ -6,27 +6,33 @@ vector<Player*> Player::playerList = vector<Player*>();
 Player::Player(){
     playerName = "NULL";
     reinArmy = 0;
-    playerHand = new Hand();
-    playerOrdersList = new OrdersList();
+    playerHand = Hand();
+    playerOrdersList = OrdersList();
     playerTerritories = vector<Territory*>();
 }
 
 Player::Player(string playerName){
     this->playerName = playerName;
     reinArmy = 0;
-    playerHand = new Hand();
-    playerOrdersList = new OrdersList();
+    playerHand = Hand();
+    playerOrdersList = OrdersList();
     playerTerritories = vector<Territory*>();
+}
+
+Player::Player(Player& anotherPlayer){
+    this->playerName = anotherPlayer.playerName;
+    this->reinArmy = anotherPlayer.reinArmy;
+    this->playerHand = Hand(anotherPlayer.playerHand);
+    this->playerOrdersList = OrdersList(anotherPlayer.playerOrdersList);
+    this->playerTerritories = vector<Territory*>();
+    for(int i = 0; i < anotherPlayer.playerTerritories.size(); i++){
+        this->playerTerritories.push_back(anotherPlayer.playerTerritories.at(i));
+    }
 }
 
 
 // Destructor
 Player::~Player(){
-    free(playerHand);
-    playerHand = NULL;
-    free(playerOrdersList);
-    playerOrdersList = NULL;
-
     for(int i = 0; i < playerList.size(); i++){
         free(playerList.at(i));
         playerList.at(i) = NULL;
@@ -42,6 +48,14 @@ int Player::getReinArmy(){
     return reinArmy;
 }
 
+Player& Player::getPlayer(int index) {
+    return *playerList.at(index);
+}
+
+int Player::getListSize() {
+    return playerList.size();
+}
+
 
 // Mutator
 void Player::addReinArmy(int num){
@@ -50,6 +64,10 @@ void Player::addReinArmy(int num){
 
 void Player::removeReinArmy(int num) {
     reinArmy -= num;
+}
+
+void Player::addPlayer(Player& player){
+    playerList.push_back(&player);
 }
 
 
@@ -67,7 +85,7 @@ vector<Territory*> Player::toAttack() {
 }
 
 void Player::issueOrder(Order& o) {
-    (*playerOrdersList).add(o);
+    playerOrdersList.add(o);
 }
 
 
