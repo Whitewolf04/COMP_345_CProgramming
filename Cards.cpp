@@ -22,8 +22,16 @@ Cards::Cards(string t){
 }
 
 // Comparing two cards to see if they are off the same type
-bool Cards::equals(Cards *other){
-    if((this->type).compare((*other).type) == 0){
+bool Cards::equals(Cards* other){
+    if(this->type == other->type){
+        return true;
+    }
+    return false;
+}
+
+// Comparing the current card with a card name string
+bool Cards::equals(string cardType){
+    if(this->type == cardType){
         return true;
     }
     return false;
@@ -62,7 +70,7 @@ int Deck::getDeckSize(){
 Cards* Deck::draw(){
     int deckSize = getDeckSize();
     int cardIndex = rand() % deckSize;
-    Cards *drawn = deck[cardIndex];
+    Cards* drawn = deck[cardIndex];
 
     // Remove the card drawn from the deck
     remove(drawn);
@@ -82,8 +90,8 @@ void Deck::remove(Cards *target){
 
     // Loop through the hand to find the target card
     for(int i = 0; i < deck.size(); i++){
-        Cards *temp = deck.at(i);
-        if((*target).equals(temp)){
+        Cards * temp = deck.at(i);
+        if(target->equals(temp)){
             removeIndex = i;
             break;
         }
@@ -173,13 +181,36 @@ void Hand::drawCard(Deck *deck){
 }
 
 // Play a card at a certain position on hand
-void Hand::playCard(int index, Deck *deck){
-    Cards *temp = hand.at(index);
-    (*temp).play();
+// Assume that the card can definitely be found on hand
+void Hand::playCard(string cardType, Deck *deck){
+    Cards *temp;
+
+    for(int i = 0; i < hand.size(); i++){
+        temp = hand.at(i);
+        if(temp->equals(cardType)){
+            break;
+        }
+    }
+    temp->play();
 
     // Remove the card that was played from hand, and add it back to the deck
     remove(temp);
-    (*deck).add(temp);
+    deck->add(temp);
+}
+
+// Check if hand contains a certain card
+bool Hand::contains(string cardType){
+    bool found = false;
+
+    for(int i = 0; i < hand.size(); i++){
+        Cards* temp = hand.at(i);
+        if(temp->equals(cardType)){
+            found = true;
+            break;
+        }
+    }
+
+    return found;
 }
 
 // Show all the current cards on hand

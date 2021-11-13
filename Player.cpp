@@ -3,6 +3,7 @@
 
 // Constructor
 Player::Player(){
+//    cout << "DEBUG: Default Player constructor was called" << endl;
     playerName = "NULL";
     reinArmy = 0;
     playerHand = new Hand();
@@ -11,6 +12,7 @@ Player::Player(){
 }
 
 Player::Player(string playerName){
+//    cout << "DEBUG: String Player constructor was called" << endl;
     this->playerName = playerName;
     reinArmy = 0;
     playerHand = new Hand();
@@ -19,8 +21,11 @@ Player::Player(string playerName){
 }
 
 Player::Player(Player& anotherPlayer){
+//    cout << "DEBUG: Player copy constructor is called" << endl;
     this->playerName = anotherPlayer.playerName;
     this->reinArmy = anotherPlayer.reinArmy;
+//    cout << "DEBUG: This player " << this->playerName << " reinArmy: " << this->reinArmy << endl;
+//    cout << "DEBUG: Another player " << anotherPlayer.playerName << " reinArmy " << anotherPlayer.reinArmy << endl;
     this->playerHand = new Hand(*anotherPlayer.playerHand);
     this->playerOrdersList = new OrdersList(*anotherPlayer.playerOrdersList);
     this->playerTerritories = vector<Territory*>();
@@ -32,7 +37,8 @@ Player::Player(Player& anotherPlayer){
 
 // Destructor
 Player::~Player(){
-//    cout << "DEBUG: Player destructor is called" << endl;
+//    cout << "DEBUG: Player " << this->playerName << " destructor is called" << endl;
+//    cout << "DEBUG: This player has " << this->reinArmy << " number of army" << endl;
 //    cout << "DEBUG: playerOrdersList address: " << playerOrdersList << endl;
     free(playerOrdersList);
     playerOrdersList = nullptr;
@@ -92,7 +98,7 @@ vector<Territory*> Player::toAttack() {
 void Player::issueOrder(Order& o) {
 //    cout << "DEBUG: Order " << o << " is being issued" << endl;
     (*playerOrdersList).add(&o);
-    cout << "DEBUG: Order " << o << " has been issued from Player" << endl;
+//    cout << "DEBUG: Order " << o << " has been issued from Player" << endl;
 }
 
 

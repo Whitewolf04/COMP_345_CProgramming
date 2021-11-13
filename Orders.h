@@ -36,7 +36,8 @@ public:
     OrdersList& operator =(const OrdersList &o);
     ~OrdersList();
     void add(Order* o);
-    Order getElement(int index);
+    Order* getElement(int index);
+    int getSize();
     void remove(int index);
     void move(int from, int to);
 };

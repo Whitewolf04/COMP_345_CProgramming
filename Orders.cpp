@@ -189,8 +189,13 @@ void OrdersList::add(Order* o){
 }
 
 //get the order type
-Order OrdersList::getElement(int index){
-    return Order_List[index]->getType();
+Order* OrdersList::getElement(int index){
+    return Order_List[index];
+}
+
+// Get the size of order list
+int OrdersList::getSize() {
+    return Order_List.size();
 }
 
 //swaps values of two order pointers in the list at different positions

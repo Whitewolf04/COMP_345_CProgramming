@@ -23,6 +23,7 @@ int main() {
         sm.init();
         PlayManager pm;
         pm.init();
+        pm.issueOrder();
     }
     return 0;
 }

@@ -223,40 +223,23 @@ void PlayManager::init () {
         // Avoid null pointer issues
         if(listOfPlayers.at(i) == nullptr){continue;}
 
-        Player temp =  *listOfPlayers.at(i);
-        int reinArmyNum = (int) ((temp).playerTerritories.size() / 3);
+        Player* temp =  listOfPlayers.at(i);
+        int reinArmyNum = (int) ((*temp).playerTerritories.size() / 3);
 
         // Make sure that each player receive minimum 3 reinforcement armies
         if(reinArmyNum <= 3){
             reinArmyNum = 3;
         }
-        temp.addReinArmy(reinArmyNum);
+        (*temp).addReinArmy(reinArmyNum);
 
         // Consider continent quirk
         //----------------------------------------------
 
-        cout << "DEBUG: " << temp.getPlayerName() << " has " << temp.getReinArmy() << " armies in the reinforcement pool." << endl;
+        cout << "DEBUG: " << (*temp).getPlayerName() << " has " << (*temp).getReinArmy() << " armies in the reinforcement pool." << endl;
     }
 
     // Reinforcement phase is done, move on to the next phase on command
-    issueOrder();
-
-    // Old code
-//    cout << "Please enter an option" << "\n";
-//    string input;
-//    cin >> input;
-//    while (true) {
-//        if (input == "issueorder") {
-//            cout << "Issuing order." << "\n";
-//            issueOrder();
-//            break;
-//        }
-//        else {
-//            cout << "Invalid input, please enter a valid option" << "\n";
-//            cin >> input;
-//        }
-//    }
-    // ----------------------------------------
+//    issueOrder();
 }
 
 // Issuing order phase
@@ -270,7 +253,7 @@ void PlayManager::issueOrder(){
     // Debug-------------------------------------------------------
 //    cout << "Current size of list of players: " << listOfPlayers.size() << endl;
 //    for(int i = 0; i < listOfPlayers.size(); i++){
-//        cout << listOfPlayers.at(i) << endl;
+//        cout << "DEBUG issueOrder(): This player has " << listOfPlayers.at(i)->getReinArmy() << " number of army." << endl;
 //    }
 //    cout << endl;
     //-----------------------------------------------------------------
@@ -282,14 +265,14 @@ void PlayManager::issueOrder(){
 //        cout << "DEBUG: Checked for null pointer \n" << endl;
 //        cout << "DEBUG: listOfPlayers element address: " << listOfPlayers.at(i) << endl;
 
-        Player tempPlayer = *listOfPlayers.at(i);
+        Player* tempPlayer = listOfPlayers.at(i);
 //        cout << "DEBUG: Extracted Player" << tempPlayer << endl;
 
         bool endIssueOrder = false;
 
         // Print out user's name and ask to issue order
-        cout << "Player " << tempPlayer.getPlayerName() << ", it is your turn to issue order." << endl;
-        cout << "DEBUG: " << tempPlayer.getPlayerName() << " has " << tempPlayer.getReinArmy() << " armies in the reinforcement pool." << endl;
+        cout << "Player " << tempPlayer->getPlayerName() << ", it is your turn to issue order." << endl;
+//        cout << "DEBUG: " << tempPlayer->getPlayerName() << " has " << tempPlayer->getReinArmy() << " armies in the reinforcement pool." << endl;
 
         // Loop constantly until the current player has finished issuing order
         while(!endIssueOrder) {
@@ -297,12 +280,12 @@ void PlayManager::issueOrder(){
 
             // Check if player has reinforcement army
             // Might have issues with territory to defend vector
-            if(tempPlayer.getReinArmy() > 0) {
+            if(tempPlayer->getReinArmy() > 0) {
                 cout << "You still have armies in the reinforcement pool, please deploy before you can issue any other order!" << endl;
 
                 // Print out territories that player can deploy army
                 cout << "These are the territories that you can deploy to: " << endl;
-                vector<Territory *> territoryToDefend = tempPlayer.toDefend();
+                vector<Territory *> territoryToDefend = tempPlayer->toDefend();
                 for (int k = 0; k < territoryToDefend.size(); k++) {
                     cout << territoryToDefend[k] << endl;
                 }
@@ -315,8 +298,11 @@ void PlayManager::issueOrder(){
                     cout << "\n" << endl;
 
                     if(input == "deploy"){
-                        Deploy deployOrder;
-                        deployOrder.execute();
+                        // Temporary placeholder because deploy order hasn't been implemented yet
+                        Order * newOrder = new Order("deploy");
+                        tempPlayer->removeReinArmy(3);
+                        tempPlayer->issueOrder(*newOrder);
+                        // NEED IMPLEMENT-------------------------------------------------------
                         break;
                     } else{
                         cout << "Invalid order. Please try again!" << endl;
@@ -329,25 +315,70 @@ void PlayManager::issueOrder(){
 
             // Notify the player if they don't need to deploy
             cout << "You have no reinforcement army to deploy, you can proceed with other orders" << endl;
+            // List the territories that the player can attack
+            cout << "These are the territories that you can attack: " << endl;
+            vector<Territory *> territoryToAttack = tempPlayer->toAttack();
+            for (int k = 0; k < territoryToAttack.size(); k++) {
+                cout << territoryToAttack[k] << endl;
+            }
+            cout << endl;
 
             // Fetch order from the player
             cout << "Please enter an order: ";
             cin >> input;
             cout << "\n" << endl;
 
-            // Create a new order and check if it is valid
-            Order* newOrder = new Order(input);
-            if (!(*newOrder).validate()) {
-                cout << "Invalid order! Please try again!" << endl;
-                continue;
-            }
+            // Check if the player is playing a card or issuing an order
+            if(input.substr(0,input.find(' ')) == "playcard"){
+                string cardName = input.substr(input.find(' ') + 1, input.length()-1);
+
+                // Check if the card is valid
+                while(true){
+                    if(tempPlayer->playerHand->contains(cardName)){
+                        break;
+                    } else{
+                        cout << "You don't have that card on your hand!" << endl;
+                        cout << R"(Input "exit" to return to order. Input "tryagain" to try again!)" << endl;
+                        cin >> input;
+                        cout << endl;
+
+                        // Check user's choice
+                        if(input == "exit"){
+                            cardName = "NULL";
+                            break;
+                        } else if(input == "tryagain"){
+                            cout << "Please enter the card you want to play: ";
+                            cin >> input;
+                            cout << "\n" << endl;
+                            cardName = input;
+                        } else {
+                            cout << "Invalid input. Please try again!" << endl;
+                        }
+                    }
+                }
+
+                // Check if the player wants to exit play card
+                if(cardName == "NULL"){
+                    continue;
+                }
+
+                // Play card feature to be implemented
+                cout << "Card " << cardName << " has been played" << endl;
+            } else {
+                // Create a new order and check if it is valid
+                Order* newOrder = new Order(input);
+                if (!newOrder->validate()) {
+                    cout << "Invalid order! Please try again!" << endl;
+                    continue;
+                }
 //            cout << "DEBUG: Order address: " << newOrder << endl;
 
-            // Once validated, issue order
-            tempPlayer.issueOrder(*newOrder);
+                // Once validated, issue order
+                tempPlayer->issueOrder(*newOrder);
 
-            // Ask player if they want to continue issuing order
-            cout << "Order issued" << "\n";
+                // Ask player if they want to continue issuing order
+                cout << "Order issued" << "\n";
+            }
 
             while (true) {
                 cout << "Do you want to end your turn? [Y/N]" << "\n";
@@ -365,34 +396,9 @@ void PlayManager::issueOrder(){
                 }
             }
         }
-
-        cout << "Looping over again" << endl;
     }
 //
     endIssueOrders();
-    // Old code------------------------------------------------------------
-//    cout << "Please enter an option" << "\n";
-//    string input;
-//    cin >> input;
-//    while (true) {
-//        if (input == "issueorder") {
-//            cout << "Issuing order." << "\n";
-//            // issue orders
-//            printPMS();
-//            cout << "Please enter an option" << "\n";
-//            cin >> input;
-//        }
-//        else if (input == "endissueorders") {
-//            cout << "Ending issue orders." << "\n";
-//            endIssueOrders();
-//            break;
-//        }
-//        else {
-//            cout << "Invalid input, please enter a valid option" << "\n";
-//            cin >> input;
-//        }
-//    }
-    // --------------------------------------------------------------------
 }
 
 void PlayManager::endIssueOrders() {
@@ -435,19 +441,47 @@ void PlayManager::exeOrder() {
     s = EXECUTEORDERS;
     printPMS();
 
+    for(int i = 0; i < listOfPlayers.size(); i++){
+        Player * tempPlayer = listOfPlayers.at(i);
+
+        cout << "Player " << tempPlayer->getPlayerName() << "'s orders are being executed" << endl;
+
+        // Take all of this player's order from orders list
+        for(int k = 0; k < tempPlayer->playerOrdersList->getSize(); k++){
+            Order* tempOrder = tempPlayer->playerOrdersList->getElement(k);
+
+            // Check for order type
+            // Assuming all orders are valid because order is checked from the previous steps
+            if(tempOrder->getType() == "advance"){
+                Advance* advanceOrder = (Advance*) tempOrder;
+                advanceOrder->execute();
+            } else if(tempOrder->getType() == "deploy"){
+                Deploy * deployOrder = (Deploy*) tempOrder;
+                deployOrder->execute();
+            } else if(tempOrder->getType() == "bomb"){
+                Bomb * bombOrder = (Bomb*) tempOrder;
+                bombOrder->execute();
+            } else if(tempOrder->getType() == "blockade"){
+                Blockade * blockadeOrder = (Blockade*) tempOrder;
+                blockadeOrder->execute();
+            } else if(tempOrder->getType() == "airlift"){
+                Airlift * airliftOrder = (Airlift*) tempOrder;
+                airliftOrder->execute();
+            } else if(tempOrder->getType() == "negotiate"){
+                Negotiate * negotiateOrder = (Negotiate*) tempOrder;
+                negotiateOrder->execute();
+            }
+        }
+    }
+
+    cout << "Finished executing all orders! \n" << endl;
+
     // Old Code-----------------------------------------------------------
     cout << "Please enter an option" << "\n";
     string input;
     cin >> input;
     while (true) {
-        if (input == "execorder") {
-            cout << "Executing order." << "\n";
-            // execute order
-            printPMS();
-            cout << "Please enter an option" << "\n";
-            cin >> input;
-        }
-        else if (input == "endexecorders") {
+        if (input == "endexecorders") {
             cout << "Ending executing orders." << "\n";
             endExeOrders();
             break;
