@@ -1,8 +1,6 @@
 #include "Player.h"
 #include <iostream>
 
-vector<Player*> Player::playerList = vector<Player*>();
-
 // Constructor
 Player::Player(){
     playerName = "NULL";
@@ -41,10 +39,6 @@ Player::~Player(){
     free(playerHand);
     playerHand = nullptr;
 //    cout << "DEBUG: playerOrdersList destruction complete" << endl;
-    for(int i = 0; i < playerList.size(); i++){
-        free(playerList.at(i));
-        playerList.at(i) = nullptr;
-    }
 //    cout << "DEBUG: Player destructor completes" << endl;
 }
 
@@ -63,14 +57,6 @@ int Player::getReinArmy(){
     return reinArmy;
 }
 
-Player& Player::getPlayer(int index) {
-    return *playerList.at(index);
-}
-
-int Player::getListSize() {
-    return playerList.size();
-}
-
 
 // Mutator
 void Player::addReinArmy(int num){
@@ -81,21 +67,24 @@ void Player::removeReinArmy(int num) {
     reinArmy -= num;
 }
 
-void Player::addPlayer(Player& player){
-    playerList.push_back(&player);
-}
-
 
 // Operational methods
 vector<Territory*> Player::toDefend() {
     vector<Territory*> territoriesToDefend = vector<Territory*>();
-    territoriesToDefend.push_back()
+    Territory dummy1 = Territory();
+    Territory dummy2 = Territory();
+    territoriesToDefend.push_back(&dummy1);
+    territoriesToDefend.push_back(&dummy2);
     // add computation for territories to defend
     return territoriesToDefend;
 }
 
 vector<Territory*> Player::toAttack() {
     vector<Territory*> territoriesToAttack = vector<Territory*>();
+    Territory dummy1 = Territory();
+    Territory dummy2 = Territory();
+    territoriesToAttack.push_back(&dummy1);
+    territoriesToAttack.push_back(&dummy2);
     // add computation for territories to defend
     return territoriesToAttack;
 }

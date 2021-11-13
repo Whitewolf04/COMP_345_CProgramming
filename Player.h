@@ -7,7 +7,6 @@
 
 class Player {
 public:
-    static vector<Player*> playerList;
     vector<Territory*> playerTerritories;
     Hand* playerHand;
     OrdersList* playerOrdersList;
@@ -23,13 +22,10 @@ public:
     // Accessor
     string getPlayerName();
     int getReinArmy();
-    static Player& getPlayer(int index);
-    static int getListSize();
 
     // Mutator
     void addReinArmy(int num);
     void removeReinArmy(int num);
-    static void addPlayer(Player& player);
 
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();

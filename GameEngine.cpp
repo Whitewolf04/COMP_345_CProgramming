@@ -230,12 +230,12 @@ void PlayManager::init () {
         if(reinArmyNum <= 3){
             reinArmyNum = 3;
         }
-        (temp).addReinArmy(reinArmyNum);
+        temp.addReinArmy(reinArmyNum);
 
         // Consider continent quirk
         //----------------------------------------------
 
-        cout << reinArmyNum << " armies have been added to Player " << (temp).getPlayerName() << "'s reinforcement army pool" << endl;
+        cout << "DEBUG: " << temp.getPlayerName() << " has " << temp.getReinArmy() << " armies in the reinforcement pool." << endl;
     }
 
     // Reinforcement phase is done, move on to the next phase on command
@@ -279,20 +279,56 @@ void PlayManager::issueOrder(){
     for(int i = 0; i < listOfPlayers.size(); i++){
         // Prevent NULL pointer issue
         if(listOfPlayers.at(i) == nullptr){continue;}
-        cout << "Checked for null pointer \n" << endl;
-        cout << "DEBUG: listOfPlayers element address: " << listOfPlayers.at(i) << endl;
+//        cout << "DEBUG: Checked for null pointer \n" << endl;
+//        cout << "DEBUG: listOfPlayers element address: " << listOfPlayers.at(i) << endl;
 
         Player tempPlayer = *listOfPlayers.at(i);
-        cout << "DEBUG: Extracted Player" << tempPlayer << endl;
+//        cout << "DEBUG: Extracted Player" << tempPlayer << endl;
 
         bool endIssueOrder = false;
 
         // Print out user's name and ask to issue order
         cout << "Player " << tempPlayer.getPlayerName() << ", it is your turn to issue order." << endl;
+        cout << "DEBUG: " << tempPlayer.getPlayerName() << " has " << tempPlayer.getReinArmy() << " armies in the reinforcement pool." << endl;
 
         // Loop constantly until the current player has finished issuing order
         while(!endIssueOrder) {
             string input;
+
+            // Check if player has reinforcement army
+            // Might have issues with territory to defend vector
+            if(tempPlayer.getReinArmy() > 0) {
+                cout << "You still have armies in the reinforcement pool, please deploy before you can issue any other order!" << endl;
+
+                // Print out territories that player can deploy army
+                cout << "These are the territories that you can deploy to: " << endl;
+                vector<Territory *> territoryToDefend = tempPlayer.toDefend();
+                for (int k = 0; k < territoryToDefend.size(); k++) {
+                    cout << territoryToDefend[k] << endl;
+                }
+
+                // Check for valid order
+                while (true){
+                    // Fetch order from the player
+                    cout << "Please enter an order: ";
+                    cin >> input;
+                    cout << "\n" << endl;
+
+                    if(input == "deploy"){
+                        Deploy deployOrder;
+                        deployOrder.execute();
+                        break;
+                    } else{
+                        cout << "Invalid order. Please try again!" << endl;
+                    }
+                }
+
+                // After order is issued, loop back to get other orders from the player
+                continue;
+            }
+
+            // Notify the player if they don't need to deploy
+            cout << "You have no reinforcement army to deploy, you can proceed with other orders" << endl;
 
             // Fetch order from the player
             cout << "Please enter an order: ";
@@ -305,7 +341,7 @@ void PlayManager::issueOrder(){
                 cout << "Invalid order! Please try again!" << endl;
                 continue;
             }
-            cout << "DEBUG: Order address: " << newOrder << endl;
+//            cout << "DEBUG: Order address: " << newOrder << endl;
 
             // Once validated, issue order
             tempPlayer.issueOrder(*newOrder);
