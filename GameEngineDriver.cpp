@@ -1,7 +1,5 @@
 #include "GameEngine.h"
 
-using namespace std;
-
 int main() {
     while (isGameOver == false) {
         std::cout << "Welcome to Warzone!" << "\n\n";
@@ -20,7 +18,7 @@ int main() {
                 "@&@@&&@@&&&&&&&&&&&&&&&&&@@@@@\n"
                 "@@@@@@@@&&&&&&@@@@@@&&&&@@@@@@\n"
                 "@@@@@@&@@&&&&&@@@@@@&&&&@@@@@@\n\n";
-        cout << "The game will now startup setting up, please wait." << "\n" << "\n";
+        std::cout << "The game will now startup setting up, please wait." << "\n" << "\n";
         StartupManager sm;
         sm.init();
         PlayManager pm;

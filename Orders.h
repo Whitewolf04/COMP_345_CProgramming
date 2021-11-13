@@ -1,26 +1,34 @@
+#ifndef ORDER_H
+#define ORDER_H
 #include <vector>
 #include <iostream>
+#include "Map.h"
+#include "Player.h"
+#include "LoggingObserver.h"
 
 //Order class
-struct Order
+struct Order: Iloggable, Subject
 {
     private:
+    Player* executor;
     std::string type;  
     friend std::ostream& operator<<(std::ostream &strm, const Order &order);
 
     public:
     Order();
     Order(std::string newType);
+    Order(std::string newType, Player* executor);
     Order(const Order &o);
     Order& operator =(const Order &o);
-    void validate();
-    std::string execute();
+    bool validate();
+    virtual std::string execute()= 0;
     std::string getType();
+    Player* getPlayer();
     
 };
 
 //OrderList class
-struct OrdersList
+struct OrdersList 
 {
     private:
     std::vector<Order*> Order_List;
@@ -28,11 +36,11 @@ struct OrdersList
 
     public:
     OrdersList();
-    OrdersList(const OrdersList &o);
-    OrdersList& operator =(const OrdersList &o);
+    //OrdersList(const OrdersList &o);
+    //OrdersList& operator =(const OrdersList &o);
     ~OrdersList();
-    void add(Order o);
-    Order getElement(int index);
+    void add(Order* o);
+    Order* getElement(int index);
     void remove(int index);
     void move(int from, int to);
 };
@@ -42,10 +50,13 @@ struct OrdersList
 struct Advance : public Order
 {
     private:
+    Territory* source;
+    Territory* adjacent;
     friend std::ostream& operator<<(std::ostream &strm, const Advance &advance);
     public:
     Advance();
-    void validate();
+    Advance(Territory* source, Territory* adjacent, Player* executor);
+    bool validate();
     std::string execute();
 };
 
@@ -53,10 +64,14 @@ struct Advance : public Order
 struct Deploy : public Order
 {
     private:
+    int army_count;
+    Territory* target;
     friend std::ostream& operator<<(std::ostream &strm, const Deploy &deploy);
+
     public:
     Deploy();
-    void validate();
+    Deploy(int army_count, Territory* target, Player* executor);
+    bool validate();
     std::string execute();
 };
 
@@ -64,10 +79,13 @@ struct Deploy : public Order
 struct Bomb : public Order
 {
     private:
+    Territory* source;
+    Territory* adjacent;
     friend std::ostream& operator<<(std::ostream &strm, const Bomb &bomb);
     public:
     Bomb();
-    void validate();
+    Bomb(Territory* source, Territory* adjacent, Player* executor);
+    bool validate();
     std::string execute();
 };
 
@@ -75,32 +93,42 @@ struct Bomb : public Order
 struct Blockade : public Order
 {
     private:
+    Territory* target;
     friend std::ostream& operator<<(std::ostream &strm, const Blockade &blockade);
 
     public:
     Blockade();
-    void validate();
+    Blockade(Territory* target, Player* executor);
+    bool validate();
     std::string execute();
 };
 
 struct Airlift : public Order
 {
     private:
+    int army_count;
+    Territory* source;
+    Territory* target;
     friend std::ostream& operator<<(std::ostream &strm, const Airlift &airlift);
 
     public:
     Airlift();
-    void validate();
+    Airlift(int army_count, Territory* source, Territory* target, Player* executor);
+    bool validate();
     std::string execute();
 };
 
 struct Negotiate : public Order
 {
     private:
+    Player* target;
     friend std::ostream& operator<<(std::ostream &strm, const Negotiate &negotiate);
 
     public:
     Negotiate();
-    void validate();
+    Negotiate(Player* target, Player* executor);
+    bool validate();
     std::string execute();
 };
+
+#endif

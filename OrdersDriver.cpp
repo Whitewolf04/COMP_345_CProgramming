@@ -6,19 +6,19 @@ int main(){
     std::cout << "Creating orders and list..." << "\n";
 
     //Create all orders
-    Deploy order1;
-    Advance order2;
-    Bomb order3;
-    Blockade order4;
-    Airlift order5;
-    Negotiate order6;
+    Order* order1 = new Deploy();
+    Order* order2 = new Advance();
+    Order* order3 = new Bomb();
+    Order* order4 = new Blockade();
+    Order* order5 = new Airlift();
+    Order* order6 = new Negotiate();
 
     //Create an order list
     OrdersList list;
 
     //validation of order
     std::cout << "Validating 2nd Order" << "\n";
-    order2.validate();
+    order2->validate();
     std::cout << "\n";
 
     //Adding order to list
@@ -37,7 +37,7 @@ int main(){
 
     //Executing 2nd order
     std::cout << "Executing 2nd order..." << "\n";
-    std::cout << list.getElement(1).execute() << "\n";
+    std::cout << list.getElement(1)->execute() << "\n";
     std::cout << "\n";
 
     //iterate through the list
@@ -62,5 +62,6 @@ int main(){
 
     std::cout << "Show copy of original list..." << "\n";
     std::cout << list_copy << "\n";
-    
+
+   
 }

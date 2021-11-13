@@ -1,24 +1,28 @@
 #include "Map.h"
-
 using namespace std;
 
 
-string MapLoader::FileLoader(ifstream* stream)
+string MapLoader::FileLoader(ifstream* stream, string name)
 {
-	string* Mapname = new string();
+	string Mapname = name;
 	ifstream* fs = stream;
-	cout << "Enter the name of the map you wish to use." << endl;
-	cin >> *Mapname;
-	cout << "Opening " << *Mapname << " file for Parsing...." << endl;
+	cout << "Opening " << Mapname << " file for Parsing...." << endl;
+	bool foundmap = false;
 
-	fs->open(*Mapname);
-	if (*fs) {
-		cout << "file exists\nProceeding with the file parsing\n";
+	fs->open(Mapname);
+	while (!foundmap) {
+		if (*fs) {
+			cout << "file exists\nProceeding with the file parsing\n";
+			foundmap = true;
+		}
+		else {
+			cout << "file doesn't exist\n";
+			cout << "Choose another file.\n";
+			cin >> Mapname;
+		}
+		fs->open(Mapname);
 	}
-	else {
-		cout << "file doesn't exist\n";
-	}
-	delete Mapname;
+
 	return string((std::istreambuf_iterator<char>(*fs)), std::istreambuf_iterator<char>());
 }
 bool MapLoader::FileParser(string& str, vector<Continent>& c, vector<Territory>& t)
@@ -230,14 +234,13 @@ Continent::Continent(const Continent& c) {
 Continent& Continent::operator=(const Continent& t) { return *this; }
 
 //Map Constructor
-Map::Map() {
-	
+Map::Map(string name) {
 	ifstream* stream = new ifstream();
 	string* MapInformation = new string();
 	vector<Continent>* Continents = new vector<Continent>;
 	vector<Territory>* Territories = new vector<Territory>;
 	bool works = false;
-	*MapInformation = MapLoader::FileLoader(stream);
+	*MapInformation = MapLoader::FileLoader(stream,name);
 	works = MapLoader::FileParser(*MapInformation, *Continents, *Territories);
 	if (!works) {
 		cout << "The map is not valid, map object will be emptied.\n";
@@ -637,12 +640,12 @@ bool Territory::PlayerCheck(int n) {
 };
 
 
-void Player::setPlayerNumber(int n) {
+void DummyPlayer::setPlayerNumber(int n) {
 	playerNum = n;
 }
-int Player::getPlayerNum() {
+int DummyPlayer::getPlayerNum() {
 	return playerNum;
 }
-Player::Player(int n){
+DummyPlayer::DummyPlayer(int n){
 	playerNum = n;
 }
