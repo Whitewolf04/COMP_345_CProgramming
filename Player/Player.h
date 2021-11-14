@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Map.h"
-#include "Cards.h"
-#include "Orders.h"
+#include "../Map/Map.h"
+#include "../Cards/Cards.h"
+#include "../Orders/Orders.h"
 
 class Player {
 public:

@@ -96,9 +96,7 @@ vector<Territory*> Player::toAttack() {
 }
 
 void Player::issueOrder(Order& o) {
-//    cout << "DEBUG: Order " << o << " is being issued" << endl;
-    (*playerOrdersList).add(&o);
-//    cout << "DEBUG: Order " << o << " has been issued from Player" << endl;
+    playerOrdersList->add(&o);
 }
 
 
