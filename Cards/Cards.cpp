@@ -21,6 +21,10 @@ Cards::Cards(string t){
         cout << "Type invalid so it is set to default" << endl;
 }
 
+Cards::Cards(Cards* anotherCard){
+    this->type = anotherCard->type;
+}
+
 // Comparing two cards to see if they are off the same type
 bool Cards::equals(Cards* other){
     if(this->type == other->type){

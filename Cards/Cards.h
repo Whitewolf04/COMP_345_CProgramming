@@ -13,6 +13,7 @@ public:
     string type;
     Cards();
     Cards(string t);
+    Cards(Cards* anotherCard);
     bool equals(Cards *other);
     bool equals(string cardType);
     void play();

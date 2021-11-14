@@ -13,6 +13,8 @@ vector<Player*> listOfPlayers;
 // REMEMBER TO ADD DELETE STATEMENT LATER
 //---------------------------------------------------------
 
+Deck * deck = new Deck(60);
+
 Map * loader;
 
 GameState gs;
