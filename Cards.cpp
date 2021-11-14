@@ -21,6 +21,10 @@ Cards::Cards(string t){
         cout << "Type invalid so it is set to default" << endl;
 }
 
+Cards::Cards(Cards& c) {
+    type = c.type;
+}
+
 // Comparing two cards to see if they are off the same type
 bool Cards::equals(Cards* other){
     if(this->type == other->type){
@@ -70,7 +74,7 @@ int Deck::getDeckSize(){
 Cards* Deck::draw(){
     int deckSize = getDeckSize();
     int cardIndex = rand() % deckSize;
-    Cards* drawn = deck[cardIndex];
+    Cards* drawn = new Cards(*deck[cardIndex]);
 
     // Remove the card drawn from the deck
     // Temporarily disable removing from deck

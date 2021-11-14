@@ -16,6 +16,7 @@ public:
     string type;
     Cards();
     Cards(string t);
+    Cards(Cards &c);
     bool equals(Cards *other);
     bool equals(string cardType);
     void play();
