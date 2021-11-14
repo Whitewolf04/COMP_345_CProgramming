@@ -30,7 +30,7 @@ public:
 
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();
-    void issueOrder(Order& o);
+    void issueOrder(Order* o);
 private :
     string playerName;
     int reinArmy;

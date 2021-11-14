@@ -274,17 +274,13 @@ void PlayManager::issueOrder(){
     for(int i = 0; i < listOfPlayers.size(); i++){
         // Prevent NULL pointer issue
         if(listOfPlayers.at(i) == nullptr){continue;}
-//        cout << "DEBUG: Checked for null pointer \n" << endl;
-//        cout << "DEBUG: listOfPlayers element address: " << listOfPlayers.at(i) << endl;
 
         Player* tempPlayer = listOfPlayers.at(i);
-//        cout << "DEBUG: Extracted Player" << tempPlayer << endl;
 
         bool endIssueOrder = false;
 
         // Print out user's name and ask to issue order
         cout << "Player " << tempPlayer->getPlayerName() << ", it is your turn to issue order." << endl;
-//        cout << "DEBUG: " << tempPlayer->getPlayerName() << " has " << tempPlayer->getReinArmy() << " armies in the reinforcement pool." << endl;
 
         // Loop constantly until the current player has finished issuing order
         while(!endIssueOrder) {
@@ -313,7 +309,7 @@ void PlayManager::issueOrder(){
                         // Temporary placeholder because deploy order hasn't been implemented yet
                         Order * newOrder = (Order*) new Deploy();
                         tempPlayer->removeReinArmy(3);
-                        tempPlayer->issueOrder(*newOrder);
+                        tempPlayer->issueOrder(newOrder);
                         // NEED IMPLEMENT-------------------------------------------------------
                         break;
                     } else{
@@ -377,28 +373,31 @@ void PlayManager::issueOrder(){
                 // Play card feature to be implemented
                 cout << "Card " << cardName << " has been played" << endl;
             } else {
-                Order* newOrder;
                 // Create a new order and check if it is valid
                 if(input == "advance"){
-                    newOrder = (Order*) new Advance();
+                    Advance * newOrder = new Advance();
+                    tempPlayer->issueOrder(newOrder);
                 } else if(input == "deploy"){
-                    newOrder = (Order*) new Deploy();
+                    Deploy * newOrder = new Deploy();
+                    tempPlayer->issueOrder(newOrder);
                 } else if(input == "bomb"){
-                    newOrder = (Order*) new Bomb();
+                    Bomb * newOrder = new Bomb();
+                    tempPlayer->issueOrder(newOrder);
                 } else if(input == "blockade"){
-                    newOrder = (Order*) new Blockade();
+                    Blockade * newOrder = new Blockade();
+                    tempPlayer->issueOrder(newOrder);
                 } else if(input == "airlift"){
-                    newOrder = (Order*) new Airlift();
+                    Airlift * newOrder = new Airlift();
+                    tempPlayer->issueOrder(newOrder);
                 } else if(input == "negotiate"){
-                    newOrder = (Order*) new Negotiate();
+                    Negotiate * newOrder = new Negotiate();
+                    tempPlayer->issueOrder(newOrder);
                 } else {
                     cout << "Invalid order! Please try again!" << endl;
                     continue;
                 }
 //            cout << "DEBUG: Order address: " << newOrder << endl;
 
-                // Once validated, issue order
-                tempPlayer->issueOrder(*newOrder);
 
                 // Ask player if they want to continue issuing order
                 cout << "Order issued" << "\n";
@@ -466,33 +465,13 @@ void PlayManager::exeOrder() {
     for(int i = 0; i < listOfPlayers.size(); i++){
         Player * tempPlayer = listOfPlayers.at(i);
 
-        cout << "Player " << tempPlayer->getPlayerName() << "'s orders are being executed" << endl;
-
         // Take all of this player's order from orders list
         for(int k = 0; k < tempPlayer->playerOrdersList->getSize(); k++){
             Order* tempOrder = tempPlayer->playerOrdersList->getElement(k);
 
             // Check for order type
             // Assuming all orders are valid because order is checked from the previous steps
-            if(tempOrder->getType() == "advance"){
-                Advance* advanceOrder = (Advance*) tempOrder;
-                advanceOrder->execute();
-            } else if(tempOrder->getType() == "deploy"){
-                Deploy * deployOrder = (Deploy*) tempOrder;
-                deployOrder->execute();
-            } else if(tempOrder->getType() == "bomb"){
-                Bomb * bombOrder = (Bomb*) tempOrder;
-                bombOrder->execute();
-            } else if(tempOrder->getType() == "blockade"){
-                Blockade * blockadeOrder = (Blockade*) tempOrder;
-                blockadeOrder->execute();
-            } else if(tempOrder->getType() == "airlift"){
-                Airlift * airliftOrder = (Airlift*) tempOrder;
-                airliftOrder->execute();
-            } else if(tempOrder->getType() == "negotiate"){
-                Negotiate * negotiateOrder = (Negotiate*) tempOrder;
-                negotiateOrder->execute();
-            }
+            tempOrder->execute();
         }
     }
 

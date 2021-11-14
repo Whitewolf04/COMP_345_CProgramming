@@ -98,8 +98,8 @@ vector<Territory*> Player::toAttack() {
     return territoriesToAttack;
 }
 
-void Player::issueOrder(Order& o) {
-    playerOrdersList->add(&o);
+void Player::issueOrder(Order* o) {
+    playerOrdersList->add(o);
 }
 
 
