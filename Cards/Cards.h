@@ -54,7 +54,7 @@ public:
 
     // Operational methods
     void drawCard(Deck *deck);
-    void playCard(string cardType, Deck *deck);
+    void playCard(string cardType);
     bool contains(string cardType);
 };
 

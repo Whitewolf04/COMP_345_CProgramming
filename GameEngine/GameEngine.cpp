@@ -7,6 +7,7 @@ const map <StartupManagerState, string> smsmap = {{start, "start"}, {mapLoaded, 
 const map <PlayManagerState, string> pmsmap = {{assignReinforcement,"assignReinforcement"},{issueOrders, "issueOrders"}, {executeOrders, "executeOrders"}, {win, "win"}, {finishPMS, "finishPMS"}};
 
 bool isGameOver = false;
+bool winnerFound = false;
 
 vector<Player*> listOfPlayers;
 // REMEMBER TO ADD DELETE STATEMENT LATER
@@ -212,6 +213,17 @@ void PlayManager::setPms(PlayManagerState p) {
     pms = p;
 }
 
+void PlayManager::gameLoop(){
+    while(!winnerFound){
+        init();
+        issueOrder();
+        exeOrder();
+    }
+
+    // If a winner has been found, call win() method
+    wins();
+}
+
 // Reinforcement phase
 void PlayManager::init () {
     setPms(assignReinforcement);
@@ -299,7 +311,7 @@ void PlayManager::issueOrder(){
 
                     if(input == "deploy"){
                         // Temporary placeholder because deploy order hasn't been implemented yet
-                        Order * newOrder = new Order("deploy");
+                        Order * newOrder = (Order*) new Deploy();
                         tempPlayer->removeReinArmy(3);
                         tempPlayer->issueOrder(*newOrder);
                         // NEED IMPLEMENT-------------------------------------------------------
@@ -365,9 +377,21 @@ void PlayManager::issueOrder(){
                 // Play card feature to be implemented
                 cout << "Card " << cardName << " has been played" << endl;
             } else {
+                Order* newOrder;
                 // Create a new order and check if it is valid
-                Order* newOrder = new Order(input);
-                if (!newOrder->validate()) {
+                if(input == "advance"){
+                    newOrder = (Order*) new Advance();
+                } else if(input == "deploy"){
+                    newOrder = (Order*) new Deploy();
+                } else if(input == "bomb"){
+                    newOrder = (Order*) new Bomb();
+                } else if(input == "blockade"){
+                    newOrder = (Order*) new Blockade();
+                } else if(input == "airlift"){
+                    newOrder = (Order*) new Airlift();
+                } else if(input == "negotiate"){
+                    newOrder = (Order*) new Negotiate();
+                } else {
                     cout << "Invalid order! Please try again!" << endl;
                     continue;
                 }
@@ -397,8 +421,6 @@ void PlayManager::issueOrder(){
             }
         }
     }
-//
-    endIssueOrders();
 }
 
 void PlayManager::endIssueOrders() {
@@ -476,19 +498,17 @@ void PlayManager::exeOrder() {
 
     cout << "Finished executing all orders! \n" << endl;
 
-    // Old Code-----------------------------------------------------------
     cout << "Please enter an option" << "\n";
     string input;
     cin >> input;
     while (true) {
-        if (input == "endexecorders") {
-            cout << "Ending executing orders." << "\n";
-            endExeOrders();
+        if (input == "endturn") {
+            cout << "This turn has finished!" << "\n";
             break;
         }
         else if (input == "win") {
             cout << "THIS IS A WIN!" << "\n";
-            wins();
+            winnerFound = true;
             break;
         }
         else {
@@ -496,7 +516,6 @@ void PlayManager::exeOrder() {
             cin >> input;
         }
     }
-    //------------------------------------------------------------------------
 }
 void PlayManager::endExeOrders(){
     cout << "\n";

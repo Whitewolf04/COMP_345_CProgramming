@@ -73,7 +73,8 @@ Cards* Deck::draw(){
     Cards* drawn = deck[cardIndex];
 
     // Remove the card drawn from the deck
-    remove(drawn);
+    // Temporarily disable removing from deck
+//    remove(drawn);
 
     // Return the drawn card
     return drawn;
@@ -182,7 +183,7 @@ void Hand::drawCard(Deck *deck){
 
 // Play a card at a certain position on hand
 // Assume that the card can definitely be found on hand
-void Hand::playCard(string cardType, Deck *deck){
+void Hand::playCard(string cardType){
     Cards *temp;
 
     for(int i = 0; i < hand.size(); i++){
@@ -195,7 +196,7 @@ void Hand::playCard(string cardType, Deck *deck){
 
     // Remove the card that was played from hand, and add it back to the deck
     remove(temp);
-    deck->add(temp);
+//    deck->add(temp);
 }
 
 // Check if hand contains a certain card

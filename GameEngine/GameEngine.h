@@ -54,6 +54,7 @@ class PlayManager {
 public:
     void printPMS() ;
     void setPms(PlayManagerState p);
+    void gameLoop();
     void init ();
     void issueOrder();
     void endIssueOrders();

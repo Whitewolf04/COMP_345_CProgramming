@@ -22,8 +22,7 @@ int main() {
         StartupManager sm;
         sm.init();
         PlayManager pm;
-        pm.init();
-        pm.issueOrder();
+        pm.gameLoop();
     }
     return 0;
 }

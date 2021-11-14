@@ -1,51 +1,50 @@
 #include "Player.h"
 #include <iostream>
 
+int Player::obj_count = 0;
+
 // Constructor
 Player::Player(){
-//    cout << "DEBUG: Default Player constructor was called" << endl;
+    id = obj_count;
     playerName = "NULL";
     reinArmy = 0;
     playerHand = new Hand();
     playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
+    obj_count++;
 }
 
 Player::Player(string playerName){
-//    cout << "DEBUG: String Player constructor was called" << endl;
+    id = obj_count;
     this->playerName = playerName;
     reinArmy = 0;
     playerHand = new Hand();
     playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
+    obj_count++;
 }
 
 Player::Player(Player& anotherPlayer){
-//    cout << "DEBUG: Player copy constructor is called" << endl;
+    this->id = anotherPlayer.id;
     this->playerName = anotherPlayer.playerName;
     this->reinArmy = anotherPlayer.reinArmy;
-//    cout << "DEBUG: This player " << this->playerName << " reinArmy: " << this->reinArmy << endl;
-//    cout << "DEBUG: Another player " << anotherPlayer.playerName << " reinArmy " << anotherPlayer.reinArmy << endl;
     this->playerHand = new Hand(*anotherPlayer.playerHand);
     this->playerOrdersList = new OrdersList(*anotherPlayer.playerOrdersList);
     this->playerTerritories = vector<Territory*>();
     for(int i = 0; i < anotherPlayer.playerTerritories.size(); i++){
         this->playerTerritories.push_back(anotherPlayer.playerTerritories.at(i));
     }
+    obj_count++;
 }
 
 
 // Destructor
 Player::~Player(){
-//    cout << "DEBUG: Player " << this->playerName << " destructor is called" << endl;
-//    cout << "DEBUG: This player has " << this->reinArmy << " number of army" << endl;
-//    cout << "DEBUG: playerOrdersList address: " << playerOrdersList << endl;
     free(playerOrdersList);
     playerOrdersList = nullptr;
     free(playerHand);
     playerHand = nullptr;
-//    cout << "DEBUG: playerOrdersList destruction complete" << endl;
-//    cout << "DEBUG: Player destructor completes" << endl;
+    obj_count--;
 }
 
 // Print out function
@@ -61,6 +60,10 @@ string Player::getPlayerName(){
 
 int Player::getReinArmy(){
     return reinArmy;
+}
+
+int Player::getId(){
+    return id;
 }
 
 

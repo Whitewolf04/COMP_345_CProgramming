@@ -22,6 +22,7 @@ public:
     // Accessor
     string getPlayerName();
     int getReinArmy();
+    int getId();
 
     // Mutator
     void addReinArmy(int num);
@@ -33,6 +34,8 @@ public:
 private :
     string playerName;
     int reinArmy;
+    int id;
+    static int obj_count;
     friend ostream& operator<<(ostream&, const Player&);
 };
 
