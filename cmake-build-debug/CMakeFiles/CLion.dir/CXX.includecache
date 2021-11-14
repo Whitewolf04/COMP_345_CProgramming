@@ -20,6 +20,14 @@ vector
 algorithm
 -
 
+D:/C++ Workspace/CLion/Cards/Cards.cpp
+Cards.h
+D:/C++ Workspace/CLion/Cards/Cards.h
+string
+-
+iostream
+-
+
 D:/C++ Workspace/CLion/Cards/Cards.h
 string
 -
@@ -42,6 +50,14 @@ vector
 tuple
 -
 
+D:/C++ Workspace/CLion/GameEngine/GameEngineDriver.cpp
+GameEngine.h
+D:/C++ Workspace/CLion/GameEngine/GameEngine.h
+
+D:/C++ Workspace/CLion/Map/Map.cpp
+Map.h
+D:/C++ Workspace/CLion/Map/Map.h
+
 D:/C++ Workspace/CLion/Map/Map.h
 string
 -
@@ -55,6 +71,10 @@ vector
 -
 algorithm
 -
+
+D:/C++ Workspace/CLion/Orders/LoggingObserver.cpp
+LoggingObserver.h
+D:/C++ Workspace/CLion/Orders/LoggingObserver.h
 
 D:/C++ Workspace/CLion/Orders/LoggingObserver.h
 
@@ -73,6 +93,12 @@ Map.h
 D:/C++ Workspace/CLion/Orders/Map.h
 LoggingObserver.h
 D:/C++ Workspace/CLion/Orders/LoggingObserver.h
+
+D:/C++ Workspace/CLion/Player/Player.cpp
+Player.h
+D:/C++ Workspace/CLion/Player/Player.h
+iostream
+-
 
 D:/C++ Workspace/CLion/Player/Player.h
 ../Map/Map.h
