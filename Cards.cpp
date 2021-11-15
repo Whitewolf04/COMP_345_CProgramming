@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 
+vector<string> Cards::types = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
+
 // Cards default constructor
 Cards::Cards(){
     type = "default";
@@ -12,7 +14,7 @@ Cards::Cards(string t){
     type = "default";
     // Check if the types are according to the preset values
     for(int i = 0; i < 5; i++){
-        if(t.compare(types[i]) == 0)
+        if(t == types[i])
             type = t;
     }
 
@@ -21,12 +23,12 @@ Cards::Cards(string t){
         cout << "Type invalid so it is set to default" << endl;
 }
 
-Cards::Cards(Cards& c) {
-    type = c.type;
+Cards::Cards(const Cards* other){
+    type = other->type;
 }
 
 // Comparing two cards to see if they are off the same type
-bool Cards::equals(Cards* other){
+bool Cards::equals(const Cards* other){
     if(this->type == other->type){
         return true;
     }
@@ -55,6 +57,12 @@ std::ostream& operator<<(std::ostream &strm, const Cards &card){
 // Constructor initializing a deck with deck size
 Deck::Deck(int deckSize){
     size = deckSize;
+
+    for(int i = 0; i < deckSize; i++){
+        int randIndex = (int) rand() % Cards::types.size();
+        Cards * newCard = new Cards(Cards::types[randIndex]);
+        add(newCard);
+    }
 }
 
 // Destructor to delete all the pointers on deck vector
@@ -71,10 +79,16 @@ int Deck::getDeckSize(){
 }
 
 // Draw a card from the deck
-Cards* Deck::draw(){
+Cards Deck::draw(){
     int deckSize = getDeckSize();
+    if(deckSize == 0){
+        cout << "\tDEBUG Deck: Deck is empty! Cannot draw card" << endl;
+        return Cards();
+    }
     int cardIndex = rand() % deckSize;
-    Cards* drawn = new Cards(*deck[cardIndex]);
+    cout << "\tDEBUG Deck: Drawing card from the deck" << endl;
+    Cards drawn = *deck[cardIndex];
+    cout << "\tDEBUG Deck: Card drawn from the deck" << endl;
 
     // Remove the card drawn from the deck
     // Temporarily disable removing from deck
@@ -150,7 +164,8 @@ int Hand::getHandSize(){
 }
 
 // Add a new card to the hand
-void Hand::add(Cards *newCard){
+void Hand::add(Cards* newCard){
+    cout << "\tDEBUG Hand: Adding new card to player's hand" << endl;
     hand.push_back(newCard);
 }
 
@@ -181,7 +196,7 @@ void Hand::remove(Cards *target){
 
 // Draw a card from deck to hand
 void Hand::drawCard(Deck *deck){
-    Cards *drawn = (*deck).draw();
+    Cards* drawn = new Cards((*deck).draw());
     this->add(drawn);
 }
 

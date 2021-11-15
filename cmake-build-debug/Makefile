@@ -152,30 +152,6 @@ Cards.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Cards.cpp.s
 .PHONY : Cards.cpp.s
 
-GameEngine.obj: GameEngine.cpp.obj
-.PHONY : GameEngine.obj
-
-# target to build an object file
-GameEngine.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngine.cpp.obj
-.PHONY : GameEngine.cpp.obj
-
-GameEngine.i: GameEngine.cpp.i
-.PHONY : GameEngine.i
-
-# target to preprocess a source file
-GameEngine.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngine.cpp.i
-.PHONY : GameEngine.cpp.i
-
-GameEngine.s: GameEngine.cpp.s
-.PHONY : GameEngine.s
-
-# target to generate assembly for a file
-GameEngine.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngine.cpp.s
-.PHONY : GameEngine.cpp.s
-
 GameEngineDriver.obj: GameEngineDriver.cpp.obj
 .PHONY : GameEngineDriver.obj
 
@@ -199,6 +175,30 @@ GameEngineDriver.s: GameEngineDriver.cpp.s
 GameEngineDriver.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.s
 .PHONY : GameEngineDriver.cpp.s
+
+Game_Engine.obj: Game_Engine.cpp.obj
+.PHONY : Game_Engine.obj
+
+# target to build an object file
+Game_Engine.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.obj
+.PHONY : Game_Engine.cpp.obj
+
+Game_Engine.i: Game_Engine.cpp.i
+.PHONY : Game_Engine.i
+
+# target to preprocess a source file
+Game_Engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.i
+.PHONY : Game_Engine.cpp.i
+
+Game_Engine.s: Game_Engine.cpp.s
+.PHONY : Game_Engine.s
+
+# target to generate assembly for a file
+Game_Engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.s
+.PHONY : Game_Engine.cpp.s
 
 LoggingObserver.obj: LoggingObserver.cpp.obj
 .PHONY : LoggingObserver.obj
@@ -308,12 +308,12 @@ help:
 	@echo ... Cards.obj
 	@echo ... Cards.i
 	@echo ... Cards.s
-	@echo ... GameEngine.obj
-	@echo ... GameEngine.i
-	@echo ... GameEngine.s
 	@echo ... GameEngineDriver.obj
 	@echo ... GameEngineDriver.i
 	@echo ... GameEngineDriver.s
+	@echo ... Game_Engine.obj
+	@echo ... Game_Engine.i
+	@echo ... Game_Engine.s
 	@echo ... LoggingObserver.obj
 	@echo ... LoggingObserver.i
 	@echo ... LoggingObserver.s

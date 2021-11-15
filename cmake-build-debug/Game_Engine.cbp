@@ -86,13 +86,13 @@
 		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Cards.h">
 			<Option target="Game_Engine"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/GameEngine.cpp">
-			<Option target="Game_Engine"/>
-		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/GameEngine.h">
-			<Option target="Game_Engine"/>
-		</Unit>
 		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/GameEngineDriver.cpp">
+			<Option target="Game_Engine"/>
+		</Unit>
+		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Game_Engine.cpp">
+			<Option target="Game_Engine"/>
+		</Unit>
+		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Game_Engine.h">
 			<Option target="Game_Engine"/>
 		</Unit>
 		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/LoggingObserver.cpp">

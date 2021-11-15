@@ -1,5 +1,5 @@
 #include "Orders.h"
-#include <string>
+#include<string>
 
 //Define Order functions
 
@@ -11,8 +11,15 @@ Order::Order(std::string newType){
     type = newType;
 }
 
-Order::Order(std::string newType, int executor_id){
+Order::Order(std::string newType, int _executor_id){
     type = newType;
+    executor_id = _executor_id;
+}
+
+Order::Order(std::string newType, int _executor_id, Hand* cards){
+    type = newType;
+    executor_id = _executor_id;
+    player_hand = cards;
 }
 
 Order::Order(const Order &o){
@@ -35,8 +42,11 @@ int Order::getExecId(){
     return executor_id;
 }
 
+Hand* Order::getPlayerHand(){
+    return player_hand;
+}
+
 bool Order::validate(){
-    std::cout << this->getType()+"'s validation is not yet implemented" << "\n";
     return false;
 }
 
@@ -67,6 +77,7 @@ std::string Deploy::execute(){
         return "Invalid Execution of Deploy";
     }else{
         target->setNumArmies(target->getNumOfArmies()+army_count);
+        notify(this);
         return "Execution complete";
     }
 
@@ -80,7 +91,7 @@ std::ostream& operator<<(std::ostream &strm, const Deploy &deploy){
 //Advance functions
 Advance::Advance():Order("advance"){}
 
-Advance::Advance(Territory* _source, Territory* _adjacent, int executor_id):Order("advance", executor_id){
+Advance::Advance(Territory* _source, Territory* _adjacent, int executor_id, Hand* player_hand):Order("advance", executor_id, player_hand){
     source = _source;
     adjacent = _adjacent;
 }
@@ -111,22 +122,27 @@ int deathCalculation(int qty, double probability){
 std::string Advance::execute(){
     if(!this->validate()){
         return "Invalid Execution of Advance";
-    }
-    else{
-        if (source->getPlayerNumber() == adjacent->getPlayerNumber()){
+    }else{
+
+        if(source->getPlayerNumber() == adjacent->getPlayerNumber()){
             adjacent->setNumArmies(source->getNumOfArmies());
             source->setNumArmies(0);
-        }
-        else{
+        }else{
             //defense
             source->setNumArmies(source->getNumOfArmies()-deathCalculation(adjacent->getNumOfArmies(),0.7));
             //attack
             adjacent->setNumArmies(adjacent->getNumOfArmies()-deathCalculation(source->getNumOfArmies(),0.6));
             if(adjacent->getNumOfArmies() == 0){
                 //conquer territory
+
+
                 //receive card.
+                getPlayerHand()->add(new Cards("airlift"));
+
             }
+
         }
+        notify(this);
         return "Execution complete";
     }
 }
@@ -138,14 +154,14 @@ std::ostream& operator<<(std::ostream &strm, const Advance &advance){
 //Airlift functions
 Airlift::Airlift():Order("airlift"){}
 
-Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id):Order("airlift", executor_id){
+Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id, Hand* player_hand):Order("airlift", executor_id, player_hand){
     this->army_count = army_count;
     source = _source;
     target = _target;
 }
 
 bool Airlift::validate(){
-    return source->getPlayerNumber() == target->getPlayerNumber() == getExecId(); //&& getPlayer()->playerHand.contains("airlift"); //needs to be created with an airlift card
+    return source->getPlayerNumber() == target->getPlayerNumber() == getExecId() && getPlayerHand()->contains("airlift"); //needs to be created with an airlift card
 }
 
 std::string Airlift::execute(){
@@ -153,10 +169,11 @@ std::string Airlift::execute(){
         return "Invalid Execution of Airlift";
     }else{
         //play card
-        //getPlayer()->playerHand.playCard("airlift");
+        getPlayerHand()->playCard("airlift");
 
         source->setNumArmies(source->getNumOfArmies()-army_count);
         target->setNumArmies(target->getNumOfArmies()+army_count);
+        notify(this);
         return "Execution complete";
     }
 }
@@ -168,7 +185,7 @@ std::ostream& operator<<(std::ostream &strm, const Airlift &airlift){
 //Bomb functions
 Bomb::Bomb():Order("bomb"){}
 
-Bomb::Bomb(Territory* _source, Territory* _adjacent, int executor_id):Order("bomb", executor_id){
+Bomb::Bomb(Territory* _source, Territory* _adjacent, int executor_id, Hand* player_hand):Order("bomb", executor_id, player_hand){
     source = _source;
     adjacent = _adjacent;
 }
@@ -180,16 +197,17 @@ bool Bomb::validate(){
             neighbor = true;
         }
     }
-    return adjacent->getPlayerNumber() != getExecId() && neighbor; //&& getPlayer()->playerHand.contains("bomb"); //player must use bomb card
+    return adjacent->getPlayerNumber() != getExecId() && neighbor && getPlayerHand()->contains("bomb"); //player must use bomb card
 }
 
 std::string Bomb::execute(){
     if(!this->validate()){
         return "Invalid Execution of Airlift";
     }else{
-        //getPlayer()->playerHand.playCard("bomb");
+        getPlayerHand()->playCard("bomb");
 
         adjacent->setNumArmies(adjacent->getNumOfArmies()/2);
+        notify(this);
         return "Execution complete";
     }
 }
@@ -201,22 +219,23 @@ std::ostream& operator<<(std::ostream &strm, const Bomb &bomb){
 //Blockade functions
 Blockade::Blockade():Order("blockade"){}
 
-Blockade::Blockade(Territory* _target, int executor_id):Order("blockade", executor_id){
+Blockade::Blockade(Territory* _target, int executor_id, Hand* player_hand):Order("blockade", executor_id, player_hand){
     target = _target;
 }
 
 bool Blockade::validate(){
-    return target->getPlayerNumber() == getExecId(); //&& getPlayer()->playerHand.contains("blockade"); //must use blockade card
+    return target->getPlayerNumber() == getExecId() && getPlayerHand()->contains("blockade"); //must use blockade card
 }
 
 std::string Blockade::execute(){
     if(!this->validate()){
         return "Invalid Execution of Blockade";
     }else{
-        //getPlayer()->playerHand.playCard("blockade");
+        getPlayerHand()->playCard("blockade");
 
         target->setNumArmies(target->getNumOfArmies()*2);
         //send territory to Neutral player
+        notify(this);
         return "Execution complete";
     }
 }
@@ -229,21 +248,22 @@ std::ostream& operator<<(std::ostream &strm, const Blockade &blockade){
 //Negotiate functions
 Negotiate::Negotiate():Order("negotiate"){}
 
-Negotiate::Negotiate(int _target_id, int executor_id):Order("negotiate", executor_id){
+Negotiate::Negotiate(int _target_id, int executor_id, Hand* player_hand):Order("negotiate", executor_id, player_hand){
     target_id = _target_id;
 }
 
 bool Negotiate::validate(){
-    return getExecId() != target_id; //&& getPlayer()->playerHand.contains("diplomacy"); //must use diplomacy card
+    return getExecId() != target_id && getPlayerHand()->contains("diplomacy"); //must use diplomacy card
 }
 
 std::string Negotiate::execute(){
     if(!this->validate()){
         return "Invalid Execution of Negotiate";
     }else{
-        //getPlayer()->playerHand.playCard("diplomacy");
+        getPlayerHand()->playCard("diplomacy");
 
         //nullify any attack between executor and target Player
+        notify(this);
         return "Execution complete";
     }
 }
@@ -258,26 +278,52 @@ OrdersList::OrdersList(){
     Order_List;
 }
 
+//Copy constructors
+OrdersList::OrdersList(const OrdersList &o){
+    cout << "\tDEBUG: Order List copy constructor is called" << endl;
+    for (int i=0; i<o.Order_List.size(); ++i){
+        if(o.Order_List[i]->getType() == "advance"){
+            Advance * newOrder = new Advance();
+            Order_List.push_back(newOrder);
+        } else if(o.Order_List[i]->getType() == "deploy"){
+            Deploy * newOrder = new Deploy();
+            Order_List.push_back(newOrder);
+        } else if(o.Order_List[i]->getType() == "bomb"){
+            Bomb * newOrder = new Bomb();
+            Order_List.push_back(newOrder);
+        } else if(o.Order_List[i]->getType() == "blockade"){
+            Blockade * newOrder = new Blockade();
+            Order_List.push_back(newOrder);
+        } else if(o.Order_List[i]->getType() == "airlift"){
+            Airlift * newOrder = new Airlift();
+            Order_List.push_back(newOrder);
+        } else if(o.Order_List[i]->getType() == "negotiate"){
+            Negotiate * newOrder = new Negotiate();
+            Order_List.push_back(newOrder);
+        }
+    }
+}
+
 /*
 //Copy constructors
 OrdersList::OrdersList(const OrdersList &o){
-    
+
     Order* _arr = new Order[o.Order_List.size()];
 
     for (int i=0; i<o.Order_List.size(); ++i){
         _arr[i] = *o.Order_List[i];
         Order_List.push_back(&_arr[i]);
-    } 
+    }
 }
 
 OrdersList& OrdersList::operator =(const OrdersList &o){
-    
+
     Order* ptr = new Order[o.Order_List.size()];
-    
+
     for (int i=0; i<o.Order_List.size(); ++i){
         ptr[i] = *o.Order_List[i];
         this->Order_List.push_back(&ptr[i]);
-    } 
+    }
 
     return *this;
 }
@@ -291,15 +337,20 @@ OrdersList::~OrdersList(){
 
 //Order List functions
 
-
 //adds Order pointer to the vector list
 void OrdersList::add(Order* o){
     Order_List.push_back(o);
+    notify(this);
 }
 
 //get the order type
 Order* OrdersList::getElement(int index){
     return Order_List[index];
+}
+
+//get list size
+int OrdersList::getSize(){
+    return Order_List.size();
 }
 
 //swaps values of two order pointers in the list at different positions
@@ -322,16 +373,17 @@ std::ostream& operator<<(std::ostream &strm, const OrdersList &olist){
     return std::cout << "";
 }
 
-void Order::stringToLog() {
-    fstream filestream;
-    filestream.open("gamelog.txt", ios::app);
-    //Code specific parts here
-    filestream.close();
-};
-
+//String to logs implementations
 void OrdersList::stringToLog() {
     fstream filestream;
     filestream.open("gamelog.txt", ios::app);
-    //Code specific parts here
+    filestream << Order_List.back()->getType() << " was added to Player number " << Order_List.back()->getExecId() << "'s list"<< '\n';
+    filestream.close();
+};
+
+void Order::stringToLog() {
+    fstream filestream;
+    filestream.open("gamelog.txt", ios::app);
+    filestream << this->getType() << " is executed by player " << this->getExecId() << "\n";
     filestream.close();
 };

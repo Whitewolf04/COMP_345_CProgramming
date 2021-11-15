@@ -5,18 +5,18 @@ CMakeFiles/Game_Engine.dir/Cards.cpp.obj: \
  ../Cards.cpp \
  ../Cards.h \
  ../LoggingObserver.h
-CMakeFiles/Game_Engine.dir/GameEngine.cpp.obj: \
+CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.obj: \
  ../Cards.h \
- ../GameEngine.cpp \
- ../GameEngine.h \
+ ../GameEngineDriver.cpp \
+ ../Game_Engine.h \
  ../LoggingObserver.h \
  ../Map.h \
  ../Orders.h \
  ../Player.h
-CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.obj: \
+CMakeFiles/Game_Engine.dir/Game_Engine.cpp.obj: \
  ../Cards.h \
- ../GameEngine.h \
- ../GameEngineDriver.cpp \
+ ../Game_Engine.cpp \
+ ../Game_Engine.h \
  ../LoggingObserver.h \
  ../Map.h \
  ../Orders.h \
@@ -29,6 +29,7 @@ CMakeFiles/Game_Engine.dir/Map.cpp.obj: \
  ../Map.cpp \
  ../Map.h
 CMakeFiles/Game_Engine.dir/Orders.cpp.obj: \
+ ../Cards.h \
  ../LoggingObserver.h \
  ../Map.h \
  ../Orders.cpp \

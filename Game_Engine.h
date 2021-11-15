@@ -1,12 +1,10 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
-#pragma once
 #include "Player.h"
 #include <iostream>
 #include <map>
 #include <vector>
 #include <tuple>
-#include <stdlib.h>
 
 using namespace std;
 
@@ -18,7 +16,7 @@ enum possibleCommands {loadmap, validatemap, addplayer, gamestart, replay, quit}
 
 extern bool isGameOver;
 
-class Command: public Iloggable, Subject{
+class Command: public Iloggable, Subject {
 public:
     Command(string c);
     void saveEffect(string e);
@@ -29,7 +27,7 @@ private:
     string effect;
 };
 
-class CommandProcessor : public Iloggable, Subject{
+class CommandProcessor: public Iloggable, Subject{
 public:
     string getCommand();
     vector <Command> lc;
@@ -41,33 +39,34 @@ private:
     void saveCommand(string c);
 };
 
-class StartupManager : public Iloggable, Subject {
+class StartupManager: public Iloggable, Subject {
     StartupManagerState sms;
-    public:
-        void transition();
-        void printSMS();
-        void setSms(StartupManagerState s);
-        void init ();
-        void mapLoad(string arg);
-        void validateMap();
-        void addPlayers(string arg);
-        void gameStart();
-        void stringToLog();
+public:
+    void printSMS();
+    void setSms(StartupManagerState s);
+    void init ();
+    void mapLoad(string arg);
+    void validateMap();
+    void addPlayers(string arg);
+    void gameStart();
+    void stringToLog();
+    void transition();
 };
 
-class PlayManager {
+class PlayManager{
     PlayManagerState pms;
-    public:
-        void printPMS() ;
-        void setPms(PlayManagerState p);
-        void init ();
-        void issueOrder();
-        void endIssueOrders();
-        void exeOrder();
-        void endExeOrders();
-        void wins();
-        void play();
-        void end();
+public:
+    void printPMS() ;
+    void setPms(PlayManagerState p);
+    void gameLoop();
+    void init ();
+    void issueOrder();
+    void endIssueOrders();
+    void exeOrder();
+    void endExeOrders();
+    void wins();
+    void play();
+    void end();
 };
 
 #endif
