@@ -8,18 +8,18 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug"/>
+				<Option working_dir="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="Game_Engine">
-				<Option output="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Game_Engine.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug"/>
+			<Target title="Warzone">
+				<Option output="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Warzone.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -32,15 +32,15 @@
 					<Add directory="D:/CLion 2021.2.1/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 Game_Engine"/>
-					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 Warzone"/>
+					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="Game_Engine/fast">
-				<Option output="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Game_Engine.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug"/>
+			<Target title="Warzone/fast">
+				<Option output="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Warzone.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -53,73 +53,73 @@
 					<Add directory="D:/CLion 2021.2.1/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 Game_Engine/fast"/>
-					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 Warzone/fast"/>
+					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug"/>
+				<Option working_dir="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug"/>
+				<Option working_dir="C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2021.2.1/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Cards.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Cards.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Cards.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Cards.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/GameEngineDriver.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/CommandProcessing.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Game_Engine.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/CommandProcessing.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Game_Engine.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/CommandProcessingDriver.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/LoggingObserver.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/LoggingObserver.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/LoggingObserver.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/LoggingObserver.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Map.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Map.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Map.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Map.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Orders.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Orders.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Orders.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Orders.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Player.cpp">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Player.cpp">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/Player.h">
-			<Option target="Game_Engine"/>
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/Player.h">
+			<Option target="Warzone"/>
 		</Unit>
-		<Unit filename="C:/Users/isrek/CLionProjects/Game_Engine/CMakeLists.txt">
+		<Unit filename="C:/Users/isrek/CLionProjects/Warzone/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

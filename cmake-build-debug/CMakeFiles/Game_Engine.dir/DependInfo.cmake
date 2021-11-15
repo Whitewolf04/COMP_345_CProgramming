@@ -8,13 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/isrek/CLionProjects/Game_Engine/Cards.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/Cards.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/GameEngineDriver.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/Game_Engine.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/Game_Engine.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/LoggingObserver.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/Map.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/Map.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/Orders.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/Orders.cpp.obj"
-  "C:/Users/isrek/CLionProjects/Game_Engine/Player.cpp" "C:/Users/isrek/CLionProjects/Game_Engine/cmake-build-debug/CMakeFiles/Game_Engine.dir/Player.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/Cards.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/Cards.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/CommandProcessing.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/CommandProcessing.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/CommandProcessingDriver.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/CommandProcessingDriver.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/LoggingObserver.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/Map.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/Map.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/Orders.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/Orders.cpp.obj"
+  "C:/Users/isrek/CLionProjects/Warzone/Player.cpp" "C:/Users/isrek/CLionProjects/Warzone/cmake-build-debug/CMakeFiles/Game_Engine.dir/Player.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

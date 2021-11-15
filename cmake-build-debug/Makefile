@@ -56,10 +56,10 @@ RM = "D:\CLion 2021.2.1\bin\cmake\win\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\isrek\CLionProjects\Game_Engine
+CMAKE_SOURCE_DIR = C:\Users\isrek\CLionProjects\Warzone
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\CMakeFiles C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\CMakeFiles C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -116,24 +116,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Game_Engine
+# Target rules for targets named Warzone
 
 # Build rule for target.
-Game_Engine: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Game_Engine
-.PHONY : Game_Engine
+Warzone: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Warzone
+.PHONY : Warzone
 
 # fast build rule for target.
-Game_Engine/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/build
-.PHONY : Game_Engine/fast
+Warzone/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/build
+.PHONY : Warzone/fast
 
 Cards.obj: Cards.cpp.obj
 .PHONY : Cards.obj
 
 # target to build an object file
 Cards.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Cards.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Cards.cpp.obj
 .PHONY : Cards.cpp.obj
 
 Cards.i: Cards.cpp.i
@@ -141,7 +141,7 @@ Cards.i: Cards.cpp.i
 
 # target to preprocess a source file
 Cards.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Cards.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Cards.cpp.i
 .PHONY : Cards.cpp.i
 
 Cards.s: Cards.cpp.s
@@ -149,63 +149,63 @@ Cards.s: Cards.cpp.s
 
 # target to generate assembly for a file
 Cards.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Cards.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Cards.cpp.s
 .PHONY : Cards.cpp.s
 
-GameEngineDriver.obj: GameEngineDriver.cpp.obj
-.PHONY : GameEngineDriver.obj
+CommandProcessing.obj: CommandProcessing.cpp.obj
+.PHONY : CommandProcessing.obj
 
 # target to build an object file
-GameEngineDriver.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.obj
-.PHONY : GameEngineDriver.cpp.obj
+CommandProcessing.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessing.cpp.obj
+.PHONY : CommandProcessing.cpp.obj
 
-GameEngineDriver.i: GameEngineDriver.cpp.i
-.PHONY : GameEngineDriver.i
+CommandProcessing.i: CommandProcessing.cpp.i
+.PHONY : CommandProcessing.i
 
 # target to preprocess a source file
-GameEngineDriver.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.i
-.PHONY : GameEngineDriver.cpp.i
+CommandProcessing.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessing.cpp.i
+.PHONY : CommandProcessing.cpp.i
 
-GameEngineDriver.s: GameEngineDriver.cpp.s
-.PHONY : GameEngineDriver.s
+CommandProcessing.s: CommandProcessing.cpp.s
+.PHONY : CommandProcessing.s
 
 # target to generate assembly for a file
-GameEngineDriver.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.s
-.PHONY : GameEngineDriver.cpp.s
+CommandProcessing.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessing.cpp.s
+.PHONY : CommandProcessing.cpp.s
 
-Game_Engine.obj: Game_Engine.cpp.obj
-.PHONY : Game_Engine.obj
+CommandProcessingDriver.obj: CommandProcessingDriver.cpp.obj
+.PHONY : CommandProcessingDriver.obj
 
 # target to build an object file
-Game_Engine.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.obj
-.PHONY : Game_Engine.cpp.obj
+CommandProcessingDriver.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessingDriver.cpp.obj
+.PHONY : CommandProcessingDriver.cpp.obj
 
-Game_Engine.i: Game_Engine.cpp.i
-.PHONY : Game_Engine.i
+CommandProcessingDriver.i: CommandProcessingDriver.cpp.i
+.PHONY : CommandProcessingDriver.i
 
 # target to preprocess a source file
-Game_Engine.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.i
-.PHONY : Game_Engine.cpp.i
+CommandProcessingDriver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessingDriver.cpp.i
+.PHONY : CommandProcessingDriver.cpp.i
 
-Game_Engine.s: Game_Engine.cpp.s
-.PHONY : Game_Engine.s
+CommandProcessingDriver.s: CommandProcessingDriver.cpp.s
+.PHONY : CommandProcessingDriver.s
 
 # target to generate assembly for a file
-Game_Engine.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Game_Engine.cpp.s
-.PHONY : Game_Engine.cpp.s
+CommandProcessingDriver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/CommandProcessingDriver.cpp.s
+.PHONY : CommandProcessingDriver.cpp.s
 
 LoggingObserver.obj: LoggingObserver.cpp.obj
 .PHONY : LoggingObserver.obj
 
 # target to build an object file
 LoggingObserver.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/LoggingObserver.cpp.obj
 .PHONY : LoggingObserver.cpp.obj
 
 LoggingObserver.i: LoggingObserver.cpp.i
@@ -213,7 +213,7 @@ LoggingObserver.i: LoggingObserver.cpp.i
 
 # target to preprocess a source file
 LoggingObserver.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/LoggingObserver.cpp.i
 .PHONY : LoggingObserver.cpp.i
 
 LoggingObserver.s: LoggingObserver.cpp.s
@@ -221,7 +221,7 @@ LoggingObserver.s: LoggingObserver.cpp.s
 
 # target to generate assembly for a file
 LoggingObserver.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/LoggingObserver.cpp.s
 .PHONY : LoggingObserver.cpp.s
 
 Map.obj: Map.cpp.obj
@@ -229,7 +229,7 @@ Map.obj: Map.cpp.obj
 
 # target to build an object file
 Map.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Map.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Map.cpp.obj
 .PHONY : Map.cpp.obj
 
 Map.i: Map.cpp.i
@@ -237,7 +237,7 @@ Map.i: Map.cpp.i
 
 # target to preprocess a source file
 Map.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Map.cpp.i
 .PHONY : Map.cpp.i
 
 Map.s: Map.cpp.s
@@ -245,7 +245,7 @@ Map.s: Map.cpp.s
 
 # target to generate assembly for a file
 Map.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Map.cpp.s
 .PHONY : Map.cpp.s
 
 Orders.obj: Orders.cpp.obj
@@ -253,7 +253,7 @@ Orders.obj: Orders.cpp.obj
 
 # target to build an object file
 Orders.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Orders.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Orders.cpp.obj
 .PHONY : Orders.cpp.obj
 
 Orders.i: Orders.cpp.i
@@ -261,7 +261,7 @@ Orders.i: Orders.cpp.i
 
 # target to preprocess a source file
 Orders.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Orders.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Orders.cpp.i
 .PHONY : Orders.cpp.i
 
 Orders.s: Orders.cpp.s
@@ -269,7 +269,7 @@ Orders.s: Orders.cpp.s
 
 # target to generate assembly for a file
 Orders.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Orders.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Orders.cpp.s
 .PHONY : Orders.cpp.s
 
 Player.obj: Player.cpp.obj
@@ -277,7 +277,7 @@ Player.obj: Player.cpp.obj
 
 # target to build an object file
 Player.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Player.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Player.cpp.obj
 .PHONY : Player.cpp.obj
 
 Player.i: Player.cpp.i
@@ -285,7 +285,7 @@ Player.i: Player.cpp.i
 
 # target to preprocess a source file
 Player.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Player.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Player.cpp.i
 .PHONY : Player.cpp.i
 
 Player.s: Player.cpp.s
@@ -293,7 +293,7 @@ Player.s: Player.cpp.s
 
 # target to generate assembly for a file
 Player.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/Player.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/Player.cpp.s
 .PHONY : Player.cpp.s
 
 # Help Target
@@ -304,16 +304,16 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Game_Engine
+	@echo ... Warzone
 	@echo ... Cards.obj
 	@echo ... Cards.i
 	@echo ... Cards.s
-	@echo ... GameEngineDriver.obj
-	@echo ... GameEngineDriver.i
-	@echo ... GameEngineDriver.s
-	@echo ... Game_Engine.obj
-	@echo ... Game_Engine.i
-	@echo ... Game_Engine.s
+	@echo ... CommandProcessing.obj
+	@echo ... CommandProcessing.i
+	@echo ... CommandProcessing.s
+	@echo ... CommandProcessingDriver.obj
+	@echo ... CommandProcessingDriver.i
+	@echo ... CommandProcessingDriver.s
 	@echo ... LoggingObserver.obj
 	@echo ... LoggingObserver.i
 	@echo ... LoggingObserver.s

@@ -5,7 +5,7 @@
 #include "Cards.h"
 #include "Orders.h"
 
-class Player{
+class Player {
 public:
     vector<Territory*> playerTerritories;
     Hand* playerHand;
@@ -30,13 +30,13 @@ public:
 
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();
-    void issueOrder(Order& o);
-    static int obj_count;
+    void issueOrder(Order* o);
 private :
     string playerName;
     int reinArmy;
-    friend ostream& operator<<(ostream&, const Player&);
     int id;
+    static int obj_count;
+    friend ostream& operator<<(ostream&, const Player&);
 };
 
 #endif //PLAYER_PLAYER_H

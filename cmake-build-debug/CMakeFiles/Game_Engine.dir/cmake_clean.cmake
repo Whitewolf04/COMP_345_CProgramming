@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Game_Engine.dir/Cards.cpp.obj"
-  "CMakeFiles/Game_Engine.dir/GameEngineDriver.cpp.obj"
-  "CMakeFiles/Game_Engine.dir/Game_Engine.cpp.obj"
+  "CMakeFiles/Game_Engine.dir/CommandProcessing.cpp.obj"
+  "CMakeFiles/Game_Engine.dir/CommandProcessingDriver.cpp.obj"
   "CMakeFiles/Game_Engine.dir/LoggingObserver.cpp.obj"
   "CMakeFiles/Game_Engine.dir/Map.cpp.obj"
   "CMakeFiles/Game_Engine.dir/Orders.cpp.obj"

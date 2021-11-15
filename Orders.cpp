@@ -16,10 +16,10 @@ Order::Order(std::string newType, int _executor_id){
     executor_id = _executor_id;
 }
 
-Order::Order(std::string newType, int _executor_id, Hand* cards){
+Order::Order(std::string newType, int _executor_id, int _army_count){
     type = newType;
     executor_id = _executor_id;
-    player_hand = cards;
+    army_count = _army_count;
 }
 
 Order::Order(const Order &o){
@@ -42,8 +42,8 @@ int Order::getExecId(){
     return executor_id;
 }
 
-Hand* Order::getPlayerHand(){
-    return player_hand;
+int Order::getArmyCount(){
+    return army_count;
 }
 
 bool Order::validate(){
@@ -62,8 +62,7 @@ std::ostream& operator<<(std::ostream &strm, const Order &order){
 //Deploy functions
 Deploy::Deploy():Order("deploy"){}
 
-Deploy::Deploy(int army_count, Territory* _target, int executor_id):Order("deploy", executor_id){
-    this->army_count = army_count;
+Deploy::Deploy(int army_count, Territory* _target, int executor_id):Order("deploy", executor_id, army_count){
     target = _target;
 }
 
@@ -76,9 +75,9 @@ std::string Deploy::execute(){
     if(!(this->validate())){
         return "Invalid Execution of Deploy";
     }else{
-        target->setNumArmies(target->getNumOfArmies()+army_count);
+        target->setNumArmies(target->getNumOfArmies()+getArmyCount());
         notify(this);
-        return "Execution complete";
+        return "Deploy Execution complete";
     }
 
 }
@@ -91,9 +90,16 @@ std::ostream& operator<<(std::ostream &strm, const Deploy &deploy){
 //Advance functions
 Advance::Advance():Order("advance"){}
 
-Advance::Advance(Territory* _source, Territory* _adjacent, int executor_id, Hand* player_hand):Order("advance", executor_id, player_hand){
+Advance::Advance(Territory* _source, Territory* _adjacent, int executor_id):Order("advance", executor_id){
     source = _source;
     adjacent = _adjacent;
+}
+
+Territory* Advance::getSourceT(){
+    return source;
+}
+Territory* Advance::getAdjacentT(){
+    return adjacent;
 }
 
 bool Advance::validate(){
@@ -132,18 +138,27 @@ std::string Advance::execute(){
             source->setNumArmies(source->getNumOfArmies()-deathCalculation(adjacent->getNumOfArmies(),0.7));
             //attack
             adjacent->setNumArmies(adjacent->getNumOfArmies()-deathCalculation(source->getNumOfArmies(),0.6));
+
+            if(source->getNumOfArmies() < 0){
+                source->setNumArmies(0);
+            }
+
+            if(adjacent->getNumOfArmies() < 0){
+                adjacent->setNumArmies(0);
+            }
+
             if(adjacent->getNumOfArmies() == 0){
-                //conquer territory
-
-
-                //receive card.
-                getPlayerHand()->add(new Cards("airlift"));
-
+                //conquer territory and get card
+                success = true;
             }
 
         }
         notify(this);
-        return "Execution complete";
+        if(success){
+            return "Conquered territory";
+        }else{
+            return "Advance Execution complete";
+        }
     }
 }
 
@@ -154,27 +169,24 @@ std::ostream& operator<<(std::ostream &strm, const Advance &advance){
 //Airlift functions
 Airlift::Airlift():Order("airlift"){}
 
-Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id, Hand* player_hand):Order("airlift", executor_id, player_hand){
-    this->army_count = army_count;
+Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id):Order("airlift", executor_id, army_count){
     source = _source;
     target = _target;
 }
 
 bool Airlift::validate(){
-    return source->getPlayerNumber() == target->getPlayerNumber() == getExecId() && getPlayerHand()->contains("airlift"); //needs to be created with an airlift card
+    return source->getPlayerNumber() == target->getPlayerNumber() && target->getPlayerNumber() == getExecId(); //needs to be created with an airlift card
 }
 
 std::string Airlift::execute(){
     if(!(this->validate())){
         return "Invalid Execution of Airlift";
     }else{
-        //play card
-        getPlayerHand()->playCard("airlift");
 
-        source->setNumArmies(source->getNumOfArmies()-army_count);
-        target->setNumArmies(target->getNumOfArmies()+army_count);
+        source->setNumArmies(source->getNumOfArmies()-getArmyCount());
+        target->setNumArmies(target->getNumOfArmies()+getArmyCount());
         notify(this);
-        return "Execution complete";
+        return "Airlift Execution complete";
     }
 }
 
@@ -185,7 +197,7 @@ std::ostream& operator<<(std::ostream &strm, const Airlift &airlift){
 //Bomb functions
 Bomb::Bomb():Order("bomb"){}
 
-Bomb::Bomb(Territory* _source, Territory* _adjacent, int executor_id, Hand* player_hand):Order("bomb", executor_id, player_hand){
+Bomb::Bomb(Territory* _source, Territory* _adjacent, int executor_id):Order("bomb", executor_id){
     source = _source;
     adjacent = _adjacent;
 }
@@ -197,18 +209,17 @@ bool Bomb::validate(){
             neighbor = true;
         }
     }
-    return adjacent->getPlayerNumber() != getExecId() && neighbor && getPlayerHand()->contains("bomb"); //player must use bomb card
+    return adjacent->getPlayerNumber() != getExecId() && neighbor; //player must use bomb card
 }
 
 std::string Bomb::execute(){
     if(!this->validate()){
-        return "Invalid Execution of Airlift";
+        return "Invalid Execution of Bomb";
     }else{
-        getPlayerHand()->playCard("bomb");
 
         adjacent->setNumArmies(adjacent->getNumOfArmies()/2);
         notify(this);
-        return "Execution complete";
+        return "Bomb Execution complete";
     }
 }
 
@@ -219,24 +230,27 @@ std::ostream& operator<<(std::ostream &strm, const Bomb &bomb){
 //Blockade functions
 Blockade::Blockade():Order("blockade"){}
 
-Blockade::Blockade(Territory* _target, int executor_id, Hand* player_hand):Order("blockade", executor_id, player_hand){
+Blockade::Blockade(Territory* _target, int executor_id):Order("blockade", executor_id){
     target = _target;
 }
 
+Territory* Blockade::getTarget(){
+    return target;
+}
+
 bool Blockade::validate(){
-    return target->getPlayerNumber() == getExecId() && getPlayerHand()->contains("blockade"); //must use blockade card
+    return target->getPlayerNumber() == getExecId(); //must use blockade card
 }
 
 std::string Blockade::execute(){
-    if(!this->validate()){
+    if(!validate()){
         return "Invalid Execution of Blockade";
     }else{
-        getPlayerHand()->playCard("blockade");
 
         target->setNumArmies(target->getNumOfArmies()*2);
         //send territory to Neutral player
         notify(this);
-        return "Execution complete";
+        return "Blockade Execution complete";
     }
 }
 
@@ -248,23 +262,27 @@ std::ostream& operator<<(std::ostream &strm, const Blockade &blockade){
 //Negotiate functions
 Negotiate::Negotiate():Order("negotiate"){}
 
-Negotiate::Negotiate(int _target_id, int executor_id, Hand* player_hand):Order("negotiate", executor_id, player_hand){
+Negotiate::Negotiate(int _target_id, int executor_id):Order("negotiate", executor_id){
     target_id = _target_id;
 }
 
+int Negotiate::getTargetId(){
+    return target_id;
+}
+
 bool Negotiate::validate(){
-    return getExecId() != target_id && getPlayerHand()->contains("diplomacy"); //must use diplomacy card
+    return getExecId() != target_id;
 }
 
 std::string Negotiate::execute(){
     if(!this->validate()){
         return "Invalid Execution of Negotiate";
     }else{
-        getPlayerHand()->playCard("diplomacy");
+
 
         //nullify any attack between executor and target Player
         notify(this);
-        return "Execution complete";
+        return "Negotiate Execution complete";
     }
 }
 

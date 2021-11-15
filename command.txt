@@ -1,0 +1,6 @@
+loadmap solar.map
+validatemap
+addplayer farouk
+addplayer ismael
+addplayer omar
+gamestart

@@ -1,0 +1,21 @@
+State: start
+State: mapLoaded
+State: mapValidated
+State: start
+State: start
+State: mapLoaded
+State: mapValidated
+State: playersAdded
+State: start
+State: mapLoaded
+State: mapValidated
+State: playersAdded
+deploy is executed by player 0
+advance was added to Player number 0's list
+deploy is executed by player 1
+deploy is executed by player 1
+blockade was added to Player number 1's list
+deploy is executed by player 2
+airlift was added to Player number 2's list
+advance is executed by player 0
+blockade is executed by player 1

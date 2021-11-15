@@ -1,5 +1,5 @@
-#ifndef GAMEENGINE_H
-#define GAMEENGINE_H
+#ifndef COMMANDPROCESSING_H
+#define COMMANDPROCESSING_H
 #include "Player.h"
 #include <iostream>
 #include <map>
@@ -35,9 +35,24 @@ public:
     bool validate(State st, string cmd);
     void stringToLog();
 private:
-    string readCommand();
+    virtual string readCommand();
     void saveCommand(string c);
 };
+
+class FileLineReader {
+public:
+    string readLineFromFile(string fileName);
+};
+
+class FileCommandProcessorAdapter: public CommandProcessor {
+public:
+    string fileName;
+    FileLineReader flr;
+    FileCommandProcessorAdapter(string f);
+private:
+    string readCommand();
+};
+
 
 class StartupManager: public Iloggable, Subject {
     StartupManagerState sms;

@@ -53,16 +53,16 @@ RM = "D:\CLion 2021.2.1\bin\cmake\win\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\isrek\CLionProjects\Game_Engine
+CMAKE_SOURCE_DIR = C:\Users\isrek\CLionProjects\Warzone
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Game_Engine.dir/all
+all: CMakeFiles/Warzone.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -70,34 +70,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Game_Engine.dir/clean
+clean: CMakeFiles/Warzone.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Game_Engine.dir
+# Target rules for target CMakeFiles/Warzone.dir
 
 # All Build rule for target.
-CMakeFiles/Game_Engine.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target Game_Engine"
-.PHONY : CMakeFiles/Game_Engine.dir/all
+CMakeFiles/Warzone.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target Warzone"
+.PHONY : CMakeFiles/Warzone.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Game_Engine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\CMakeFiles 8
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Game_Engine.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Game_Engine\cmake-build-debug\CMakeFiles 0
-.PHONY : CMakeFiles/Game_Engine.dir/rule
+CMakeFiles/Warzone.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Warzone.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\isrek\CLionProjects\Warzone\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/Warzone.dir/rule
 
 # Convenience name for target.
-Game_Engine: CMakeFiles/Game_Engine.dir/rule
-.PHONY : Game_Engine
+Warzone: CMakeFiles/Warzone.dir/rule
+.PHONY : Warzone
 
 # clean rule for target.
-CMakeFiles/Game_Engine.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Game_Engine.dir\build.make CMakeFiles/Game_Engine.dir/clean
-.PHONY : CMakeFiles/Game_Engine.dir/clean
+CMakeFiles/Warzone.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Warzone.dir\build.make CMakeFiles/Warzone.dir/clean
+.PHONY : CMakeFiles/Warzone.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
