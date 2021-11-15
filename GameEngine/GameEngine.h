@@ -16,7 +16,7 @@ enum possibleCommands {loadmap, validatemap, addplayer, gamestart, replay, quit}
 
 extern bool isGameOver;
 
-class Command{
+class Command : public Iloggable, Subject{
 public:
     Command(string c);
     void saveEffect(string e);
@@ -27,7 +27,7 @@ private:
     string effect;
 };
 
-class CommandProcessor{
+class CommandProcessor : public Iloggable, Subject{
 public:
     string getCommand();
     vector <Command> lc;
@@ -39,7 +39,7 @@ private:
     void saveCommand(string c);
 };
 
-class StartupManager{
+class StartupManager : public Iloggable, Subject{
     StartupManagerState sms;
 public:
     void transition();
@@ -68,6 +68,7 @@ public:
     void wins();
     void play();
     void end();
+    void stringToLog();
 };
 
 #endif

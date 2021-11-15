@@ -11,8 +11,6 @@ bool winnerFound = false;
 
 vector<Player*> listOfPlayers;
 vector<Player*> orderedListOfPlayers;
-// REMEMBER TO ADD DELETE STATEMENT LATER
-//---------------------------------------------------------
 
 Deck * deck = new Deck(60);
 
@@ -80,17 +78,30 @@ bool CommandProcessor::validate(State st, string cmd) {
     return false;
 }
 
+void CommandProcessor::stringToLog() {
+    fstream filestream;
+    filestream.open("gamelog.txt", ios::app);
+    filestream << "Saving: " << lc.back().toString();
+    filestream.close();
+}
+
 Command::Command(string c) {
     command = c;
 }
 
 void Command::saveEffect(string e) {
     effect = e;
-//    Subject::notify(this);
 }
 
 string Command::toString() {
     return "command: " + command + ", effect: " + effect;
+}
+
+void Command::stringToLog() {
+    fstream filestream;
+    filestream.open("gamelog.txt", ios::app);
+    filestream << effect << "\n";
+    filestream.close();
 }
 
 void StartupManager::printSMS() {
@@ -100,8 +111,15 @@ void StartupManager::setSms(StartupManagerState s) {
     sms = s;
 }
 void StartupManager::transition(){
-//    Subject::notify(this);
+    Subject::notify(this);
 }
+void StartupManager::stringToLog() {
+    fstream filestream;
+    filestream.open("gamelog.txt", ios::app);
+    filestream << "State: " + smsmap.at(sms) << "\n";
+    filestream.close();
+}
+
 void StartupManager::init () {
     cout << "\n";
     gs = startup;
@@ -177,7 +195,6 @@ void StartupManager::addPlayers(string arg) {
     // add player
     Player* p = new Player(arg);
     listOfPlayers.push_back(p);
-//    Player::addPlayer(p);
     // add player
     setSms(playersAdded);
     s = PLAYERADDED;
@@ -193,7 +210,6 @@ void StartupManager::addPlayers(string arg) {
             // add player
             Player* p2 = new Player(name);      // Avoid overshadowing
             listOfPlayers.push_back(p2);
-//            Player::addPlayer(p);
             //
             printSMS();
             cout << "Please enter an option" << "\n";
@@ -478,38 +494,6 @@ void PlayManager::issueOrder(){
     }
 }
 
-void PlayManager::endIssueOrders() {
-    cout << "\n";
-    // end issue order
-    setPms(executeOrders);
-    s = EXECUTEORDERS;
-    printPMS();
-    cout << "Please enter an option" << "\n";
-    string input;
-    cin >> input;
-    while (true) {
-        if (input == "execorder") {
-            cout << "Executing order." << "\n";
-            exeOrder();
-            break;
-        }
-        else if (input == "endexecorders") {
-            cout << "Ending executing orders." << "\n";
-            endExeOrders();
-            break;
-        }
-        else if (input == "win") {
-            cout << "THIS IS A WIN!" << "\n";
-            wins();
-            break;
-        }
-        else {
-            cout << "Invalid input, please enter a valid option" << "\n";
-            cin >> input;
-        }
-    }
-}
-
 // Executing order phase
 void PlayManager::exeOrder() {
     cout << "\n";
@@ -552,13 +536,7 @@ void PlayManager::exeOrder() {
         }
     }
 }
-void PlayManager::endExeOrders(){
-    cout << "\n";
-    // end execute orders
-    setPms(assignReinforcement);
-    s = ASSIGNREINFORCEMENT;
-    init();
-}
+
 void PlayManager::wins() {
     cout << "\n";
     cout <<
@@ -576,15 +554,18 @@ void PlayManager::wins() {
     printPMS();
     cout << "Please enter an option" << "\n";
     string input = cp.getCommand();
-    while (cp.validate(s, input)) {
+    while (!cp.validate(s, input)) {
+        cp.lc.back().saveEffect("Error. Nothing happened.");
         input = cp.getCommand();
     }
     if (input == "end") {
         cout << "Ending the game. See you soon!" << "\n";
+        cp.lc.back().saveEffect("Ending the game. See you soon!");
         end();
     }
     else if (input == "play") {
         cout << "Want to replay? Restarting the game!" << "\n";
+        cp.lc.back().saveEffect("Want to replay? Restarting the game!");
         gs = startup;
         play();
     }
