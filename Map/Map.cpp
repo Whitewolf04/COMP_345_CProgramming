@@ -533,6 +533,13 @@ vector<Territory> Map::getNodesForContinent(int n) {
     return v;
 
 }
+vector<Continent> Map::getListOfContinents() {
+    vector<Continent> v;
+    for(int i = 0; i < ListOfContinents->size(); i++){
+        v.push_back(ListOfContinents->at(i));
+    }
+    return v;
+}
 
 //Method for identifying map file elements
 int Continent::Parsing(string line,string& element1, string& element2, string& element3) {
@@ -623,6 +630,9 @@ Territory* Map::getNode(int n) {
 Continent* Map::getContinent(int n) {
     return &ListOfContinents->at(n);
 };
+int Map::getSize() {
+    return ListOfNodes->size();
+}
 
 //Territory Game Related Methods
 void Territory::addNeighbors(int v) {

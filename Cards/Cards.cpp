@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 
+
 // Cards default constructor
 Cards::Cards(){
     type = "default";
@@ -12,7 +13,7 @@ Cards::Cards(string t){
     type = "default";
     // Check if the types are according to the preset values
     for(int i = 0; i < 5; i++){
-        if(t.compare(types[i]) == 0)
+        if(t == types[i])
             type = t;
     }
 
@@ -21,12 +22,12 @@ Cards::Cards(string t){
         cout << "Type invalid so it is set to default" << endl;
 }
 
-Cards::Cards(Cards* anotherCard){
-    this->type = anotherCard->type;
+Cards::Cards(const Cards* other){
+    type = other->type;
 }
 
 // Comparing two cards to see if they are off the same type
-bool Cards::equals(Cards* other){
+bool Cards::equals(const Cards* other){
     if(this->type == other->type){
         return true;
     }
@@ -55,14 +56,21 @@ std::ostream& operator<<(std::ostream &strm, const Cards &card){
 // Constructor initializing a deck with deck size
 Deck::Deck(int deckSize){
     size = deckSize;
+    vector<string> cardTypes = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
+
+    for(int i = 0; i < deckSize; i++){
+        int randIndex = (int) rand() % 5;
+        Cards * newCard = new Cards(cardTypes[randIndex]);
+        add(newCard);
+    }
 }
 
 // Destructor to delete all the pointers on deck vector
 Deck::~Deck(){
-     for(int i = 0; i < deck.size(); i++){
-         free(deck[i]);
-         deck[i] = nullptr;
-     }
+    for(int i = 0; i < deck.size(); i++){
+        free(deck[i]);
+        deck[i] = nullptr;
+    }
 }
 
 // Deck size getter
@@ -71,10 +79,16 @@ int Deck::getDeckSize(){
 }
 
 // Draw a card from the deck
-Cards* Deck::draw(){
+Cards Deck::draw(){
     int deckSize = getDeckSize();
+    if(deckSize == 0){
+        cout << "\tDEBUG Deck: Deck is empty! Cannot draw card" << endl;
+        return Cards();
+    }
     int cardIndex = rand() % deckSize;
-    Cards* drawn = deck[cardIndex];
+//    cout << "\tDEBUG Deck: Drawing card from the deck" << endl;
+    Cards drawn = *deck[cardIndex];
+//    cout << "\tDEBUG Deck: Card drawn from the deck" << endl;
 
     // Remove the card drawn from the deck
     // Temporarily disable removing from deck
@@ -138,10 +152,10 @@ Hand::Hand(int handSize){
 
 // Destructor deleting all the pointers in hand vector
 Hand::~Hand(){
-     for(int i = 0; i < hand.size(); i++){
-         free(hand[i]);
-         hand[i] = nullptr;
-     }
+    for(int i = 0; i < hand.size(); i++){
+        free(hand[i]);
+        hand[i] = nullptr;
+    }
 }
 
 // Hand size getter
@@ -150,7 +164,7 @@ int Hand::getHandSize(){
 }
 
 // Add a new card to the hand
-void Hand::add(Cards *newCard){
+void Hand::add(Cards* newCard){
     hand.push_back(newCard);
 }
 
@@ -166,7 +180,7 @@ void Hand::remove(Cards *target){
             break;
         }
 
-        // Testing 
+        // Testing
         // delete temp;
     }
 
@@ -181,7 +195,7 @@ void Hand::remove(Cards *target){
 
 // Draw a card from deck to hand
 void Hand::drawCard(Deck *deck){
-    Cards *drawn = (*deck).draw();
+    Cards* drawn = new Cards((*deck).draw());
     this->add(drawn);
 }
 

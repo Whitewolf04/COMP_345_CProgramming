@@ -10,6 +10,7 @@ bool isGameOver = false;
 bool winnerFound = false;
 
 vector<Player*> listOfPlayers;
+vector<Player*> orderedListOfPlayers;
 // REMEMBER TO ADD DELETE STATEMENT LATER
 //---------------------------------------------------------
 
@@ -33,6 +34,7 @@ string CommandProcessor::readCommand() {
 void CommandProcessor::saveCommand(string c) {
     Command cmd(c);
     lc.push_back(cmd);
+//    Subject::notify(this);
 }
 
 void CommandProcessor::showList() {
@@ -84,6 +86,7 @@ Command::Command(string c) {
 
 void Command::saveEffect(string e) {
     effect = e;
+//    Subject::notify(this);
 }
 
 string Command::toString() {
@@ -95,6 +98,9 @@ void StartupManager::printSMS() {
 }
 void StartupManager::setSms(StartupManagerState s) {
     sms = s;
+}
+void StartupManager::transition(){
+//    Subject::notify(this);
 }
 void StartupManager::init () {
     cout << "\n";
@@ -111,6 +117,7 @@ void StartupManager::init () {
     string arg = input.substr(input.find(' ') + 1, input.length()-1);
     cout << "Loading the map " + arg << "\n";
     cp.lc.back().saveEffect("Loading the map " + arg);
+    transition();
     mapLoad(arg);
 }
 void StartupManager::mapLoad(string arg) {
@@ -141,6 +148,7 @@ void StartupManager::mapLoad(string arg) {
     if (input == "validatemap") {
         cout << "Validating the map." << "\n";
         cp.lc.back().saveEffect("Validating the map.");
+        transition();
         validateMap();
     }
 }
@@ -161,6 +169,7 @@ void StartupManager::validateMap() {
     string arg = input.substr(input.find(' ') + 1, input.length()-1);
     cout << "Adding player " + arg << "\n";
     cp.lc.back().saveEffect("Adding player " + arg);
+    transition();
     addPlayers(arg);
 }
 void StartupManager::addPlayers(string arg) {
@@ -196,16 +205,59 @@ void StartupManager::addPlayers(string arg) {
     }
     cout << "Assigning countries" << "\n";
     cp.lc.back().saveEffect("Assigning countries");
-    cp.showList();
+    transition();
     gameStart();
 }
 void StartupManager::gameStart() {
     cout << "\n";
-    // assign countries
+    // gamestart
+    // distribute territories
+    int numOfPlayers = listOfPlayers.size();
+    int mapSize = loader->getSize();
+    int division = mapSize / numOfPlayers;
+    int remainder = mapSize % numOfPlayers;
+    for (int i = 0; i < numOfPlayers; i++) {
+        for (int j = 0; j < remainder; j++) {
+            listOfPlayers.at(i)->playerTerritories.push_back(loader->getNode(j + i * division));
+        }
+    }
+    // determine order
+    int x;
+    map <int, string> pipi;
+    for (int i = 0; i < numOfPlayers; i++) {
+        x = rand() % numOfPlayers;
+        if (pipi[x] == "") {
+            orderedListOfPlayers.push_back(listOfPlayers.at(x));
+            pipi[x] = listOfPlayers.at(x)->getPlayerName();
+        }
+        else {
+            i--;
+        }
+    }
+    // give armies
+    for (int i = 0; i < orderedListOfPlayers.size(); i++) {
+        orderedListOfPlayers.at(i)->addReinArmy(50);
+    }
+    // make each play draw
+    for (int i = 0; i < orderedListOfPlayers.size(); i++) {
+        orderedListOfPlayers.at(i)->playerHand->drawCard(deck);
+        orderedListOfPlayers.at(i)->playerHand->drawCard(deck);
+    }
+    // gamestart
     setSms(finishSMS);
     gs = play;
     cout << "End of startup phase." << "\n\n\n";
     cout << "Thank you for your patience. The game shall now startup!\n";
+}
+
+PlayManager::~PlayManager() {
+    for(int i = 0; i < listOfPlayers.size(); i++){
+        delete listOfPlayers[i];
+    }
+    for(int i = 0; i < orderedListOfPlayers.size(); i++){
+        delete orderedListOfPlayers[i];
+    }
+    delete loader;
 }
 
 void PlayManager::printPMS() {
@@ -238,7 +290,27 @@ void PlayManager::init () {
         if(listOfPlayers.at(i) == nullptr){continue;}
 
         Player* temp =  listOfPlayers.at(i);
+        cout << "Player " << temp->getPlayerName() << " has " << temp->playerTerritories.size() << " territories." << endl;
         int reinArmyNum = (int) ((*temp).playerTerritories.size() / 3);
+
+        // Consider continent quirk
+        for(int k = 0; k < loader->getListOfContinents().size(); k++){
+            bool owned = true;
+            int continentNum = loader->getListOfContinents().at(k).getContinentNumber();
+            for(int j = 0; j < loader->getNodesForContinent(continentNum).size(); j++){
+                int playerID = temp->getId();
+                Territory tempTerritory = loader->getNodesForContinent(continentNum).at(j);
+                if(!tempTerritory.PlayerCheck(playerID)){
+                    owned = false;
+                    break;
+                }
+            }
+
+            if(owned){
+                cout << "Player " << temp->getPlayerName() << " owns continent " << loader->getListOfContinents().at(k).getContinentName() << ", so bonus will be given" << endl;
+                reinArmyNum += loader->getListOfContinents().at(k).getCCB();
+            }
+        }
 
         // Make sure that each player receive minimum 3 reinforcement armies
         if(reinArmyNum <= 3){
@@ -246,14 +318,8 @@ void PlayManager::init () {
         }
         (*temp).addReinArmy(reinArmyNum);
 
-        // Consider continent quirk
-        //----------------------------------------------
-
-        cout << "DEBUG: " << (*temp).getPlayerName() << " has " << (*temp).getReinArmy() << " armies in the reinforcement pool." << endl;
+        cout << "Player " << temp->getPlayerName() << " now has " << temp->getReinArmy() << " armies in the reinforcement pool." << endl;
     }
-
-    // Reinforcement phase is done, move on to the next phase on command
-//    issueOrder();
 }
 
 // Issuing order phase
@@ -263,14 +329,6 @@ void PlayManager::issueOrder(){
     setPms(issueOrders);
     s = ISSUEORDER;
     printPMS();
-
-    // Debug-------------------------------------------------------
-//    cout << "Current size of list of players: " << listOfPlayers.size() << endl;
-//    for(int i = 0; i < listOfPlayers.size(); i++){
-//        cout << "DEBUG issueOrder(): This player has " << listOfPlayers.at(i)->getReinArmy() << " number of army." << endl;
-//    }
-//    cout << endl;
-    //-----------------------------------------------------------------
 
     // Ask user to issue order
     for(int i = 0; i < listOfPlayers.size(); i++){
@@ -309,8 +367,8 @@ void PlayManager::issueOrder(){
 
                     if(input == "deploy"){
                         // Temporary placeholder because deploy order hasn't been implemented yet
-                        Order * newOrder = (Order*) new Deploy();
-                        tempPlayer->removeReinArmy(3);
+                        Deploy * newOrder = new Deploy();
+                        tempPlayer->removeReinArmy(tempPlayer->getReinArmy());
                         tempPlayer->issueOrder(newOrder);
                         // NEED IMPLEMENT-------------------------------------------------------
                         break;
@@ -398,13 +456,9 @@ void PlayManager::issueOrder(){
                     cout << "Invalid order! Please try again!" << endl;
                     continue;
                 }
-//            cout << "DEBUG: Order address: " << newOrder << endl;
-
-
-                // Ask player if they want to continue issuing order
-                cout << "Order issued" << "\n";
             }
 
+            // Ask player if they want to continue issuing order
             while (true) {
                 cout << "Do you want to end your turn? [Y/N]" << "\n";
                 cin >> input;

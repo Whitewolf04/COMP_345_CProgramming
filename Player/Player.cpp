@@ -25,7 +25,9 @@ Player::Player(string playerName){
 }
 
 Player::Player(Player& anotherPlayer){
+//    cout << "DEBUG: Player Copy constructor is called " << endl;
     this->id = anotherPlayer.id;
+//    cout << "Copied player's id" << endl;
     this->playerName = anotherPlayer.playerName;
     this->reinArmy = anotherPlayer.reinArmy;
     this->playerHand = new Hand(*anotherPlayer.playerHand);

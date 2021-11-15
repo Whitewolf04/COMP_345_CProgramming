@@ -44,7 +44,7 @@ private:
     int NumOfArmies;
     string T_name;
     int Continent_Number;
-    int PlayerNumber=0;
+    int PlayerNumber=-1;
     vector<int> NeighboringTerritories;
     vector<Territory*> Edges;
 
@@ -94,7 +94,6 @@ public:
     //Display Methods
     void printContinentList();
     void printNodeList();
-    vector<Territory> getNodesForContinent(int n);
 
     //Game Related Methods
     bool advance(int n, int m);
@@ -104,6 +103,9 @@ public:
     //Accessors
     Territory* getNode(int n);
     Continent* getContinent(int n);
+    vector<Territory> getNodesForContinent(int n);
+    vector<Continent> getListOfContinents();
+    int getSize();
 private:
     vector<Territory>* ListOfNodes = new vector<Territory>;
     vector<Continent>* ListOfContinents = new vector<Continent>;

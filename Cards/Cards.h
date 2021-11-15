@@ -1,8 +1,14 @@
 #ifndef CARDS_H
 #define CARDS_H
+#include "LoggingObserver.h"
 #include <string>
 #include <vector>
+#include <fstream>
+#include <map>
+
 using namespace std;
+
+//enum CardTypes {defaultType, bomb, reinforcement, blockade, airlift, diplomacy};
 
 class Cards
 {
@@ -13,8 +19,8 @@ public:
     string type;
     Cards();
     Cards(string t);
-    Cards(Cards* anotherCard);
-    bool equals(Cards *other);
+    Cards(const Cards* other);
+    bool equals(const Cards *other);
     bool equals(string cardType);
     void play();
 };
@@ -31,7 +37,7 @@ public:
     int getDeckSize();
     void add(Cards *newCard);
     void remove(Cards *target);
-    Cards* draw();
+    Cards draw();
 };
 
 class Hand
@@ -50,7 +56,7 @@ public:
     int getHandSize();
 
     // Mutator
-    void add(Cards *newCard);
+    void add(Cards* newCard);
     void remove(Cards *target);
 
     // Operational methods
