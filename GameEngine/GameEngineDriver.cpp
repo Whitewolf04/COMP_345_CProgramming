@@ -1,7 +1,7 @@
 #include "GameEngine.h"
 
 int main() {
-    while (isGameOver == false) {
+    while (!isGameOver) {
         std::cout << "Welcome to Warzone!" << "\n\n";
         std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
                      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"

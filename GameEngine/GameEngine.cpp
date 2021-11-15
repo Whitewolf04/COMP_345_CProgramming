@@ -266,16 +266,6 @@ void StartupManager::gameStart() {
     cout << "Thank you for your patience. The game shall now startup!\n";
 }
 
-PlayManager::~PlayManager() {
-    for(int i = 0; i < listOfPlayers.size(); i++){
-        delete listOfPlayers[i];
-    }
-    for(int i = 0; i < orderedListOfPlayers.size(); i++){
-        delete orderedListOfPlayers[i];
-    }
-    delete loader;
-}
-
 void PlayManager::printPMS() {
     cout << "The game is in " << gsmap.at(gs) << " state at the " << pmsmap.at(pms) << " sub-state." << "\n";
 }
@@ -558,12 +548,12 @@ void PlayManager::wins() {
         cp.lc.back().saveEffect("Error. Nothing happened.");
         input = cp.getCommand();
     }
-    if (input == "end") {
+    if (input == "quit") {
         cout << "Ending the game. See you soon!" << "\n";
         cp.lc.back().saveEffect("Ending the game. See you soon!");
         end();
     }
-    else if (input == "play") {
+    else if (input == "replay") {
         cout << "Want to replay? Restarting the game!" << "\n";
         cp.lc.back().saveEffect("Want to replay? Restarting the game!");
         gs = startup;
