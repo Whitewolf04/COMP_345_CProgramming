@@ -373,9 +373,17 @@ void PlayManager::issueOrder(){
 
                     if(input == "deploy"){
                         // Temporary placeholder because deploy order hasn't been implemented yet
-                        Deploy * newOrder = new Deploy();
-                        tempPlayer->removeReinArmy(tempPlayer->getReinArmy());
-                        tempPlayer->issueOrder(newOrder);
+                        int deploy = tempPlayer->getReinArmy();
+
+                        cout << territoryToDefend.at(0)->getPlayerNumber() << '\n';
+                        Deploy * newOrder = new Deploy(deploy, territoryToDefend.at(0) ,tempPlayer->getId());
+                        cout << tempPlayer->getId() << '\n';
+                        cout << newOrder->validate() << '\n';
+                        if(newOrder->validate()){
+                            tempPlayer->removeReinArmy(tempPlayer->getReinArmy());
+                        }
+                        //tempPlayer->removeReinArmy(deploy);
+                        //tempPlayer->issueOrder(newOrder);
                         // NEED IMPLEMENT-------------------------------------------------------
                         break;
                     } else{
@@ -441,22 +449,24 @@ void PlayManager::issueOrder(){
             } else {
                 // Create a new order and check if it is valid
                 if(input == "advance"){
-                    Advance * newOrder = new Advance();
+                    Advance * newOrder = new Advance(tempPlayer->playerTerritories.at(0),tempPlayer->playerTerritories.at(1), tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else if(input == "deploy"){
-                    Deploy * newOrder = new Deploy();
+                    int deploy = 2;
+                    Deploy * newOrder = new Deploy(deploy, listOfPlayers.at(1)->playerTerritories.at(0) ,tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else if(input == "bomb"){
-                    Bomb * newOrder = new Bomb();
+                    Bomb * newOrder = new Bomb(tempPlayer->playerTerritories.at(0),territoryToAttack.at(0), tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else if(input == "blockade"){
-                    Blockade * newOrder = new Blockade();
+                    Blockade * newOrder = new Blockade(tempPlayer->playerTerritories.at(0),tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else if(input == "airlift"){
-                    Airlift * newOrder = new Airlift();
+                    int deploy = 2;
+                    Airlift * newOrder = new Airlift(deploy, listOfPlayers.at(1)->playerTerritories.at(0), listOfPlayers.at(1)->playerTerritories.at(1) ,tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else if(input == "negotiate"){
-                    Negotiate * newOrder = new Negotiate();
+                    Negotiate * newOrder = new Negotiate(listOfPlayers.at(1)->getId(), tempPlayer->getId());
                     tempPlayer->issueOrder(newOrder);
                 } else {
                     cout << "Invalid order! Please try again!" << endl;
@@ -501,7 +511,29 @@ void PlayManager::exeOrder() {
 
             // Check for order type
             // Assuming all orders are valid because order is checked from the previous steps
-            tempOrder->execute();
+            //Apply special conditions if needed else just execute
+            if(tempOrder->getType() == "advance"){
+                Advance* p = (Advance*) tempOrder;
+                if(tempOrder->execute() == "Conquered territory"){
+
+                    //Draw a card
+                    tempPlayer->playerHand->drawCard(deck);
+                    //Give territory to tempPlayer
+
+                }
+            }else if(tempOrder->getType() == "deploy"){
+                if(tempOrder->validate()){
+                    tempPlayer->removeReinArmy(tempOrder->getArmyCount());
+                }else{
+                    tempOrder->execute();
+                }
+            }else if(tempOrder->getType() == "blockade"){
+                //give Territory to Neutral Player
+            }else if (tempOrder->getType() == "negotiate"){
+                //executing and target player cant attack each other for on turn
+            }else{
+                tempOrder->execute();
+            }
         }
     }
 

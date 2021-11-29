@@ -1,5 +1,5 @@
 #include "Orders.h"
-#include <string>
+#include<string>
 
 //Define Order functions
 
@@ -11,8 +11,15 @@ Order::Order(std::string newType){
     type = newType;
 }
 
-Order::Order(std::string newType, int executor_id){
+Order::Order(std::string newType, int _executor_id){
     type = newType;
+    executor_id = _executor_id;
+}
+
+Order::Order(std::string newType, int _executor_id, int _army_count){
+    type = newType;
+    executor_id = _executor_id;
+    army_count = _army_count;
 }
 
 Order::Order(const Order &o){
@@ -35,8 +42,11 @@ int Order::getExecId(){
     return executor_id;
 }
 
+int Order::getArmyCount(){
+    return army_count;
+}
+
 bool Order::validate(){
-    std::cout << this->getType()+"'s validation is not yet implemented" << "\n";
     return false;
 }
 
@@ -52,8 +62,7 @@ std::ostream& operator<<(std::ostream &strm, const Order &order){
 //Deploy functions
 Deploy::Deploy():Order("deploy"){}
 
-Deploy::Deploy(int army_count, Territory* _target, int executor_id):Order("deploy", executor_id){
-    this->army_count = army_count;
+Deploy::Deploy(int army_count, Territory* _target, int executor_id):Order("deploy", executor_id, army_count){
     target = _target;
 }
 
@@ -62,14 +71,14 @@ bool Deploy::validate(){
 }
 
 std::string Deploy::execute(){
-    cout << "\t\tDEBUG: Deploy is being executed" << endl;
-    return "";
-//    if(!(this->validate())){
-//        return "Invalid Execution of Deploy";
-//    }else{
-//        target->setNumArmies(target->getNumOfArmies()+army_count);
-//        return "Execution complete";
-//    }
+
+    if(!(this->validate())){
+        return "Invalid Execution of Deploy";
+    }else{
+        target->setNumArmies(target->getNumOfArmies()+getArmyCount());
+        notify(this);
+        return "Execution complete";
+    }
 
 }
 
@@ -110,28 +119,31 @@ int deathCalculation(int qty, double probability){
 }
 
 std::string Advance::execute(){
-//    if(!this->validate()){
-//        return "Invalid Execution of Advance";
-//    }
-//    else{
-//        if (source->getPlayerNumber() == adjacent->getPlayerNumber()){
-//            adjacent->setNumArmies(source->getNumOfArmies());
-//            source->setNumArmies(0);
-//        }
-//        else{
-//            //defense
-//            source->setNumArmies(source->getNumOfArmies()-deathCalculation(adjacent->getNumOfArmies(),0.7));
-//            //attack
-//            adjacent->setNumArmies(adjacent->getNumOfArmies()-deathCalculation(source->getNumOfArmies(),0.6));
-//            if(adjacent->getNumOfArmies() == 0){
-//                //conquer territory
-//                //receive card.
-//            }
-//        }
-//        return "Execution complete";
-//    }
-    cout << "\t\tDEBUG: Advance is being executed!" << endl;
-    return "";
+    if(!this->validate()){
+        return "Invalid Execution of Advance";
+    }else{
+
+        if(source->getPlayerNumber() == adjacent->getPlayerNumber()){
+            adjacent->setNumArmies(source->getNumOfArmies());
+            source->setNumArmies(0);
+        }else{
+            //defense
+            source->setNumArmies(source->getNumOfArmies()-deathCalculation(adjacent->getNumOfArmies(),0.7));
+            //attack
+            adjacent->setNumArmies(adjacent->getNumOfArmies()-deathCalculation(source->getNumOfArmies(),0.6));
+            if(adjacent->getNumOfArmies() == 0){
+                //conquer territory and get card
+                success = true;
+            }
+
+        }
+        notify(this);
+        if(success){
+            return "Conquered territory";
+        }else{
+            return "Execution complete";
+        }
+    }
 }
 
 std::ostream& operator<<(std::ostream &strm, const Advance &advance){
@@ -141,25 +153,23 @@ std::ostream& operator<<(std::ostream &strm, const Advance &advance){
 //Airlift functions
 Airlift::Airlift():Order("airlift"){}
 
-Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id):Order("airlift", executor_id){
-    this->army_count = army_count;
+Airlift::Airlift(int army_count, Territory* _source, Territory* _target, int executor_id):Order("airlift", executor_id, army_count){
     source = _source;
     target = _target;
 }
 
 bool Airlift::validate(){
-    return source->getPlayerNumber() == target->getPlayerNumber() == getExecId(); //&& getPlayer()->playerHand.contains("airlift"); //needs to be created with an airlift card
+    return source->getPlayerNumber() == target->getPlayerNumber() == getExecId(); //needs to be created with an airlift card
 }
 
 std::string Airlift::execute(){
     if(!(this->validate())){
         return "Invalid Execution of Airlift";
     }else{
-        //play card
-        //getPlayer()->playerHand.playCard("airlift");
 
-        source->setNumArmies(source->getNumOfArmies()-army_count);
-        target->setNumArmies(target->getNumOfArmies()+army_count);
+        source->setNumArmies(source->getNumOfArmies()-getArmyCount());
+        target->setNumArmies(target->getNumOfArmies()+getArmyCount());
+        notify(this);
         return "Execution complete";
     }
 }
@@ -183,16 +193,16 @@ bool Bomb::validate(){
             neighbor = true;
         }
     }
-    return adjacent->getPlayerNumber() != getExecId() && neighbor; //&& getPlayer()->playerHand.contains("bomb"); //player must use bomb card
+    return adjacent->getPlayerNumber() != getExecId() && neighbor; //player must use bomb card
 }
 
 std::string Bomb::execute(){
     if(!this->validate()){
-        return "Invalid Execution of Airlift";
+        return "Invalid Execution of Bomb";
     }else{
-        //getPlayer()->playerHand.playCard("bomb");
 
         adjacent->setNumArmies(adjacent->getNumOfArmies()/2);
+        notify(this);
         return "Execution complete";
     }
 }
@@ -209,17 +219,17 @@ Blockade::Blockade(Territory* _target, int executor_id):Order("blockade", execut
 }
 
 bool Blockade::validate(){
-    return target->getPlayerNumber() == getExecId(); //&& getPlayer()->playerHand.contains("blockade"); //must use blockade card
+    return target->getPlayerNumber() == getExecId(); //must use blockade card
 }
 
 std::string Blockade::execute(){
     if(!this->validate()){
         return "Invalid Execution of Blockade";
     }else{
-        //getPlayer()->playerHand.playCard("blockade");
 
         target->setNumArmies(target->getNumOfArmies()*2);
         //send territory to Neutral player
+        notify(this);
         return "Execution complete";
     }
 }
@@ -237,16 +247,17 @@ Negotiate::Negotiate(int _target_id, int executor_id):Order("negotiate", executo
 }
 
 bool Negotiate::validate(){
-    return getExecId() != target_id; //&& getPlayer()->playerHand.contains("diplomacy"); //must use diplomacy card
+    return getExecId() != target_id;
 }
 
 std::string Negotiate::execute(){
     if(!this->validate()){
         return "Invalid Execution of Negotiate";
     }else{
-        //getPlayer()->playerHand.playCard("diplomacy");
+
 
         //nullify any attack between executor and target Player
+        notify(this);
         return "Execution complete";
     }
 }
@@ -260,7 +271,6 @@ std::ostream& operator<<(std::ostream &strm, const Negotiate &negotiate){
 OrdersList::OrdersList(){
     Order_List;
 }
-
 
 //Copy constructors
 OrdersList::OrdersList(const OrdersList &o){
@@ -289,6 +299,17 @@ OrdersList::OrdersList(const OrdersList &o){
 }
 
 /*
+//Copy constructors
+OrdersList::OrdersList(const OrdersList &o){
+
+    Order* _arr = new Order[o.Order_List.size()];
+
+    for (int i=0; i<o.Order_List.size(); ++i){
+        _arr[i] = *o.Order_List[i];
+        Order_List.push_back(&_arr[i]);
+    }
+}
+
 OrdersList& OrdersList::operator =(const OrdersList &o){
 
     Order* ptr = new Order[o.Order_List.size()];
@@ -297,12 +318,12 @@ OrdersList& OrdersList::operator =(const OrdersList &o){
         ptr[i] = *o.Order_List[i];
         this->Order_List.push_back(&ptr[i]);
     }
+
     return *this;
 }
 */
 //Destructor: deletes all Order pointer of the list
 OrdersList::~OrdersList(){
-    cout << "\tDEBUG: Order List destructor is called" << endl;
     for (int i=0; i<Order_List.size(); ++i){
         delete Order_List[i];
     }
@@ -310,10 +331,10 @@ OrdersList::~OrdersList(){
 
 //Order List functions
 
-
 //adds Order pointer to the vector list
 void OrdersList::add(Order* o){
     Order_List.push_back(o);
+    notify(this);
 }
 
 //get the order type
@@ -321,6 +342,7 @@ Order* OrdersList::getElement(int index){
     return Order_List[index];
 }
 
+//get list size
 int OrdersList::getSize(){
     return Order_List.size();
 }
@@ -345,16 +367,17 @@ std::ostream& operator<<(std::ostream &strm, const OrdersList &olist){
     return std::cout << "";
 }
 
-void Order::stringToLog() {
-    fstream filestream;
-    filestream.open("gamelog.txt", ios::app);
-    //Code specific parts here
-    filestream.close();
-};
-
+//String to logs implementations
 void OrdersList::stringToLog() {
     fstream filestream;
     filestream.open("gamelog.txt", ios::app);
-    //Code specific parts here
+    filestream << Order_List.back()->getType() << " was added to Player number " << Order_List.back()->getExecId() << "'s list"<< '\n';
+    filestream.close();
+};
+
+void Order::stringToLog() {
+    fstream filestream;
+    filestream.open("gamelog.txt", ios::app);
+    filestream << this->getType() << " is executed by player " << this->getExecId() << "\n";
     filestream.close();
 };

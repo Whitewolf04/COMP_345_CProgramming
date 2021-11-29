@@ -2,14 +2,16 @@
 #define ORDER_H
 #include <vector>
 #include <iostream>
-#include "Map.h"
+#include "../Map/Map.h"
 #include "LoggingObserver.h"
+#include "../Cards/Cards.h"
 
 //Order class
 struct Order: Iloggable, Subject
 {
 private:
     int executor_id;
+    int army_count = 0;
     std::string type;
     friend std::ostream& operator<<(std::ostream &strm, const Order &order);
 
@@ -17,12 +19,15 @@ public:
     Order();
     Order(std::string newType);
     Order(std::string newType, int executor_id);
+    Order(std::string newType, int executor_id, int army_count);
     Order(const Order &o);
     Order& operator =(const Order &o);
     bool validate();
     virtual std::string execute()= 0;
     std::string getType();
+    int getArmyCount();
     int getExecId();
+    Hand* getPlayerHand();
     void stringToLog();
 
 };
@@ -54,6 +59,7 @@ struct Advance : public Order
 private:
     Territory* source;
     Territory* adjacent;
+    bool success = false;
     friend std::ostream& operator<<(std::ostream &strm, const Advance &advance);
 public:
     Advance();
@@ -66,7 +72,6 @@ public:
 struct Deploy : public Order
 {
 private:
-    int army_count;
     Territory* target;
     friend std::ostream& operator<<(std::ostream &strm, const Deploy &deploy);
 
@@ -108,7 +113,6 @@ public:
 struct Airlift : public Order
 {
 private:
-    int army_count;
     Territory* source;
     Territory* target;
     friend std::ostream& operator<<(std::ostream &strm, const Airlift &airlift);
