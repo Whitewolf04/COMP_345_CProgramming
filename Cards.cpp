@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 
+vector<string> Cards::types = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
+
 // Cards default constructor
 Cards::Cards(){
     type = "default";
@@ -12,7 +14,7 @@ Cards::Cards(string t){
     type = "default";
     // Check if the types are according to the preset values
     for(int i = 0; i < 5; i++){
-        if(t.compare(types[i]) == 0)
+        if(t == types[i])
             type = t;
     }
 
@@ -21,9 +23,21 @@ Cards::Cards(string t){
         cout << "Type invalid so it is set to default" << endl;
 }
 
+Cards::Cards(const Cards* other){
+    type = other->type;
+}
+
 // Comparing two cards to see if they are off the same type
-bool Cards::equals(Cards *other){
-    if((this->type).compare((*other).type) == 0){
+bool Cards::equals(const Cards* other){
+    if(this->type == other->type){
+        return true;
+    }
+    return false;
+}
+
+// Comparing the current card with a card name string
+bool Cards::equals(string cardType){
+    if(this->type == cardType){
         return true;
     }
     return false;
@@ -43,14 +57,20 @@ std::ostream& operator<<(std::ostream &strm, const Cards &card){
 // Constructor initializing a deck with deck size
 Deck::Deck(int deckSize){
     size = deckSize;
+
+    for(int i = 0; i < deckSize; i++){
+        int randIndex = (int) rand() % Cards::types.size();
+        Cards * newCard = new Cards(Cards::types[randIndex]);
+        add(newCard);
+    }
 }
 
 // Destructor to delete all the pointers on deck vector
 Deck::~Deck(){
-    // for(int i = 0; i < deck.size(); i++){
-    //     free(deck[i]);
-    //     // deck[i] = NULL;
-    // }
+     for(int i = 0; i < deck.size(); i++){
+         free(deck[i]);
+         deck[i] = nullptr;
+     }
 }
 
 // Deck size getter
@@ -59,13 +79,20 @@ int Deck::getDeckSize(){
 }
 
 // Draw a card from the deck
-Cards* Deck::draw(){
+Cards Deck::draw(){
     int deckSize = getDeckSize();
+    if(deckSize == 0){
+        cout << "\tDEBUG Deck: Deck is empty! Cannot draw card" << endl;
+        return Cards();
+    }
     int cardIndex = rand() % deckSize;
-    Cards *drawn = deck[cardIndex];
+    cout << "\tDEBUG Deck: Drawing card from the deck" << endl;
+    Cards drawn = *deck[cardIndex];
+    cout << "\tDEBUG Deck: Card drawn from the deck" << endl;
 
     // Remove the card drawn from the deck
-    remove(drawn);
+    // Temporarily disable removing from deck
+//    remove(drawn);
 
     // Return the drawn card
     return drawn;
@@ -82,8 +109,8 @@ void Deck::remove(Cards *target){
 
     // Loop through the hand to find the target card
     for(int i = 0; i < deck.size(); i++){
-        Cards *temp = deck.at(i);
-        if((*target).equals(temp)){
+        Cards * temp = deck.at(i);
+        if(target->equals(temp)){
             removeIndex = i;
             break;
         }
@@ -125,10 +152,10 @@ Hand::Hand(int handSize){
 
 // Destructor deleting all the pointers in hand vector
 Hand::~Hand(){
-    // for(int i = 0; i < hand.size(); i++){
-    //     free(hand[i]);
-    //     // hand[i] = NULL;
-    // }
+     for(int i = 0; i < hand.size(); i++){
+         free(hand[i]);
+         hand[i] = nullptr;
+     }
 }
 
 // Hand size getter
@@ -137,7 +164,8 @@ int Hand::getHandSize(){
 }
 
 // Add a new card to the hand
-void Hand::add(Cards *newCard){
+void Hand::add(Cards* newCard){
+    cout << "\tDEBUG Hand: Adding new card to player's hand" << endl;
     hand.push_back(newCard);
 }
 
@@ -168,18 +196,41 @@ void Hand::remove(Cards *target){
 
 // Draw a card from deck to hand
 void Hand::drawCard(Deck *deck){
-    Cards *drawn = (*deck).draw();
+    Cards* drawn = new Cards((*deck).draw());
     this->add(drawn);
 }
 
 // Play a card at a certain position on hand
-void Hand::playCard(int index, Deck *deck){
-    Cards *temp = hand.at(index);
-    (*temp).play();
+// Assume that the card can definitely be found on hand
+void Hand::playCard(string cardType){
+    Cards *temp;
+
+    for(int i = 0; i < hand.size(); i++){
+        temp = hand.at(i);
+        if(temp->equals(cardType)){
+            break;
+        }
+    }
+    temp->play();
 
     // Remove the card that was played from hand, and add it back to the deck
     remove(temp);
-    (*deck).add(temp);
+//    deck->add(temp);
+}
+
+// Check if hand contains a certain card
+bool Hand::contains(string cardType){
+    bool found = false;
+
+    for(int i = 0; i < hand.size(); i++){
+        Cards* temp = hand.at(i);
+        if(temp->equals(cardType)){
+            found = true;
+            break;
+        }
+    }
+
+    return found;
 }
 
 // Show all the current cards on hand
@@ -190,6 +241,6 @@ std::ostream& operator<<(std::ostream &stream, const Hand &obj){
         output += temp.type;
         output += " card\n";
     }
-    
+
     return stream << output;
 }

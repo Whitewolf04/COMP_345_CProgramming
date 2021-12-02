@@ -1,19 +1,24 @@
 #ifndef CARDS_H
 #define CARDS_H
+#include "LoggingObserver.h"
 #include <string>
 #include <vector>
+#include <fstream>
+
 using namespace std;
 
 class Cards
 {
 private:
-    string types[5] = {"bomb", "reinforcement", "blockade", "airlift", "diplomacy"};
     friend std::ostream& operator<<(std::ostream&, const Cards&);
 public:
+    static vector<string> types;
     string type;
     Cards();
     Cards(string t);
-    bool equals(Cards *other);
+    Cards(const Cards* other);
+    bool equals(const Cards *other);
+    bool equals(string cardType);
     void play();
 };
 
@@ -29,7 +34,7 @@ public:
     int getDeckSize();
     void add(Cards *newCard);
     void remove(Cards *target);
-    Cards* draw();
+    Cards draw();
 };
 
 class Hand
@@ -39,14 +44,22 @@ private:
     std::vector<Cards*> hand;
     friend std::ostream& operator<<(std::ostream&, const Hand&);
 public:
+    // Constructor and Destructor
     Hand();
     Hand(int handSize);
     ~Hand();
+
+    // Accessor
     int getHandSize();
-    void add(Cards *newCard);
+
+    // Mutator
+    void add(Cards* newCard);
     void remove(Cards *target);
+
+    // Operational methods
     void drawCard(Deck *deck);
-    void playCard(int index, Deck *deck);
+    void playCard(string cardType);
+    bool contains(string cardType);
 };
 
 #endif
