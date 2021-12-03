@@ -3,7 +3,6 @@
 #include "Orders.h"
 #include <iostream>
 
-#include "PlayerStrategies.h"
 #include "Player.h"
 
 int Player::obj_count = 0;
@@ -16,6 +15,8 @@ Player::Player(){
     playerHand = new Hand();
     playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
+    territoriesToAttack = vector<Territory*>();
+    territoriesToDefend = vector<Territory*>();
     obj_count++;
 }
 
@@ -26,6 +27,8 @@ Player::Player(string playerName){
     playerHand = new Hand();
     playerOrdersList = new OrdersList();
     playerTerritories = vector<Territory*>();
+    territoriesToAttack = vector<Territory*>();
+    territoriesToDefend = vector<Territory*>();
     obj_count++;
 }
 
@@ -38,16 +41,48 @@ Player::Player(Player& anotherPlayer){
     this->playerHand = new Hand(*anotherPlayer.playerHand);
     this->playerOrdersList = new OrdersList(*anotherPlayer.playerOrdersList);
     this->playerTerritories = vector<Territory*>();
+    territoriesToAttack = vector<Territory*>();
+    territoriesToDefend = vector<Territory*>();
     for(int i = 0; i < anotherPlayer.playerTerritories.size(); i++){
         this->playerTerritories.push_back(anotherPlayer.playerTerritories.at(i));
+    }
+    for(int i = 0; i < anotherPlayer.territoriesToAttack.size(); i++){
+        this->territoriesToAttack.push_back(anotherPlayer.territoriesToAttack.at(i));
+    }
+    for(int i = 0; i < anotherPlayer.territoriesToDefend.size(); i++){
+        this->territoriesToDefend.push_back(anotherPlayer.territoriesToDefend.at(i));
     }
     obj_count++;
 }
 
-Player::Player(PlayerStrategy* ps){
+Player::Player(string name, PlayerStrategy* ps){
+    id = obj_count;
+    this->playerName = name;
     this->ps = ps;
+    ps->setPlayer(this);
+    reinArmy = 0;
+    playerHand = new Hand();
+    playerOrdersList = new OrdersList();
+    playerTerritories = vector<Territory*>();
+    territoriesToAttack = vector<Territory*>();
+    territoriesToDefend = vector<Territory*>();
+    obj_count++;
 }
 
+Player::Player(string name, PlayerStrategy* ps, string strat){
+    id = obj_count;
+    this->playerName = name;
+    this->ps = ps;
+    ps->setPlayer(this);
+    reinArmy = 0;
+    playerHand = new Hand();
+    playerOrdersList = new OrdersList();
+    playerTerritories = vector<Territory*>();
+    territoriesToAttack = vector<Territory*>();
+    territoriesToDefend = vector<Territory*>();
+    setStrategy(strat);
+    obj_count++;
+}
 
 // Destructor
 Player::~Player(){
@@ -77,8 +112,16 @@ int Player::getId(){
     return id;
 }
 
+string Player::getStrategy(){
+    return strategy;
+}
+
 
 // Mutator
+void Player::setStrategy(string strat){
+    strategy = strat;
+}
+
 void Player::addReinArmy(int num){
     reinArmy += num;
 }

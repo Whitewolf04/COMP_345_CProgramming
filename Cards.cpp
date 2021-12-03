@@ -1,4 +1,5 @@
 #include "Cards.h"
+#include "Orders.h"
 #include <string>
 #include <iostream>
 
@@ -44,9 +45,32 @@ bool Cards::equals(string cardType){
 }
 
 // Play method adding the card to list of orders
-void Cards::play(){
-    // Add this card to the list of orders
-    cout << "Card " << this->type << " has been added to the list of orders" << endl;
+Order * Cards::play(){
+    // Check for the type of card being played
+    if(this->type == "bomb"){
+        Order * temp = new Bomb();
+        cout << "DEBUG: Bomb card was played" << endl;
+        return temp;
+    } else if(this->type == "reinforcement"){
+        Order * temp = new Deploy();
+        cout << "DEBUG: Reinforcement card was played" << endl;
+        return temp;
+    } else if(this->type == "blockade"){
+        Order * temp = new Blockade();
+        cout << "DEBUG: Blockade card was played" << endl;
+        return temp;
+    } else if(this->type == "airlift"){
+        Order * temp = new Airlift();
+        cout << "DEBUG: Airlift card was played" << endl;
+        return temp;
+    } else if(this->type == "diplomacy"){
+        Order * temp = new Negotiate();
+        cout << "DEBUG: Diplomacy card was played" << endl;
+        return temp;
+    } else{
+        cout << "Default card was played. Order invalid!";
+        return nullptr;
+    }
 }
 
 // Show the card type
@@ -82,13 +106,10 @@ int Deck::getDeckSize(){
 Cards Deck::draw(){
     int deckSize = getDeckSize();
     if(deckSize == 0){
-        cout << "\tDEBUG Deck: Deck is empty! Cannot draw card" << endl;
         return Cards();
     }
     int cardIndex = rand() % deckSize;
-    cout << "\tDEBUG Deck: Drawing card from the deck" << endl;
     Cards drawn = *deck[cardIndex];
-    cout << "\tDEBUG Deck: Card drawn from the deck" << endl;
 
     // Remove the card drawn from the deck
     // Temporarily disable removing from deck
@@ -165,7 +186,6 @@ int Hand::getHandSize(){
 
 // Add a new card to the hand
 void Hand::add(Cards* newCard){
-    cout << "\tDEBUG Hand: Adding new card to player's hand" << endl;
     hand.push_back(newCard);
 }
 
@@ -202,7 +222,7 @@ void Hand::drawCard(Deck *deck){
 
 // Play a card at a certain position on hand
 // Assume that the card can definitely be found on hand
-void Hand::playCard(string cardType){
+Order * Hand::playCard(string cardType){
     Cards *temp;
 
     for(int i = 0; i < hand.size(); i++){
@@ -211,11 +231,12 @@ void Hand::playCard(string cardType){
             break;
         }
     }
-    temp->play();
+    Order * o = temp->play();
 
     // Remove the card that was played from hand, and add it back to the deck
     remove(temp);
 //    deck->add(temp);
+    return o;
 }
 
 // Check if hand contains a certain card

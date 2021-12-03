@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+using std::string;
+
 class Player;
 class Order;
 
@@ -11,9 +14,20 @@ class PlayerStrategy{
     virtual void toAttack()=0;
     virtual void toDefend()=0;
     Player* getPlayer();
+    void setPlayer(Player* pl);
 };
 
-class Human : PlayerStrategy{
+class Human : public PlayerStrategy{
+
+    public:
+    void issueOrder(Order* o);
+    void toAttack();
+    void toDefend();
+
+
+};
+
+class Neutral : public PlayerStrategy{
 
     public:
     void issueOrder(Order* o);
@@ -22,7 +36,7 @@ class Human : PlayerStrategy{
 
 };
 
-class Neutral : PlayerStrategy{
+class Aggressive : public PlayerStrategy{
 
     public:
     void issueOrder(Order* o);
@@ -31,7 +45,7 @@ class Neutral : PlayerStrategy{
 
 };
 
-class Aggressive : PlayerStrategy{
+class Benevolent : public PlayerStrategy{
 
     public:
     void issueOrder(Order* o);
@@ -40,16 +54,7 @@ class Aggressive : PlayerStrategy{
 
 };
 
-class Benevolent : PlayerStrategy{
-
-    public:
-    void issueOrder(Order* o);
-    void toAttack();
-    void toDefend();
-
-};
-
-class Cheater : PlayerStrategy{
+class Cheater : public PlayerStrategy{
 
     public:
     void issueOrder(Order* o);

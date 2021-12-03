@@ -5,7 +5,12 @@
 #include "PlayerStrategies.h"
 #include "Cards.h"
 
+
+#include <ostream>
+#include <istream>
+#include <typeinfo>
 using namespace std;
+
 
 const map <GameState, string> gsmap = {{startup, "startup"}, {play, "play"}};
 const map <StartupManagerState, string> smsmap = {{start, "start"}, {mapLoaded, "mapLoaded"}, {mapValidated, "mapValidated"}, {playersAdded, "playersAdded"}, {finishSMS, "finishSMS"}};
@@ -202,16 +207,32 @@ void StartupManager::validateMap() {
         cp->lc.back().saveEffect("Error. Nothing happened.");
         input = cp->getCommand();
     }
-    string arg = input.substr(input.find(' ') + 1, input.length()-1);
-    cout << "Adding player " + arg << "\n";
+
+    string arg = input.substr(10, (input.find("-t")-1)-10);
+    string arg2 = input.substr(input.find("-t")+3, input.size()-1);
+
     cp->lc.back().saveEffect("Adding player " + arg);
     transition();
-    addPlayers(arg);
+    addPlayers(arg, arg2);
 }
-void StartupManager::addPlayers(string arg) {
+void StartupManager::addPlayers(string arg, string arg2) {
     cout << "\n";
+    Player* p;
     // add player
-    Player* p = new Player(arg);
+    if(arg2 == "Human" || arg2 == "human"){
+        p = new Player(arg, new Human(), arg2);
+    }else if(arg2 == "Neutral" || arg2 == "neutral"){
+        p = new Player(arg, new Neutral(), arg2);
+    }else if (arg2 == "Aggressive" || arg2 == "aggressive"){
+        p = new Player(arg, new Aggressive(), arg2);
+    }else if (arg2 == "Cheater" || arg2 == "cheater"){
+        p = new Player(arg, new Cheater(), arg2);
+    }else if (arg2 == "Benevolent" || arg2 == "benevolent"){
+        p = new Player(arg, new Benevolent(), arg2);
+    }else{
+        cout << "Input strategy does not exist, we will select Human by default" << '\n';
+        p = new Player(arg, new Human(), "Human");
+    }
     listOfPlayers.push_back(p);
 //    Player::addPlayer(p);
     // add player
@@ -223,12 +244,26 @@ void StartupManager::addPlayers(string arg) {
     cout << input << "\n";
     while (!cp->validate(s, input) || input.substr(0,input.find(' ')) == "addplayer" ) {
         if (input.substr(0,input.find(' ')) == "addplayer") {
-            string name = input.substr(input.find(' ') + 1, input.length()-1);
-            cout << "Adding player " + name << "\n";
+            string name = input.substr(10, (input.find("-t")-1)-10);
+            string type = input.substr(input.find("-t")+3, input.size()-1);
+
             cp->lc.back().saveEffect("Adding player "+ name);
             // add player
-            Player* p2 = new Player(name);      // Avoid overshadowing
-            listOfPlayers.push_back(p2);
+            if(type == "Human" || type == "human"){
+                p = new Player(name, new Human(), type);
+            }else if(type == "Neutral" || type == "neutral"){
+                p = new Player(name, new Neutral(), type);
+            }else if (type == "Aggressive" || type == "aggressive"){
+                p = new Player(name, new Aggressive(), type);
+            }else if (type == "Cheater" || type == "cheater"){
+                p = new Player(name, new Cheater(), type);
+            }else if (type == "Benevolent" || type == "benevolent"){
+                p = new Player(name, new Benevolent(), type);
+            }else{
+                cout << "Input strategy does not exist, we will select Human by default" << '\n';
+                p = new Player(name, new Human(), "Human");
+            }
+            listOfPlayers.push_back(p);
 //            Player::addPlayer(p);
             //
             printSMS();
@@ -272,7 +307,6 @@ void StartupManager::gameStart() {
             division += constant;
         }
     }
-    loader->printNodeList();
     loader->convertToPointers();
     // determine order
     int x;
@@ -383,51 +417,171 @@ void PlayManager::issueOrder(){
     s = ISSUEORDER;
     printPMS();
 
+    cout << "Here's a look into the map for this turn" << '\n';
+    loader->printNodeList();
     // Ask user to issue order
     for(int i = 0; i < listOfPlayers.size(); i++){
         // Prevent NULL pointer issue
         if(listOfPlayers.at(i) == nullptr){continue;}
 
         Player* tempPlayer = listOfPlayers.at(i);
-
         bool endIssueOrder = false;
 
         // Print out user's name and ask to issue order
         cout << "Player " << tempPlayer->getPlayerName() << ", it is your turn to issue order." << endl;
 
-        // Loop constantly until the current player has finished issuing order
-        while(!endIssueOrder) {
-            string input;
 
-            // Check if player has reinforcement army
-            // Might have issues with territory to defend vector
-            if(tempPlayer->getReinArmy() > 0) {
-                cout << "You still have armies in the reinforcement pool, please deploy before you can issue any other order!" << endl;
 
-                // Print out territories that player can deploy army
-                cout << "These are the territories that you can deploy to: " << endl;
-                vector<Territory *> territoryToDefend = tempPlayer->playerTerritories;
-                for (int k = 0; k < territoryToDefend.size(); k++) {
-                    territoryToDefend[k]->setPlayerNumber(tempPlayer->getId());
-                    cout << territoryToDefend[k]->getTerritoryName() << endl;
+        if(tempPlayer->getStrategy() == "Human"){
+            // Loop constantly until the current player has finished issuing order
+            while(!endIssueOrder) {
+                string input;
+
+                // Check if player has reinforcement army
+                // Might have issues with territory to defend vector
+                if(tempPlayer->getReinArmy() > 0) {
+                    cout << "You still have armies in the reinforcement pool, please deploy before you can issue any other order!" << endl;
+
+                    // Print out territories that player can deploy army
+                    cout << "These are the territories that you can deploy to: " << endl;
+                    vector<Territory *> territoryToDefend = tempPlayer->playerTerritories;
+                    for (int k = 0; k < territoryToDefend.size(); k++) {
+                        territoryToDefend[k]->setPlayerNumber(tempPlayer->getId());
+                        cout << territoryToDefend[k]->getTerritoryName() << endl;
+                    }
+
+                    // Check for valid order
+                    while (true){
+                        // Fetch order from the player
+                        cout << "Please enter an order: ";
+                        cin >> input;
+                        cout << "\n" << endl;
+
+                        if(input == "deploy"){
+                            //Choose army count
+
+                            int deploy;
+                            while (true)
+                            {
+                                cout << "Enter number of army to deploy: " << '\n';
+                                cin >> deploy;
+                                if(deploy <= tempPlayer->getReinArmy() && deploy>0){
+                                    break;
+                                }else{
+                                    cout << "Invalid army count" << '\n';
+                                }
+                            }
+                            //Choose territory
+                            int t_deploy;
+                            while (true)
+                            {
+                                cout << "Enter territory id to deploy to: " << '\n';
+                                cin >> t_deploy;
+                                if(t_deploy <= territoryToDefend.size() && t_deploy>0){
+                                    break;
+                                }else{
+                                    cout << "Invalid territory" << '\n';
+                                }
+                            }
+
+                            Deploy * newOrder = new Deploy(deploy, territoryToDefend.at(t_deploy-1) ,tempPlayer->getId());
+
+                            if(newOrder->validate()){
+                                tempPlayer->removeReinArmy(newOrder->getArmyCount());
+                            }
+                            cout << newOrder->execute() << '\n';
+                            break;
+                        } else{
+                            cout << "Invalid order. Please try again!" << endl;
+                        }
+                    }
+
+                    // After order is issued, loop back to get other orders from the player
+                    continue;
                 }
 
-                // Check for valid order
-                while (true){
-                    // Fetch order from the player
-                    cout << "Please enter an order: ";
-                    cin >> input;
-                    cout << "\n" << endl;
+                // Notify the player if they don't need to deploy
+                cout << "You have no reinforcement army to deploy, you can proceed with other orders" << endl;
+                // List the territories that the player can attack
+                cout << "These are the territories that you can attack: " << endl;
+                loader->printNodeList();
+                //vector<Territory> territoryToAttack = loader->getNodesForContinent();
+                //for (int k = 0; k < territoryToAttack.size(); k++) {
+                //    cout << territoryToAttack[k]->getTerritoryName() << endl;
+                //}
+                cout << endl;
 
-                    if(input == "deploy"){
+                // Fetch order from the player
+                cout << "Please enter an order: ";
+                cin >> input;
+                cout << "\n" << endl;
+
+                string cardName;
+                // Check if the player is playing a card or issuing an order
+                if(input.substr(0,input.find(' ')) == "playcard"){
+                    cardName = input.substr(input.find(' ') + 1, input.length()-1);
+
+                    // Check if the card is valid
+                    while(true){
+                        if(tempPlayer->playerHand->contains(cardName)){
+                            break;
+                        } else{
+                            cout << "You don't have that card on your hand!" << endl;
+                            cout << R"(Input "exit" to return to order. Input "tryagain" to try again!)" << endl;
+                            cin >> input;
+                            cout << endl;
+
+                            // Check user's choice
+                            if(input == "exit"){
+                                cardName = "NULL";
+                                break;
+                            } else if(input == "tryagain"){
+                                cout << "Please enter the card you want to play: ";
+                                cin >> input;
+                                cout << "\n" << endl;
+                                cardName = input;
+                            } else {
+                                cout << "Invalid input. Please try again!" << endl;
+                            }
+                        }
+                    }
+
+                    // Check if the player wants to exit play card
+                    if(cardName == "NULL"){
+                        continue;
+                    }
+
+                    // Play card feature to be implemented
+                    cout << "Card " << cardName << " has been played" << endl;
+                } else {
+                    // Create a new order and check if it is valid
+                    if(input == "advance"){
+                        int sourceId;
+                        int adjacentId;
+
+                        while(true){
+                            cout << "Choose source territory to advance from: " << endl;
+                            cin >> sourceId;
+                            cout << "Choose adjacent territory to advance to: " << endl;
+                            cin >> adjacentId;
+
+                            if(sourceId <= loader->getSize() && sourceId > 0 && adjacentId <= loader->getSize() && adjacentId > 0){
+                                break;
+                            }else{
+                                cout << "Invalid territory ID" << endl;
+                            }
+                        }
+
+                        Advance * newOrder = new Advance(loader->getAllTerritoriesP().at(sourceId-1),loader->getAllTerritoriesP().at(adjacentId-1), tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else if(input == "deploy"){
                         //Choose army count
-
                         int deploy;
                         while (true)
                         {
                             cout << "Enter number of army to deploy: " << '\n';
                             cin >> deploy;
-                            if(deploy <= tempPlayer->getReinArmy() && deploy>0){
+                            if(deploy <= tempPlayer->getReinArmy() && deploy>=0){
                                 break;
                             }else{
                                 cout << "Invalid army count" << '\n';
@@ -439,236 +593,149 @@ void PlayManager::issueOrder(){
                         {
                             cout << "Enter territory id to deploy to: " << '\n';
                             cin >> t_deploy;
-                            if(t_deploy <= territoryToDefend.size() && t_deploy>0){
+                            if(t_deploy <= loader->getAllTerritoriesP().size() && t_deploy>0){
                                 break;
                             }else{
                                 cout << "Invalid territory" << '\n';
                             }
                         }
 
-                        Deploy * newOrder = new Deploy(deploy, territoryToDefend.at(t_deploy-1) ,tempPlayer->getId());
+                        Deploy * newOrder = new Deploy(deploy, loader->getAllTerritoriesP().at(t_deploy-1) ,tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else if(input == "bomb"){
+                        cout << cardName << '\n';
+                        int sourceId;
+                        int adjacentId;
 
-                        if(newOrder->validate()){
-                            tempPlayer->removeReinArmy(newOrder->getArmyCount());
+                        while(true){
+                            cout << "Choose source territory to bomb from: " << endl;
+                            cin >> sourceId;
+                            cout << "Choose adjacent territory to bomb to: " << endl;
+                            cin >> adjacentId;
+
+                            if(sourceId <= loader->getSize() && sourceId > 0 && adjacentId <= loader->getSize() && adjacentId > 0){
+                                break;
+                            }else{
+                                cout << "Invalid territory ID" << endl;
+                            }
                         }
-                        cout << newOrder->execute() << '\n';
+
+                        Bomb * newOrder = new Bomb(loader->getAllTerritoriesP().at(sourceId-1),loader->getAllTerritoriesP().at(adjacentId-1), tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else if(input == "blockade"){
+                        int sourceId;
+
+                        while(true){
+                            cout << "Choose territory to blockade" << endl;
+                            cin >> sourceId;
+                            if(sourceId <= loader->getSize() && sourceId > 0){
+                                break;
+                            }else{
+                                cout << "Invalid territory ID" << endl;
+                            }
+                        }
+
+                        Blockade * newOrder = new Blockade(loader->getAllTerritoriesP().at(sourceId-1),tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else if(input == "airlift"){
+                        //Choose territory
+
+                        int source;
+                        int target;
+                        while (true)
+                        {
+                            cout << "Enter territory id to deploy from: " << '\n';
+                            cin >> source;
+                            cout << "Enter territory id to deploy to: " << '\n';
+                            cin >> target;
+                            if(source <= loader->getAllTerritoriesP().size() && source>0 && target>0 && target <= loader->getAllTerritoriesP().size()){
+                                break;
+                            }else{
+                                cout << "Invalid territory" << '\n';
+                            }
+                        }
+
+                        //Choose army count
+
+                        int deploy;
+                        while (true)
+                        {
+                            cout << "Enter number of army to airlift: " << '\n';
+                            cin >> deploy;
+                            if(deploy>=0 && deploy <= loader->getAllTerritoriesP().at(source-1)->getNumOfArmies()){
+                                break;
+                            }else{
+                                cout << "Invalid army count, army needs to be smaller than " << loader->getAllTerritoriesP().at(source-1)->getNumOfArmies() <<'\n';
+                            }
+                        }
+
+
+                        Airlift * newOrder = new Airlift(deploy, loader->getAllTerritoriesP().at(source-1), loader->getAllTerritoriesP().at(target-1) ,tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else if(input == "negotiate"){
+                        int player2_id;
+                        while (true)
+                        {
+                            cout << "Enter id of the player you want to negotiate with: " << '\n';
+                            cin >> player2_id;
+                            if(player2_id < listOfPlayers.size()){
+                                break;
+                            }else{
+                                cout << "Invalid user id" << '\n';
+                            }
+                        }
+                        Negotiate * newOrder = new Negotiate(player2_id, tempPlayer->getId());
+                        tempPlayer->issueOrder(newOrder);
+                    } else {
+                        cout << "Invalid order! Please try again!" << endl;
+                        continue;
+                    }
+                }
+
+                // Ask player if they want to continue issuing order
+                while (true) {
+                    cout << "Do you want to end your turn? [Y/N]" << "\n";
+                    cin >> input;
+                    cout << endl;
+
+                    // Check player's answer
+                    if (input == "Y") {
+                        endIssueOrder = true;
                         break;
-                    } else{
-                        cout << "Invalid order. Please try again!" << endl;
-                    }
-                }
-
-                // After order is issued, loop back to get other orders from the player
-                continue;
-            }
-
-            // Notify the player if they don't need to deploy
-            cout << "You have no reinforcement army to deploy, you can proceed with other orders" << endl;
-            // List the territories that the player can attack
-            cout << "These are the territories that you can attack: " << endl;
-            loader->printNodeList();
-            //vector<Territory> territoryToAttack = loader->getNodesForContinent();
-            //for (int k = 0; k < territoryToAttack.size(); k++) {
-            //    cout << territoryToAttack[k]->getTerritoryName() << endl;
-            //}
-            cout << endl;
-
-            // Fetch order from the player
-            cout << "Please enter an order: ";
-            cin >> input;
-            cout << "\n" << endl;
-
-            string cardName;
-            // Check if the player is playing a card or issuing an order
-            if(input.substr(0,input.find(' ')) == "playcard"){
-                cardName = input.substr(input.find(' ') + 1, input.length()-1);
-
-                // Check if the card is valid
-                while(true){
-                    if(tempPlayer->playerHand->contains(cardName)){
+                    } else if (input == "N") {
                         break;
-                    } else{
-                        cout << "You don't have that card on your hand!" << endl;
-                        cout << R"(Input "exit" to return to order. Input "tryagain" to try again!)" << endl;
-                        cin >> input;
-                        cout << endl;
-
-                        // Check user's choice
-                        if(input == "exit"){
-                            cardName = "NULL";
-                            break;
-                        } else if(input == "tryagain"){
-                            cout << "Please enter the card you want to play: ";
-                            cin >> input;
-                            cout << "\n" << endl;
-                            cardName = input;
-                        } else {
-                            cout << "Invalid input. Please try again!" << endl;
-                        }
+                    } else {
+                        cout << "Invalid input. Please try again!" << endl;
                     }
-                }
-
-                // Check if the player wants to exit play card
-                if(cardName == "NULL"){
-                    continue;
-                }
-
-                // Play card feature to be implemented
-                cout << "Card " << cardName << " has been played" << endl;
-            } else {
-                // Create a new order and check if it is valid
-                if(input == "advance"){
-                    int sourceId;
-                    int adjacentId;
-
-                    while(true){
-                        cout << "Choose source territory to advance from: " << endl;
-                        cin >> sourceId;
-                        cout << "Choose adjacent territory to advance to: " << endl;
-                        cin >> adjacentId;
-
-                        if(sourceId <= loader->getSize() && sourceId > 0 && adjacentId <= loader->getSize() && adjacentId > 0){
-                            break;
-                        }else{
-                            cout << "Invalid territory ID" << endl;
-                        }
-                    }
-
-                    Advance * newOrder = new Advance(loader->getAllTerritoriesP().at(sourceId-1),loader->getAllTerritoriesP().at(adjacentId-1), tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else if(input == "deploy"){
-                    //Choose army count
-                    int deploy;
-                    while (true)
-                    {
-                        cout << "Enter number of army to deploy: " << '\n';
-                        cin >> deploy;
-                        if(deploy <= tempPlayer->getReinArmy() && deploy>=0){
-                            break;
-                        }else{
-                            cout << "Invalid army count" << '\n';
-                        }
-                    }
-                    //Choose territory
-                    int t_deploy;
-                    while (true)
-                    {
-                        cout << "Enter territory id to deploy to: " << '\n';
-                        cin >> t_deploy;
-                        if(t_deploy <= loader->getAllTerritoriesP().size() && t_deploy>0){
-                            break;
-                        }else{
-                            cout << "Invalid territory" << '\n';
-                        }
-                    }
-
-                    Deploy * newOrder = new Deploy(deploy, loader->getAllTerritoriesP().at(t_deploy-1) ,tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else if(input == "bomb"){
-                    cout << cardName << '\n';
-                    int sourceId;
-                    int adjacentId;
-
-                    while(true){
-                        cout << "Choose source territory to bomb from: " << endl;
-                        cin >> sourceId;
-                        cout << "Choose adjacent territory to bomb to: " << endl;
-                        cin >> adjacentId;
-
-                        if(sourceId <= loader->getSize() && sourceId > 0 && adjacentId <= loader->getSize() && adjacentId > 0){
-                            break;
-                        }else{
-                            cout << "Invalid territory ID" << endl;
-                        }
-                    }
-
-                    Bomb * newOrder = new Bomb(loader->getAllTerritoriesP().at(sourceId-1),loader->getAllTerritoriesP().at(adjacentId-1), tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else if(input == "blockade"){
-                    int sourceId;
-
-                    while(true){
-                        cout << "Choose territory to blockade" << endl;
-                        cin >> sourceId;
-                        if(sourceId <= loader->getSize() && sourceId > 0){
-                            break;
-                        }else{
-                            cout << "Invalid territory ID" << endl;
-                        }
-                    }
-
-                    Blockade * newOrder = new Blockade(loader->getAllTerritoriesP().at(sourceId-1),tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else if(input == "airlift"){
-                    //Choose territory
-
-                    int source;
-                    int target;
-                    while (true)
-                    {
-                        cout << "Enter territory id to deploy from: " << '\n';
-                        cin >> source;
-                        cout << "Enter territory id to deploy to: " << '\n';
-                        cin >> target;
-                        if(source <= loader->getAllTerritoriesP().size() && source>0 && target>0 && target <= loader->getAllTerritoriesP().size()){
-                            break;
-                        }else{
-                            cout << "Invalid territory" << '\n';
-                        }
-                    }
-
-                    //Choose army count
-
-                    int deploy;
-                    while (true)
-                    {
-                        cout << "Enter number of army to airlift: " << '\n';
-                        cin >> deploy;
-                        if(deploy>=0 && deploy <= loader->getAllTerritoriesP().at(source-1)->getNumOfArmies()){
-                            break;
-                        }else{
-                            cout << "Invalid army count, army needs to be smaller than " << loader->getAllTerritoriesP().at(source-1)->getNumOfArmies() <<'\n';
-                        }
-                    }
-
-
-                    Airlift * newOrder = new Airlift(deploy, loader->getAllTerritoriesP().at(source-1), loader->getAllTerritoriesP().at(target-1) ,tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else if(input == "negotiate"){
-                    int player2_id;
-                    while (true)
-                    {
-                        cout << "Enter id of the player you want to negotiate with: " << '\n';
-                        cin >> player2_id;
-                        if(player2_id < listOfPlayers.size()){
-                            break;
-                        }else{
-                            cout << "Invalid user id" << '\n';
-                        }
-                    }
-                    Negotiate * newOrder = new Negotiate(player2_id, tempPlayer->getId());
-                    tempPlayer->issueOrder(newOrder);
-                } else {
-                    cout << "Invalid order! Please try again!" << endl;
-                    continue;
                 }
             }
-
-            // Ask player if they want to continue issuing order
-            while (true) {
-                cout << "Do you want to end your turn? [Y/N]" << "\n";
-                cin >> input;
-                cout << endl;
-
-                // Check player's answer
-                if (input == "Y") {
-                    endIssueOrder = true;
-                    break;
-                } else if (input == "N") {
-                    break;
-                } else {
-                    cout << "Invalid input. Please try again!" << endl;
-                }
+        }else if(tempPlayer->getStrategy() == "Cheater"){
+            Advance* key = new Advance();
+            tempPlayer->issueOrder(key);
+            delete key;
+        }else if(tempPlayer->getStrategy() == "Benevolent"){
+            if(tempPlayer->getReinArmy() > 0){
+                Deploy* key = new Deploy();
+                tempPlayer->issueOrder(key);
+                delete key;
+            }else{
+                Advance* key = new Advance();
+                tempPlayer->issueOrder(key);
+                delete key;
+            }
+        }else if(tempPlayer->getStrategy() == "Neutral"){
+            Advance* key = new Advance();
+            tempPlayer->issueOrder(key);
+            delete key;
+        }else if(tempPlayer->getStrategy() == "Aggressive"){
+            if(tempPlayer->getReinArmy() > 0){
+                Deploy* key = new Deploy();
+                tempPlayer->issueOrder(key);
+                delete key;
+            }else{
+                Advance* key = new Advance();
+                tempPlayer->issueOrder(key);
+                delete key;
             }
         }
     }

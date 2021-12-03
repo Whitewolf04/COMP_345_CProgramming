@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class Order;
+
 class Cards
 {
 private:
@@ -19,7 +21,7 @@ public:
     Cards(const Cards* other);
     bool equals(const Cards *other);
     bool equals(string cardType);
-    void play();
+    Order* play();
 };
 
 class Deck
@@ -58,7 +60,7 @@ public:
 
     // Operational methods
     void drawCard(Deck *deck);
-    void playCard(string cardType);
+    Order * playCard(string cardType);
     bool contains(string cardType);
 };
 

@@ -3,7 +3,7 @@
 
 class Map;
 class Cards;
-class Orders;
+class Order;
 class PlayerStrategy;
 class Territory;
 class Hand;
@@ -15,6 +15,7 @@ using std::vector;
 using std::ostream;
 #include <string>
 using std::string;
+#include "PlayerStrategies.h"
 
 class Player {
 public:
@@ -29,7 +30,8 @@ public:
     Player();
     Player(string name);
     Player(Player& anotherPlayer);
-    Player(PlayerStrategy* ps);
+    Player(string name, PlayerStrategy* ps);
+    Player(string name, PlayerStrategy* ps, string strat);
 
     // Destructor
     ~Player();
@@ -38,11 +40,14 @@ public:
     string getPlayerName();
     int getReinArmy();
     int getId();
+    string getStrategy();
+
 
     // Mutator
     void addReinArmy(int num);
     void removeReinArmy(int num);
     void setPlayerStrategy(PlayerStrategy* ps);
+    void setStrategy(string strat);
 
     vector<Territory*> toDefend(); 
     vector<Territory*> toAttack();
@@ -54,6 +59,7 @@ private :
     static int obj_count;
     friend ostream& operator<<(ostream&, const Player&);
     PlayerStrategy* ps;
+    string strategy;
     
 };
 

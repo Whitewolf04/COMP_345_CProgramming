@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <tuple>
+#include "LoggingObserver.h"
 
 using namespace std;
 
@@ -62,7 +63,7 @@ public:
     void init ();
     void mapLoad(string arg);
     void validateMap();
-    void addPlayers(string arg);
+    void addPlayers(string arg, string arg2);
     void gameStart();
     void stringToLog();
     void transition();

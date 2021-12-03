@@ -8,12 +8,17 @@
 using std::cout;
 
 
+void PlayerStrategy::setPlayer(Player* pl){
+    this->p = pl;
+}
 
 Player* PlayerStrategy::getPlayer(){
     return p;
 }
 
 //HUMAN
+
+ 
 void Human::issueOrder(Order* o){
     getPlayer()->playerOrdersList->add(o);
 }
@@ -61,6 +66,7 @@ void Aggressive::issueOrder(Order* o){
     if(o->getType() == "deploy"){
         o = new Deploy(getPlayer()->getReinArmy(),getPlayer()->territoriesToDefend.at(0) , getPlayer()->getId());
         getPlayer()->playerOrdersList->add(o);
+        cout << "Deployed to strongest country" << '\n';
     }else if(o->getType() == "advance"){
         
         o = new Advance(getPlayer()->territoriesToDefend.back(),getPlayer()->territoriesToDefend.at(0) , getPlayer()->getId());
@@ -115,6 +121,8 @@ void Aggressive::toDefend(){
 
     if(strongest_country != -1){
         getPlayer()->territoriesToDefend.push_back(getPlayer()->playerTerritories.at(strongest_country));
+    }else{
+        getPlayer()->territoriesToDefend.push_back(getPlayer()->playerTerritories.at(0));
     }
 
 
@@ -173,18 +181,20 @@ void Cheater::issueOrder(Order* o){
         getPlayer()->territoriesToAttack.at(i)->setPlayerNumber(getPlayer()->getId());
         getPlayer()->playerTerritories.push_back(getPlayer()->territoriesToAttack.at(i));
     }
+    cout << getPlayer()->getPlayerName() << " took ownership of all adjacent territories!!!!!!!!! ඞ" << '\n'; 
 }
 
 void Cheater::toAttack(){
+    
     getPlayer()->territoriesToAttack.clear();
+    
     for(int i=0; i < getPlayer()->playerTerritories.size(); i++){
 
-
         for(int j=0; j < getPlayer()->playerTerritories.at(i)->getEdges().size(); j++){
-            
             if(getPlayer()->playerTerritories[i]->getEdges().at(j)->getPlayerNumber() != getPlayer()->getId()){
 
                 getPlayer()->territoriesToAttack.push_back(getPlayer()->playerTerritories[i]->getEdges().at(j));
+
 
             }
 
