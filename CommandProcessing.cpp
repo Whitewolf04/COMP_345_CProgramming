@@ -846,9 +846,9 @@ bool PlayManager::checkWinner(Player * p){
     int playerID = p->getId();
     bool win = true;
 
-    for(int k = 0; k < loader->getAllTerritories()->size(); k++){
-        Territory tempTerritory = loader->getAllTerritories()->at(k);
-        if(!tempTerritory.PlayerCheck(playerID)){
+    for(int k = 0; k < loader->getAllTerritoriesP().size(); k++){
+        Territory * tempTerritory = loader->getAllTerritoriesP().at(k);
+        if(!tempTerritory->PlayerCheck(playerID)){
             win = false;
             break;
         }
